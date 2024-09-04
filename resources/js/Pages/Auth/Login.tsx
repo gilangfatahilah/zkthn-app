@@ -3,7 +3,7 @@ import InputError from '@/Components/InputError';
 import { Button } from '@/Components/ui/button';
 import { Label } from '@/Components/ui/label';
 import { Input } from '@/Components/ui/input';
-import { Link, useForm } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 import { Checkbox } from '@/Components/ui/checkbox';
 
 export default function Login({ status, canResetPassword }: { status?: string, canResetPassword: boolean }) {
@@ -23,6 +23,10 @@ export default function Login({ status, canResetPassword }: { status?: string, c
 
 
   return (
+    <>
+
+    <Head title='Login' />
+
     <div className="w-full h-screen lg:grid lg:grid-cols-2 relative">
       <div className="absolute top-0 left-0 ml-4 p-4">
         <Link href="/" className="block" aria-label="logo">
@@ -122,5 +126,7 @@ export default function Login({ status, canResetPassword }: { status?: string, c
         />
       </div>
     </div>
+
+    </>
   )
 }

@@ -22,6 +22,10 @@ export default function Register() {
     };
 
     return (
+        <>
+
+        <Head title='Register' />
+
         <div className="w-full h-screen lg:grid lg:grid-cols-2 relative">
             <div className="absolute top-0 right-0 mr-4 p-4">
                 <Link href="/" className="block" aria-label="logo">
@@ -124,5 +128,7 @@ export default function Register() {
                 </div>
             </div>
         </div>
+
+        </>
     )
 }

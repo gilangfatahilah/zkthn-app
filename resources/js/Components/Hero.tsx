@@ -1,8 +1,20 @@
+import React, { useEffect } from 'react';
+import AOS from 'aos';
+import 'aos/dist/aos.css'; 
 import VideoThumb from '../../../public/images/hero.jpg'
 import ModalVideo from './ModalVideo'
 import { Button } from './ui/button'
 
 export default function Hero() {
+  useEffect(() => {
+      AOS.init({
+        once: true,
+        disable: 'phone',
+        duration: 600,
+        easing: 'ease-out-sine',
+    })
+  }, []);  
+
   return (
     <section>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 relative">
@@ -12,7 +24,7 @@ export default function Hero() {
 
           {/* Section header */}
           <div className="max-w-3xl mx-auto text-center pb-12 md:pb-16">
-            <h1 className="text-6xl text-primary/70 font-bold mb-4" data-aos="fade-up">Ambil Peran Jadi Relawan</h1>
+            <h1 className="text-6xl text-primary/70 font-bold mb-4" data-aos="fade-up">Lorem ipsum dolor.</h1>
             <p className="text-xl text-gray-400 mb-8" data-aos="fade-up" data-aos-delay="200">Our landing page template works on all devices, so you only have to set it up once, and get beautiful results forever.</p>
             <div className="max-w-xs mx-auto sm:max-w-none sm:flex sm:gap-4 sm:justify-center">
               <div data-aos="fade-up" data-aos-delay="400">
