@@ -3,6 +3,7 @@ import { PageProps } from '@/types';
 import Navbar from '@/Components/Navbar';
 import Hero from '@/Components/Hero';
 import { ThemeProvider } from '@/Components/themeProvider';
+import Features from '@/Components/Features';
 
 export default function Welcome({ auth, laravelVersion, phpVersion }: PageProps<{ laravelVersion: string, phpVersion: string }>) {
 
@@ -11,6 +12,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }: PageProps<
             <Head title="My App" />
             <Navbar user={auth.user} />
             <Hero />
+            <Features />
         </ThemeProvider>
     );
 }
