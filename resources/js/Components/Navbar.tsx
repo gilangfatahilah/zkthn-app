@@ -2,6 +2,7 @@ import { Link } from '@inertiajs/react'
 import MobileMenu from './MobileMenu'
 import { User } from '@/types'
 import { Button } from './ui/button'
+import { ModeToggle } from './ToggleMode'
 
 interface NavbarProps {
   user: User
@@ -22,22 +23,31 @@ export default function Navbar({ user }: NavbarProps) {
             </Link>
           </div>
 
-          <nav className='hidden md:flex md:grow'>
+          <nav className='hidden md:flex pl-4'>
             <ul className='flex grow justify-end flex-wrap items-center'>
-              <li className='font-medium tracking-wide text-lg text-primary hover:text-primary/80 px-4 py-3 flex items-center transition duration-150 ease-in-out cursor-pointer'>
-                  Aktivitas
+              <li>
+                <Button variant={'link'} asChild className="text-md font-semibold tracking-wide">
+                  <Link href="#">
+                    Aktivitas
+                  </Link>
+                </Button>
               </li>
 
-              <li className='font-medium tracking-wide text-lg text-primary hover:text-primary/80 px-4 py-3 flex items-center transition duration-150 ease-in-out cursor-pointer'>
-                  Tentang Kami
+              <li>
+                <Button variant={'link'} asChild className="text-md font-semibold tracking-wide">
+                  <Link href="#">
+                    Tentang Kami
+                  </Link>
+                </Button>
               </li>
             </ul>
           </nav>
 
           {/* Desktop navigation */}
-          <div className="hidden md:flex md:grow">
+          <div className="hidden md:flex">
+
             {/* Desktop sign in links */}
-            <ul className="flex gap-2 grow justify-end flex-wrap items-center">
+            <ul className="flex gap-2 justify-end flex-wrap items-center">
               {
                 user ? (
                   <li>
@@ -50,21 +60,25 @@ export default function Navbar({ user }: NavbarProps) {
                   </li>
                 ) : (
                   <>
-                  <li>
-                    <Button asChild className="text-md tracking-wide">
-                      <Link href={route('login')}>
-                        Masuk
-                      </Link>
-                    </Button>
-                  </li>
+                    <li>
+                      <Button asChild className="text-md tracking-wide">
+                        <Link href={route('login')}>
+                          Masuk
+                        </Link>
+                      </Button>
+                    </li>
 
-                  <li>
-                    <Button variant={'link'} asChild className="text-md tracking-wide">
-                      <Link href={route('register')}>
-                        Daftar
-                      </Link>
-                    </Button>
-                  </li>                 
+                    {/* <li>
+                      <Button variant={'link'} asChild className="text-md tracking-wide">
+                        <Link href={route('register')}>
+                          Daftar
+                        </Link>
+                      </Button>
+                    </li> */}
+
+                    <li>
+                      <ModeToggle />
+                    </li>
                   </>
                 )
               }
