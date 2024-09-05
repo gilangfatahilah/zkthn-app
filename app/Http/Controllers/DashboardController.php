@@ -2,23 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
-class UserController extends Controller
+class DashboardController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $data = [
-            'users' => User::all()
-        ];
-
-        dd($data);
-        // Meneruskan data user ke view
-        // return view('users.index', ['users' => $users]);
+        return Inertia::render('Dashboard');
     }
 
     /**
@@ -42,11 +36,7 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        $data = [
-            'users' => User::find($id),
-        ];
-
-        dd($data);
+        //
     }
 
     /**
@@ -54,9 +44,7 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        $data = [
-            'users' => User::find($id),
-        ];
+        //
     }
 
     /**
@@ -72,10 +60,6 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        $user = User::find($id);
-
-        $user->delete();
-
-        return $this->index();
+        //
     }
 }
