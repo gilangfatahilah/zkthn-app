@@ -1,4 +1,4 @@
-import Navbar from '@/Components/Navbar';
+import Navbar from '@/Components/home/Navbar';
 import { Link } from '@inertiajs/react';
 import { PropsWithChildren } from 'react';
 

@@ -1,12 +1,12 @@
 import { Link, Head } from '@inertiajs/react';
 import { PageProps } from '@/types';
-import Navbar from '@/Components/Navbar';
-import Hero from '@/Components/Hero';
+import Navbar from '@/Components/home/Navbar';
+import Hero from '@/Components/home/Hero';
 import { ThemeProvider } from '@/Components/themeProvider';
-import Features from '@/Components/Features';
-import HomeCampaign from '@/Components/HomeCampaign';
-import HomeBanner from '@/Components/HomeBanner';
-import Footer from '@/Components/Footer';
+import Features from '@/Components/home/Features';
+import HomeCampaign from '@/Components/home/HomeCampaign';
+import HomeBanner from '@/Components/home/HomeBanner';
+import Footer from '@/Components/home/Footer';
 
 export default function Welcome({ auth, laravelVersion, phpVersion }: PageProps<{ laravelVersion: string, phpVersion: string }>) {
 

@@ -1,7 +1,7 @@
 import { Card, CardContent, CardFooter } from "@/Components/ui/card";
 import { Link } from "@inertiajs/react";
 import { Button } from "@/Components/ui/button";
-import { Badge } from "./ui/badge";
+import { Badge } from "../ui/badge";
 import { MdDateRange } from "react-icons/md";
 import { FaLocationDot } from "react-icons/fa6";
 

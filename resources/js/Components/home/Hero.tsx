@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css'; 
-import VideoThumb from '../../../public/images/hero.jpg'
+import VideoThumb from '../../../../public/images/hero.jpg'
 import ModalVideo from './ModalVideo'
-import { Button } from './ui/button'
+import { Button } from '../ui/button'
 
 export default function Hero() {
   useEffect(() => {

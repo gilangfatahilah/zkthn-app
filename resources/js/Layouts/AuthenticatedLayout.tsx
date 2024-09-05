@@ -1,18 +1,18 @@
-import { useState, PropsWithChildren, ReactNode } from "react";
-import { User } from "@/types";
+import { useState, PropsWithChildren, ReactNode } from 'react';
+import Header from '@/Components/dashboard/header';
+import Sidebar from '@/Components/dashboard/sidebar';
+import { User } from '@/types';
 
-export default function Authenticated({
-    user,
-    header,
-    children,
-}: PropsWithChildren<{ user: User; header?: ReactNode }>) {
-    const [showingNavigationDropdown, setShowingNavigationDropdown] =
-        useState(false);
-
+export default function DashboardLayout({ user, header, children }: PropsWithChildren<{ user: User, header?: ReactNode }>) {
     return (
         <>
-            <p>dashboard</p>
-            {children}
+            {/* // <Suspense fallback={<Loader />} > */}
+            <Header user={user} />
+            <div className="flex h-screen overflow-hidden">
+                <Sidebar />
+                <main className="w-full pt-16">{children}</main>
+            </div>
+            {/* // </Suspense> */}
         </>
     );
 }

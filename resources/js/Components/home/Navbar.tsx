@@ -1,8 +1,8 @@
 import { Link } from "@inertiajs/react";
 import MobileMenu from "./MobileMenu";
 import { User } from "@/types";
-import { Button } from "./ui/button";
-import { ModeToggle } from "./ToggleMode";
+import { Button } from "../ui/button";
+import { ModeToggle } from "../ToggleMode";
 
 interface NavbarProps {
   user: User;
