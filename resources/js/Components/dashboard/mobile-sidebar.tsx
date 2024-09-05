@@ -1,5 +1,5 @@
 import { DashboardNav } from './dashboard-nav';
-import { Sheet, SheetContent, SheetTrigger } from '@/Components/ui/sheet';
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/Components/ui/sheet';
 import { navItems } from '@/constans';
 import { MenuIcon } from 'lucide-react';
 import { useState } from 'react';
@@ -21,9 +21,9 @@ export function MobileSidebar({ className }: SidebarProps) {
         <SheetContent side="left" className="!px-0">
           <div className="space-y-4 py-4">
             <div className="px-3 py-2">
-              <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
+              <SheetTitle className="mb-2 px-4 text-lg font-semibold tracking-tight">
                 Overview
-              </h2>
+              </SheetTitle>
               <div className="space-y-1">
                 <DashboardNav
                   items={navItems}

@@ -10,7 +10,9 @@ export default function DashboardLayout({ user, header, children }: PropsWithChi
             <Header user={user} />
             <div className="flex h-screen overflow-hidden">
                 <Sidebar />
-                <main className="w-full pt-16">{children}</main>
+                <main className="w-full pt-16">
+                    {children}
+                </main>
             </div>
             {/* // </Suspense> */}
         </>

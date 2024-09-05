@@ -31,7 +31,7 @@ export function UserNav({ user }: UserNavProps) {
   const [openDialog, setOpenDialog] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const { post } = useForm(); // Inertia.js form handling
+  const { post } = useForm();
 
   const handleSignOutClick = () => {
     setOpenDialog(true);
@@ -71,7 +71,7 @@ export function UserNav({ user }: UserNavProps) {
         onClose={() => setOpenDialog(false)}
         onConfirm={handleSignOut}
         loading={loading}
-        description="This action can not be undone, you will be redirected to the sign-in page."
+        description="Are you sure you want to Logout ?"
       />
 
       <DropdownMenu>
@@ -82,7 +82,7 @@ export function UserNav({ user }: UserNavProps) {
                 src={user.image ?? ''}
                 alt={user.name ?? ''}
               />
-              <AvatarFallback>{name?.[0]}</AvatarFallback>
+              <AvatarFallback>{user.name?.[0]}</AvatarFallback>
             </Avatar>
           </Button>
         </DropdownMenuTrigger>
@@ -91,15 +91,15 @@ export function UserNav({ user }: UserNavProps) {
             <div className="flex flex-col space-y-2">
               <p className="text-sm font-medium leading-none">{user.name}</p>
               <p className="text-xs leading-none text-muted-foreground">
-                {user.role}
+                {user.role.charAt(0).toUpperCase() + user.role.slice(1)} Account
               </p>
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <Link href="/dashboard/setting">
+            <Link href="/profile">
               <DropdownMenuItem>
-                Settings
+                Profile
                 <DropdownMenuShortcut>
                   <Settings className="w-4 h-4" />
                 </DropdownMenuShortcut>
@@ -107,7 +107,7 @@ export function UserNav({ user }: UserNavProps) {
             </Link>
           </DropdownMenuGroup>
           <DropdownMenuItem onClick={handleSignOutClick}>
-            Sign Out
+            Logout
             <DropdownMenuShortcut>
               <LogOut className="w-4 h-4" />
             </DropdownMenuShortcut>
