@@ -22,7 +22,7 @@ Route::middleware('auth', 'role:administrator,organization,personal', 'verified'
 
 Route::middleware('auth', 'role:administrator,organization', 'verified')->group(function () {
     Route::get('/user', [UserController::class, 'index'])->name('user');
-    Route::delete('/user', [UserController::class, 'destroy'])->name('user.destroy');
+    Route::delete('/user{id}', [UserController::class, 'destroy'])->name('user.destroy');
 
 
     Route::get('/activity', [ActivityController::class, 'index'])->name('activity');

@@ -26,20 +26,20 @@ export const features = [
 
 export const navItems: NavItem[] = [
   {
-    title: 'Dashboard',
+    title: 'Beranda',
     href: '/dashboard',
     icon: 'dashboard',
     label: 'Dashboard'
   },
   {
-    title: 'User',
-    href: '/dashboard/user',
+    title: 'Pengguna',
+    href: '/user',
     icon: 'user',
     label: 'user'
   },
   {
-    title: 'Events',
-    href: '/dashboard/Events',
+    title: 'Aktivitas',
+    href: '/event',
     icon: 'calendar',
     label: 'Events'
   },

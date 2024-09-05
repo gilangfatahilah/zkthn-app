@@ -13,6 +13,7 @@ import { useForm, usePage } from "@inertiajs/react";
 import { Transition } from "@headlessui/react";
 import { FormEventHandler } from "react";
 import { PageProps } from "@/types";
+import CalendarInput from "@/Components/Calendar";
 
 export default function UpdateProfileInformation({
     mustVerifyEmail,
@@ -37,7 +38,14 @@ export default function UpdateProfileInformation({
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        patch(route("profile.update"));
+        patch(route("profile.update"), {
+            onError: () => {
+                console.log("error", e);
+            },
+            onSuccess: () => {
+                console.log("success", e);
+            }
+        });
     };
 
     return (
@@ -124,15 +132,11 @@ export default function UpdateProfileInformation({
                         )}
                     </div>
                     <div>
-                        <Label htmlFor="dob">Tanggal Lahir</Label>
-                        <Input
+                        <Label className="mb-1" htmlFor="dob">Tanggal Lahir</Label>
+                        <CalendarInput
                             id="dob"
-                            type="date"
-                            className="mt-1 block w-full"
                             value={data.dob}
-                            onChange={(e) => setData("dob", e.target.value)}
-                            required
-                            autoFocus
+                            onSelect={(e) => setData("dob", e)}
                         />
                         {errors.dob && (
                             <p className="mt-2 text-sm text-red-600">
@@ -147,7 +151,7 @@ export default function UpdateProfileInformation({
                             type="number"
                             className="mt-1 block w-full"
                             value={data.phone}
-                            onChange={(e) => setData("phone", e.target.value)}
+                            onChange={(e) => setData("phone", parseInt(e.target.value))}
                             required
                             autoFocus
                         />

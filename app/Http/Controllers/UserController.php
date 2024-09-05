@@ -17,7 +17,25 @@ class UserController extends Controller
             'users' => User::all()
         ];
 
-        return Inertia::render('...', $data);
+        // Meneruskan data user ke view
+        return Inertia::render('Tables/User/UserTable', $data);
+        // return view('users.index', ['users' => $users]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+    //
     }
 
     /**
@@ -43,6 +61,6 @@ class UserController extends Controller
         $user->delete();
 
         // Redirect ke halaman index dengan pesan sukses
-        return redirect()->route('users.index')->with('success', 'User berhasil dihapus.');
+        return redirect()->route('user')->with('success', 'User berhasil dihapus.');
     }
 }
