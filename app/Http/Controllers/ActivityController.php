@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Activity;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class ActivityController extends Controller
 {
@@ -12,9 +13,11 @@ class ActivityController extends Controller
      */
     public function index()
     {
-        $activity = Activity::all();
+        $data = [
+            'activity' => Activity::all(),
+        ];
 
-        dd($activity);
+        return Inertia::render('....', $data);
     }
 
     /**
@@ -22,7 +25,7 @@ class ActivityController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('....');
     }
 
     /**
@@ -30,7 +33,34 @@ class ActivityController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'title' => 'required',
+            'banner' => 'required',
+            'location' => 'required',
+            'category' => 'required',
+            'schedule' => 'required',
+            'deadline' => 'required',
+            'description' => 'required',
+            'max' => 'required',
+            'jobdesk' => 'required',
+            'requirement' => 'required',
+            'domicile' => 'required',
+            'addtional_information' => 'required',
+        ]);
+
+        if ($request->hasFile('banner')) {
+            $file = $request->file('banner');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $filePath = $file->storeAs('resources/assets/images', $fileName); // Simpan file di folder resources/assets/images
+
+            // Pindahkan file ke folder public
+            $publicPath = public_path('images/' . $fileName);
+
+            Activity::create($validated);
+
+            // Redirect atau beri respons sukses
+            return redirect()->back()->with('success', 'Activity berhasil disimpan.');
+        }
     }
 
     /**

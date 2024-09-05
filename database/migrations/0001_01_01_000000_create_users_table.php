@@ -19,11 +19,12 @@ return new class extends Migration
             $table->string('password');
             $table->enum('role', ['administrator', 'organization', 'personal'])->default('personal');
             $table->string('image')->nullable();
-            $table->enum('gender', ['Pria', 'Wanita']);
+            $table->enum('gender', ['Pria', 'Wanita', 'Lainnya']);
             $table->date('dob')->nullable();
             $table->string('phone', length: 15)->nullable();
             $table->string('address')->nullable();
             $table->string('cv')->nullable();
+            $table->integer('status')->default(1);
             $table->rememberToken();
             $table->timestamps();
         });

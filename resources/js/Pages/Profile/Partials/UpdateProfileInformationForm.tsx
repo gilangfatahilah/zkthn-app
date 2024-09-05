@@ -32,6 +32,7 @@ export default function UpdateProfileInformation({
             role: user.role,
             dob: user.dob,
             phone: user.phone,
+            address: user.address,
         });
 
     const submit: FormEventHandler = (e) => {
@@ -133,9 +134,9 @@ export default function UpdateProfileInformation({
                             required
                             autoFocus
                         />
-                        {errors.name && (
+                        {errors.dob && (
                             <p className="mt-2 text-sm text-red-600">
-                                {errors.name}
+                                {errors.dob}
                             </p>
                         )}
                     </div>
@@ -150,9 +151,26 @@ export default function UpdateProfileInformation({
                             required
                             autoFocus
                         />
-                        {errors.name && (
+                        {errors.phone && (
                             <p className="mt-2 text-sm text-red-600">
-                                {errors.name}
+                                {errors.phone}
+                            </p>
+                        )}
+                    </div>
+                    <div>
+                        <Label htmlFor="address">Alamat</Label>
+                        <Input
+                            id="address"
+                            type="text"
+                            className="mt-1 block w-full"
+                            value={data.address}
+                            onChange={(e) => setData("address", e.target.value)}
+                            required
+                            autoFocus
+                        />
+                        {errors.address && (
+                            <p className="mt-2 text-sm text-red-600">
+                                {errors.address}
                             </p>
                         )}
                     </div>
