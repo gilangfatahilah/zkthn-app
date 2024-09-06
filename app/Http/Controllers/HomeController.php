@@ -40,10 +40,21 @@ class HomeController extends Controller
     {
         $activityModel = new Activity();
 
-        // $data = [
-        //     'activity' => $activityModel->activityJoin()
-        // ];
+        $data = [
+            'activity' => $activityModel->activityJoin()
+        ];
         // dd($data);
-        return Inertia::render('Activity');
+        return Inertia::render('Activity', $data);
+    }
+
+    public function detailActivity(string $id)
+    {
+        $activityModel = new Activity();
+
+        $data = [
+            'activity' => $activityModel->activityJoin($id)
+        ];
+        dd($data);
+        return Inertia::render('Activity', $data);
     }
 }

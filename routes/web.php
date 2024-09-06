@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 // public
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/activity', [HomeController::class, 'allActivity'])->name('allActivity');
+Route::get('/activity{id}', [HomeController::class, 'detailActivity'])->name('detailActivity');
 
 // allrole
 Route::middleware('auth', 'role:administrator,organization,personal', 'verified')->group(function () {
