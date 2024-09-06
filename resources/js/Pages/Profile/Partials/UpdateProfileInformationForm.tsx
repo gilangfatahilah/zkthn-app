@@ -44,16 +44,16 @@ export default function UpdateProfileInformation({
             },
             onSuccess: () => {
                 console.log("success", e);
-            }
+            },
         });
     };
 
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Profile Information</CardTitle>
+                <CardTitle>Informasi Profil</CardTitle>
                 <CardDescription>
-                    Update your account's profile information and email address.
+                    Perbarui informasi profil dan alamat email akun Anda.
                 </CardDescription>
             </CardHeader>
 
@@ -132,7 +132,9 @@ export default function UpdateProfileInformation({
                         )}
                     </div>
                     <div>
-                        <Label className="mb-1" htmlFor="dob">Tanggal Lahir</Label>
+                        <Label className="mb-1" htmlFor="dob">
+                            Tanggal Lahir
+                        </Label>
                         <CalendarInput
                             id="dob"
                             value={data.dob}
@@ -151,7 +153,9 @@ export default function UpdateProfileInformation({
                             type="number"
                             className="mt-1 block w-full"
                             value={data.phone}
-                            onChange={(e) => setData("phone", parseInt(e.target.value))}
+                            onChange={(e) =>
+                                setData("phone", parseInt(e.target.value))
+                            }
                             required
                             autoFocus
                         />
