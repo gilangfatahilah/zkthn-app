@@ -29,29 +29,31 @@ const breadcrumbItems = [
 const AddActivity = ({ auth }: PageProps) => {
     // Menggunakan useForm untuk mengelola state form
     const { data, setData, post, processing, errors } = useForm({
-        title: '',
-        location: '',
-        category: [''],
+        title: "",
+        location: "",
+        category: [""],
         schedule: new Date(),
         deadline: new Date(),
-        max: '',
-        domicile: '',
-        description: '',
-        requirement: '',
-        jobdesk: '',
-        addtional_information: '',
+        max: "",
+        domicile: "",
+        description: "",
+        requirement: "",
+        jobdesk: "",
+        addtional_information: "",
         banner: null, // Tambahkan key untuk file gambar
     });
 
     const [categoryTags, setCategoryTags] = useState<string[]>([]);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const handleChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
         const key = e.target.id as keyof typeof data;
         setData(key, e.target.value);
     };
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setData('banner', e.target.files?.[0] || null); // Menangani file gambar
+        setData("banner", e.target.files?.[0] || null); // Menangani file gambar
     };
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -62,14 +64,14 @@ const AddActivity = ({ auth }: PageProps) => {
             formData.append(key, value);
         });
 
-        post(route('activity.store'), {
+        post(route("activity.store"), {
             data: formData,
             onSuccess: () => {
-                toast.success('Activity created successfully');
+                toast.success("Activity created successfully");
             },
             onError: (e) => {
                 console.log(e);
-                toast.error('Failed to create activity');
+                toast.error("Failed to create activity");
             },
             preserveScroll: true,
         });
@@ -98,7 +100,9 @@ const AddActivity = ({ auth }: PageProps) => {
                                             onChange={handleChange}
                                             required
                                         />
-                                        {errors.title && <div>{errors.title}</div>}
+                                        {errors.title && (
+                                            <div>{errors.title}</div>
+                                        )}
                                     </div>
                                     <div className="space-y-1">
                                         <Label htmlFor="location">Lokasi</Label>
@@ -110,22 +114,28 @@ const AddActivity = ({ auth }: PageProps) => {
                                             onChange={handleChange}
                                             required
                                         />
-                                        {errors.location && <div>{errors.location}</div>}
+                                        {errors.location && (
+                                            <div>{errors.location}</div>
+                                        )}
                                     </div>
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-1">
-                                        <Label htmlFor="category">Kategori</Label>
+                                        <Label htmlFor="category">
+                                            Kategori
+                                        </Label>
                                         <InputTags
                                             id="category"
                                             value={data.category}
                                             onChange={(e) => {
                                                 // @ts-ignore
-                                                setData('category', e);
+                                                setData("category", e);
                                             }}
                                             placeholder="Masukan Kategori"
                                         />
-                                        {errors.category && <div>{errors.category}</div>}
+                                        {errors.category && (
+                                            <div>{errors.category}</div>
+                                        )}
                                     </div>
                                     <div className="space-y-1">
                                         <Label htmlFor="schedule">
@@ -133,9 +143,13 @@ const AddActivity = ({ auth }: PageProps) => {
                                         </Label>
                                         <DatePicker
                                             value={data.schedule}
-                                            onApply={(e) => setData('schedule', e as Date)}
+                                            onApply={(e) =>
+                                                setData("schedule", e as Date)
+                                            }
                                         />
-                                        {errors.schedule && <div>{errors.schedule}</div>}
+                                        {errors.schedule && (
+                                            <div>{errors.schedule}</div>
+                                        )}
                                     </div>
                                     <div className="space-y-1">
                                         <Label htmlFor="deadline">
@@ -143,9 +157,13 @@ const AddActivity = ({ auth }: PageProps) => {
                                         </Label>
                                         <DatePicker
                                             value={data.deadline}
-                                            onApply={(e) => setData('deadline', e as Date)}
+                                            onApply={(e) =>
+                                                setData("deadline", e as Date)
+                                            }
                                         />
-                                        {errors.deadline && <div>{errors.deadline}</div>}
+                                        {errors.deadline && (
+                                            <div>{errors.deadline}</div>
+                                        )}
                                     </div>
                                     <div className="space-y-1">
                                         <Label htmlFor="max">
@@ -162,7 +180,9 @@ const AddActivity = ({ auth }: PageProps) => {
                                         {errors.max && <div>{errors.max}</div>}
                                     </div>
                                     <div className="space-y-1">
-                                        <Label htmlFor="domicile">Domisili</Label>
+                                        <Label htmlFor="domicile">
+                                            Domisili
+                                        </Label>
                                         <Input
                                             id="domicile"
                                             placeholder="Masukan Domisili"
@@ -171,11 +191,15 @@ const AddActivity = ({ auth }: PageProps) => {
                                             onChange={handleChange}
                                             required
                                         />
-                                        {errors.domicile && <div>{errors.domicile}</div>}
+                                        {errors.domicile && (
+                                            <div>{errors.domicile}</div>
+                                        )}
                                     </div>
                                 </div>
                                 <div className="space-y-1">
-                                    <Label htmlFor="description">Deskripsi</Label>
+                                    <Label htmlFor="description">
+                                        Deskripsi
+                                    </Label>
                                     <Textarea
                                         id="description"
                                         placeholder="Masukan Deskripsi"
@@ -183,7 +207,9 @@ const AddActivity = ({ auth }: PageProps) => {
                                         onChange={handleChange}
                                         required
                                     />
-                                    {errors.description && <div>{errors.description}</div>}
+                                    {errors.description && (
+                                        <div>{errors.description}</div>
+                                    )}
                                 </div>
                                 <div className="space-y-1">
                                     <Label htmlFor="jobdesk">Tugas</Label>
@@ -194,10 +220,14 @@ const AddActivity = ({ auth }: PageProps) => {
                                         onChange={handleChange}
                                         required
                                     />
-                                    {errors.jobdesk && <div>{errors.jobdesk}</div>}
+                                    {errors.jobdesk && (
+                                        <div>{errors.jobdesk}</div>
+                                    )}
                                 </div>
                                 <div className="space-y-1">
-                                    <Label htmlFor="requirement">Kriteria</Label>
+                                    <Label htmlFor="requirement">
+                                        Kriteria
+                                    </Label>
                                     <Textarea
                                         id="requirement"
                                         placeholder="Masukan Tugas"
@@ -205,7 +235,9 @@ const AddActivity = ({ auth }: PageProps) => {
                                         onChange={handleChange}
                                         required
                                     />
-                                    {errors.requirement && <div>{errors.requirement}</div>}
+                                    {errors.requirement && (
+                                        <div>{errors.requirement}</div>
+                                    )}
                                 </div>
                                 <div className="space-y-1">
                                     <Label htmlFor="addtional_information">
@@ -218,7 +250,11 @@ const AddActivity = ({ auth }: PageProps) => {
                                         onChange={handleChange}
                                         required
                                     />
-                                    {errors.addtional_information && <div>{errors.addtional_information}</div>}
+                                    {errors.addtional_information && (
+                                        <div>
+                                            {errors.addtional_information}
+                                        </div>
+                                    )}
                                 </div>
 
                                 {/* Input file untuk banner */}
@@ -230,7 +266,9 @@ const AddActivity = ({ auth }: PageProps) => {
                                         onChange={handleFileChange}
                                         required
                                     />
-                                    {errors.banner && <div>{errors.banner}</div>}
+                                    {errors.banner && (
+                                        <div>{errors.banner}</div>
+                                    )}
                                 </div>
                             </CardContent>
                             <CardFooter>

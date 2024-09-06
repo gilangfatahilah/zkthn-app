@@ -22,6 +22,7 @@ class Activity extends Model
         'description',
         'max',
         'jobdesk',
+        'requirement',
         'domicile',
         'addtional_information'
     ];
@@ -44,5 +45,7 @@ class Activity extends Model
             ->select('activity.*', 'users.name as publised_name')
             ->where('publised_by', $id)
             ->get();
+
+        return $query;
     }
 }

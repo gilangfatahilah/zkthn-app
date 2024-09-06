@@ -9,11 +9,21 @@ class ActivityDetail extends Model
 {
     use HasFactory;
 
-    protected $table = 'activity';
+    protected $table = 'activity_detail';
 
     protected $fillable = [
         'activity_id',
         'user_id',
         'status',
     ];
+
+    public function getRegistrants($id)
+    {
+        $query = $this->join('users', 'users.id', '=', 'activity_detail.user_id')
+            ->select('users.*', 'activity_detail.*')
+            ->where('activity_id', $id)
+            ->get();
+
+        return $query;
+    }
 }

@@ -23,7 +23,7 @@ class ProfileUpdateRequest extends FormRequest
             'dob' => ['required'],
             'phone' => ['required'],
             'address' => ['required'],
-            'cv' => ['nullable', 'file', 'mimes:pdf', 'max:2048'], // Tambahkan validasi untuk CV
+            // 'cv' => ['nullable', 'file', 'mimes:pdf', 'max:2048'], // Tambahkan validasi untuk CV
             // 'cv' => ['required'],
         ];
     }

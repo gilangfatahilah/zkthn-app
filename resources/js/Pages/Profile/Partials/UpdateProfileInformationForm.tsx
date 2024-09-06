@@ -52,11 +52,14 @@ export default function UpdateProfileInformation({
 
         if (cvFile) {
             formData.append("cv", cvFile); // Tambahkan file CV ke FormData
-            console.log(formData)
+            console.log(formData);
         }
 
         post(route("profile.update"), {
             data: formData,
+            headers: {
+                "Content-Type": "multipart/form-data", // Tambahkan header Content-Type
+            },
             onError: () => {
                 console.log("error", e);
             },
@@ -157,7 +160,7 @@ export default function UpdateProfileInformation({
                         <DatePicker
                             value={data.dob}
                             limit={true}
-                            onApply={(e) => setData('dob', e as Date)}
+                            onApply={(e) => setData("dob", e as Date)}
                         />
                         {errors.dob && (
                             <p className="mt-2 text-sm text-red-600">
@@ -170,10 +173,10 @@ export default function UpdateProfileInformation({
                         <Input
                             id="phone"
                             type="text"
-                            pattern="\d*"  // Membatasi input agar hanya angka yang bisa dimasukkan
+                            pattern="\d*" // Membatasi input agar hanya angka yang bisa dimasukkan
                             className="mt-1 block w-full"
-                            value={data.phone}  // Pastikan 'data.phone' disimpan sebagai string
-                            onChange={(e) => setData("phone", e.target.value)}  // Set sebagai string
+                            value={data.phone} // Pastikan 'data.phone' disimpan sebagai string
+                            onChange={(e) => setData("phone", e.target.value)} // Set sebagai string
                             required
                             autoFocus
                         />
@@ -208,7 +211,9 @@ export default function UpdateProfileInformation({
                             type="file"
                             className="mt-1 block w-full"
                             accept=".pdf"
-                            onChange={(e) => setCvFile(e.target.files?.[0] || null)} // Simpan file yang dipilih
+                            onChange={(e) =>
+                                setCvFile(e.target.files?.[0] || null)
+                            } // Simpan file yang dipilih
                         />
                         {errors.cv && (
                             <p className="mt-2 text-sm text-red-600">
@@ -217,7 +222,6 @@ export default function UpdateProfileInformation({
                         )}
                     </div>
                 </CardContent>
-
                 <CardFooter className="flex items-center gap-4">
                     <Button disabled={processing}>Save</Button>
 

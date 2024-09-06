@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Activity;
+use App\Models\ActivityDetail;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -51,19 +53,45 @@ class ActivityController extends Controller
             'domicile' => 'required',
             'addtional_information' => 'required',
         ]);
-
+        $user = Auth::user();
         if ($request->hasFile('banner')) {
             $file = $request->file('banner');
             $fileName = time() . '_' . $file->getClientOriginalName();
-            $filePath = $file->storeAs('resources/assets/images', $fileName); // Simpan file di folder resources/assets/images
 
-            // Pindahkan file ke folder public
-            $publicPath = public_path('images/' . $fileName);
+            // Tentukan path tujuan di folder public/images
+            $destinationPath = public_path('images');
 
-            Activity::create($validated);
+            // Buat folder jika belum ada
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            // Pindahkan file dari direktori sementara ke direktori tujuan
+            $file->move($destinationPath, $fileName);
+
+            // Simpan informasi file ke database
+            $coba = json_encode($validated['category']);
+            Activity::create([
+                'title' => $validated['title'],
+                'banner' => $fileName, // Nama file disimpan di database
+                'location' => $validated['location'],
+                'category' => $coba,
+                'schedule' => $validated['schedule'],
+                'deadline' => $validated['deadline'],
+                'description' => $validated['description'],
+                'max' => $validated['max'],
+                'jobdesk' => $validated['jobdesk'],
+                'requirement' => $validated['requirement'],
+                'domicile' => $validated['domicile'],
+                'addtional_information' => $validated['addtional_information'],
+                'publised_by' => $user->id,
+            ]);
+
 
             // Redirect atau beri respons sukses
-            return redirect()->back();
+            return redirect()->back()->with('success', 'File berhasil diupload dan disimpan.');
+        } else {
+            return redirect()->back()->with('error', 'Tidak ada file yang diupload.');
         }
     }
 
@@ -73,12 +101,14 @@ class ActivityController extends Controller
     public function show(string $id)
     {
         $activityModel = new Activity();
+        $activityDetailModel = new ActivityDetail();
 
         $data = [
-            'activity' => $activityModel->activityJoin($id)
+            'activity' => $activityModel->activityJoin($id),
+            'registrants' => $activityDetailModel->getRegistrants($id),
         ];
 
-
+        dd($data);
 
         return Inertia::render('....', $data);
     }

@@ -34,11 +34,17 @@ class ProfileController extends Controller
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
 
-        dd($request->all());
+        // dd($request->all());
         // Isi data user dengan data yang sudah divalidasi
         $request->user()->fill($request->validated());
 
-        dd($request->user());
+        dd($request->hasFile('cv'));
+        if ($request->has('cv')) {
+            $file = $request->file('cv'); // Ambil file dari request
+            $fileName = $file->getClientOriginalName(); // Dapatkan nama file asli
+            dd($fileName); // Menampilkan nama file
+        }
+
         // Simpan data user
         $request->user()->save();
 

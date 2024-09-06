@@ -7,7 +7,7 @@ import { FaLocationDot } from "react-icons/fa6";
 import { newActivity } from "@/types";
 import { useEffect } from "react";
 import { format, parseISO } from "date-fns";
-import { id } from 'date-fns/locale'; // Import locale ID for Indonesian
+import { id } from "date-fns/locale"; // Import locale ID for Indonesian
 
 interface NewActivityProps {
     newActivity: newActivity[];
@@ -16,8 +16,8 @@ interface NewActivityProps {
 const formatDate = (date: any) => {
     const parsedISO = parseISO(date);
 
-    return format(parsedISO, 'dd MMMM yyyy', { locale: id });
-}
+    return format(parsedISO, "dd MMMM yyyy", { locale: id });
+};
 
 const truncateText = (text: string, maxWords: number) => {
     const words = text.split(" ");
@@ -30,7 +30,7 @@ const truncateText = (text: string, maxWords: number) => {
 const HomeCampaign = ({ newActivity }: NewActivityProps) => {
     useEffect(() => {
         console.log(newActivity);
-    }, [])
+    }, []);
 
     return (
         <section>
@@ -58,8 +58,8 @@ const HomeCampaign = ({ newActivity }: NewActivityProps) => {
                                 <span className="sr-only">View campaign</span>
                             </Link>
                             <img
-                                src={activity.banner}
-                                alt="Campaign Image"
+                                src={`images/${activity.banner}`}
+                                alt={`${activity.banner}`}
                                 width={500}
                                 height={300}
                                 className="h-48 w-full object-cover"
