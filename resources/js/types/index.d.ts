@@ -6,7 +6,7 @@ export interface User {
     image?: string;
     role: string;
     dob: Date;
-    phone: number;
+    phone: string;
     address: string;
 }
 

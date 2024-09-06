@@ -1,70 +1,47 @@
-import {
-    Popover,
-    PopoverTrigger,
-    PopoverContent,
-} from "@/Components/ui/popover";
-import { Input } from "@/Components/ui/input";
-import { Calendar } from "@/Components/ui/calendar";
+import * as React from "react"
+import { Button } from "@/Components/ui/button"
+import { Calendar } from "@/Components/ui/calendar"
+import { Popover, PopoverContent, PopoverTrigger } from "@/Components/ui/popover"
+import { cn } from "@/lib/utils"
+import { format } from "date-fns"
+import { CalendarIcon } from "lucide-react"
 
-interface CalendarProps {
-    id: string;
-    value: Date;
-    onSelect: (e: any) => void;
+interface DatePickerProps {
+    value: Date,
+    limit?: boolean,
+    onApply: (e: Date | undefined) => void
 }
 
-export default function CalendarInput({ id, value, onSelect }: CalendarProps) {
+export function DatePicker({ value, limit = false, onApply }: DatePickerProps) {
+    const [open, setOpen] = React.useState(false)
+
     return (
-        <Popover>
+        <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
-                <div className="relative">
-                    <Input
-                        id={id}
-                        placeholder="Pilih Tanggal Lahir"
-                        readOnly
-                        value={value ? value.toLocaleDateString() : ""}
-                        className="pr-10 cursor-pointer"
-                    />
-                </div>
+                <Button
+                    variant={"outline"}
+                    className={cn("w-full mt-1 justify-start text-left font-normal", !value && "text-muted-foreground")}
+                >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {value ? format(value, "PPP") : <span>Pick a date</span>}
+                </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start">
+            <PopoverContent align="start" className=" w-full p-0">
                 <Calendar
                     mode="single"
-                    selected={value}
-                    onSelect={(e) => onSelect(e)}
+                    captionLayout="dropdown-buttons"
+                    selected={value ?? new Date()}
+                    onSelect={(e) => {
+                        onApply(e)
+                        setOpen(false);
+                    }}
+                    fromYear={1960}
+                    toYear={2030}
                     disabled={(date) =>
-                        date > new Date() || date < new Date("1900-01-01")
+                        limit ? date > new Date() || date < new Date("1900-01-01") : false
                     }
-                    initialFocus
                 />
             </PopoverContent>
         </Popover>
-    );
-}
-
-function CalendarDaysIcon(props: any) {
-    return (
-        <svg
-            {...props}
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-        >
-            <path d="M8 2v4" />
-            <path d="M16 2v4" />
-            <rect width="18" height="18" x="3" y="4" rx="2" />
-            <path d="M3 10h18" />
-            <path d="M8 14h.01" />
-            <path d="M12 14h.01" />
-            <path d="M16 14h.01" />
-            <path d="M8 18h.01" />
-            <path d="M12 18h.01" />
-            <path d="M16 18h.01" />
-        </svg>
-    );
+    )
 }
