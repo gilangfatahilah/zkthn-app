@@ -1,13 +1,13 @@
+import ActivityCard from "@/Components/ActivtyCard";
 import HomeLayout from "@/Layouts/HomeLayout";
-import { PageProps } from "@/types";
-import React from "react";
+import { Activity, PageProps } from "@/types";
 
-const Activity = ({ auth }: PageProps) => {
-    return (
-        <HomeLayout user={auth.user}>
-            <p>halo</p>
-        </HomeLayout>
-    );
+const ActivityPage = ({ auth, activity }: PageProps<{ activity: Activity[] }>) => {
+  return (
+    <HomeLayout user={auth.user}>
+      <ActivityCard activities={activity} />
+    </HomeLayout>
+  );
 };
 
-export default Activity;
+export default ActivityPage;

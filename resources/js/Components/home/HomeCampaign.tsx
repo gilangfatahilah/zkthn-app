@@ -5,66 +5,19 @@ import { Badge } from "../ui/badge";
 import { MdDateRange } from "react-icons/md";
 import { FaLocationDot } from "react-icons/fa6";
 import { newActivity } from "@/types";
+import { useEffect } from "react";
+import { format, parseISO } from "date-fns";
+import { id } from 'date-fns/locale'; // Import locale ID for Indonesian
 
 interface NewActivityProps {
     newActivity: newActivity[];
 }
 
-const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    const days = [
-        "01",
-        "02",
-        "03",
-        "04",
-        "05",
-        "06",
-        "07",
-        "08",
-        "09",
-        "10",
-        "11",
-        "12",
-        "13",
-        "14",
-        "15",
-        "16",
-        "17",
-        "18",
-        "19",
-        "20",
-        "21",
-        "22",
-        "23",
-        "24",
-        "25",
-        "26",
-        "27",
-        "28",
-        "29",
-        "30",
-        "31",
-    ];
-    const months = [
-        "Januari",
-        "Februari",
-        "Maret",
-        "April",
-        "Mei",
-        "Juni",
-        "Juli",
-        "Agustus",
-        "September",
-        "Oktober",
-        "November",
-        "Desember",
-    ];
-    const year = date.getFullYear();
-    const month = months[date.getMonth()];
-    const day = days[date.getDate() - 1];
+const formatDate = (date: any) => {
+    const parsedISO = parseISO(date);
 
-    return `${day} ${month} ${year}`;
-};
+    return format(parsedISO, 'dd MMMM yyyy', { locale: id });
+}
 
 const truncateText = (text: string, maxWords: number) => {
     const words = text.split(" ");
@@ -75,6 +28,10 @@ const truncateText = (text: string, maxWords: number) => {
 };
 
 const HomeCampaign = ({ newActivity }: NewActivityProps) => {
+    useEffect(() => {
+        console.log(newActivity);
+    }, [])
+
     return (
         <section>
             <div className="max-w-6xl mx-auto py-12 md:py-20">

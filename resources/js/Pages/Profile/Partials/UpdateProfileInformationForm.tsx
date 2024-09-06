@@ -52,11 +52,7 @@ export default function UpdateProfileInformation({
 
         if (cvFile) {
             formData.append("cv", cvFile); // Tambahkan file CV ke FormData
-        }
-
-        // Menggunakan for-of untuk melihat isi FormData
-        for (let [key, value] of formData.entries()) {
-            console.log(key, value);
+            console.log(formData)
         }
 
         post(route("profile.update"), {
@@ -81,7 +77,6 @@ export default function UpdateProfileInformation({
             </CardHeader>
 
             <form onSubmit={submit}>
-                @csrf
                 <CardContent className="space-y-6">
                     <div>
                         <Label htmlFor="name">Nama</Label>

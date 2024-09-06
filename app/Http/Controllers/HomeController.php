@@ -43,6 +43,9 @@ class HomeController extends Controller
         $data = [
             'activity' => $activityModel->activityJoin()
         ];
+        $data = [
+            'activity' => $activityModel->activityJoin()
+        ];
         // dd($data);
         return Inertia::render('Activity', $data);
     }
@@ -54,7 +57,7 @@ class HomeController extends Controller
         $data = [
             'activity' => $activityModel->activityJoin($id)
         ];
-        dd($data);
-        return Inertia::render('Activity', $data);
+
+        return Inertia::render('ActivityDetail', $data);
     }
 }
