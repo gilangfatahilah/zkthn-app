@@ -138,7 +138,11 @@ export default function UpdateProfileInformation({
                         <CalendarInput
                             id="dob"
                             value={data.dob}
-                            onSelect={(e) => setData("dob", e)}
+                            onSelect={(e) => {
+                                const i = new Date(e);
+                                console.log(i, typeof i);
+                                setData("dob", e)
+                            }}
                         />
                         {errors.dob && (
                             <p className="mt-2 text-sm text-red-600">

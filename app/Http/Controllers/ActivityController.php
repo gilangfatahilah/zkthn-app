@@ -20,7 +20,7 @@ class ActivityController extends Controller
             'activity' => $activityModel->activityJoin()
         ];
 
-        return Inertia::render('....', $data);
+        return Inertia::render('Tables/Activity/ActivityTable', $data);
     }
 
     /**
@@ -28,7 +28,7 @@ class ActivityController extends Controller
      */
     public function create()
     {
-        return Inertia::render('....');
+        return Inertia::render('Form/AddActivity');
     }
 
     /**

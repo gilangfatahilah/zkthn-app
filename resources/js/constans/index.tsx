@@ -36,13 +36,13 @@ export const navItems: NavItem[] = [
     },
     {
         title: "Pengguna",
-        href: "dashboard/user",
+        href: "/dashboard/user",
         icon: "user",
         label: "user",
     },
     {
         title: "Aktivitas",
-        href: "dashboard/activity",
+        href: "/dashboard/activity",
         icon: "calendar",
         label: "Activity",
     },

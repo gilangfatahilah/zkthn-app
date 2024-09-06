@@ -9,13 +9,12 @@ import {
 } from '@/Components/ui/dropdown-menu';
 import { Edit, MoreHorizontal, Trash } from 'lucide-react';
 import { AlertModal } from '@/Components/AlertModal';
-import { User } from '@/types';
-import UserDetail from '@/Components/UserDetail';
+import { Activity } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { toast } from 'sonner';
 
 interface CellActionProps {
-  data: User;
+  data: Activity;
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ data }: CellActionProps) => {
@@ -23,20 +22,19 @@ export const CellAction: React.FC<CellActionProps> = ({ data }: CellActionProps)
   const [open, setOpen] = useState(false);
   const [openDetail, setOpenDetail] = useState(false);
 
-  const { delete: deleteUser } = useForm();
+  const { delete: deleteActivity } = useForm();
 
   const onConfirm = async () => {
     setLoading(true);
 
     try {
-      deleteUser(route('user.destroy', { id: data.id }), {
+      deleteActivity(route('activity.destroy', { id: data.id }), {
         onSuccess: () => {
-          console.log('cok')
           setOpen(false); // Close the modal after successful deletion
-          return toast.success('Berhasil menghapus pengguna');
+          return toast.success('Berhasil menghapus aktivitas.');
         },
         onError: () => {
-          toast.error('Error', {
+          toast.error('Error!', {
             description:
               'Terjadi kesalahan, silahkan coba lagi.',
           });
@@ -59,7 +57,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }: CellActionProps)
         loading={loading}
       />
 
-      <UserDetail user={data} isOpen={openDetail} onClose={() => setOpenDetail(false)} />
+      {/* <UserDetail user={data} isOpen={openDetail} onClose={() => setOpenDetail(false)} /> */}
 
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
