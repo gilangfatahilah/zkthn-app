@@ -1,26 +1,33 @@
-import * as React from "react"
-import { Button } from "@/Components/ui/button"
-import { Calendar } from "@/Components/ui/calendar"
-import { Popover, PopoverContent, PopoverTrigger } from "@/Components/ui/popover"
-import { cn } from "@/lib/utils"
-import { format } from "date-fns"
-import { CalendarIcon } from "lucide-react"
+import * as React from "react";
+import { Button } from "@/Components/ui/button";
+import { Calendar } from "@/Components/ui/calendar";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/Components/ui/popover";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { CalendarIcon } from "lucide-react";
 
 interface DatePickerProps {
-    value: Date,
-    limit?: boolean,
-    onApply: (e: Date | undefined) => void
+    value: Date;
+    limit?: boolean;
+    onApply: (e: Date | undefined) => void;
 }
 
 export function DatePicker({ value, limit = false, onApply }: DatePickerProps) {
-    const [open, setOpen] = React.useState(false)
+    const [open, setOpen] = React.useState(false);
 
     return (
         <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
                 <Button
                     variant={"outline"}
-                    className={cn("w-full mt-1 justify-start text-left font-normal", !value && "text-muted-foreground")}
+                    className={cn(
+                        "w-full mt-1 justify-start text-left font-normal",
+                        !value && "text-muted-foreground"
+                    )}
                 >
                     <CalendarIcon className="mr-2 h-4 w-4" />
                     {value ? format(value, "PPP") : <span>Pick a date</span>}
@@ -32,16 +39,18 @@ export function DatePicker({ value, limit = false, onApply }: DatePickerProps) {
                     captionLayout="dropdown-buttons"
                     selected={value ?? new Date()}
                     onSelect={(e) => {
-                        onApply(e)
+                        onApply(e);
                         setOpen(false);
                     }}
                     fromYear={1960}
                     toYear={2030}
                     disabled={(date) =>
-                        limit ? date > new Date() || date < new Date("1900-01-01") : false
+                        limit
+                            ? date > new Date() || date < new Date("1900-01-01")
+                            : false
                     }
                 />
             </PopoverContent>
         </Popover>
-    )
+    );
 }

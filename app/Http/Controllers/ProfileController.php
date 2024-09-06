@@ -20,6 +20,8 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): Response
     {
+
+        // dd($request->user());
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
@@ -36,16 +38,12 @@ class ProfileController extends Controller
         // Isi data user dengan data yang sudah divalidasi
         $request->user()->fill($request->validated());
 
-        // Jika email berubah, reset verifikasi email
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
-
+        dd($request->user());
         // Simpan data user
         $request->user()->save();
 
         // Redirect kembali ke halaman profile edit dengan pesan sukses
-        return Redirect::route('profile.edit')->with('success', 'Profile updated successfully.');
+        return Redirect::route('profile.edit');
     }
 
     /**

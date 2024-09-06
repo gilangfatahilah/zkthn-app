@@ -1,5 +1,5 @@
 import { Head } from "@inertiajs/react";
-import { PageProps } from "@/types";
+import { newActivity, PageProps } from "@/types";
 import Navbar from "@/Components/home/Navbar";
 import Hero from "@/Components/home/Hero";
 import { ThemeProvider } from "@/Components/themeProvider";
@@ -19,13 +19,13 @@ export default function Welcome({
     personal: number;
     organization: number;
     activity: number;
-    newActivity: any;
+    newActivity: newActivity[];
 }>) {
     return (
         <HomeLayout user={auth.user}>
             <Hero />
             <Features />
-            <HomeCampaign />
+            <HomeCampaign newActivity={newActivity} />
             <HomeBanner
                 personal={personal}
                 organization={organization}

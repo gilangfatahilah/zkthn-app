@@ -31,17 +31,19 @@ class HomeController extends Controller
                 ->limit(6)
                 ->get()
         ];
-        dd($data);
+        // dd($data);
         return Inertia::render('Home', $data);
     }
 
     // Menampilkan seluruh activity
     public function allActivity()
     {
-        $data = [
-            'activity' => Activity::all(),
-        ];
-        dd($data);
-        return Inertia::render('....', $data);
+        $activityModel = new Activity();
+
+        // $data = [
+        //     'activity' => $activityModel->activityJoin()
+        // ];
+        // dd($data);
+        return Inertia::render('Activity');
     }
 }
