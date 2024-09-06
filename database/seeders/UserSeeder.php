@@ -19,6 +19,9 @@ class UserSeeder extends Seeder
             'email' => 'admin@mailnesia.com',
             'password' => Hash::make('password123'),
             'role' => 'administrator',
+            'gender' => 'Pria',
+            'dob' => '1990-01-01',
+
         ]);
 
         User::create([
@@ -26,6 +29,10 @@ class UserSeeder extends Seeder
             'email' => 'organisasi@mailnesia.com',
             'password' => Hash::make('password123'),
             'role' => 'organization',
+            'gender' => 'Pria',
+            'dob' => '2024-09-03T17:00:00.000Z',
+
+
         ]);
 
         User::create([
@@ -33,6 +40,10 @@ class UserSeeder extends Seeder
             'email' => 'personal@mailnesia.com',
             'password' => Hash::make('password123'),
             'role' => 'personal',
+            'gender' => 'Pria',
+            'dob' => '1990-01-01',
+
+
         ]);
     }
 }
