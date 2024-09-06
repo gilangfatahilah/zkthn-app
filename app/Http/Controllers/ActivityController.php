@@ -36,6 +36,7 @@ class ActivityController extends Controller
      */
     public function store(Request $request)
     {
+
         $validated = $request->validate([
             'title' => 'required',
             'banner' => 'required',

@@ -1,11 +1,11 @@
 import Breadcrumbs from "@/Components/Breadcrumb";
+import { DatePicker } from "@/Components/Calendar";
 import { Heading } from "@/Components/Heading";
 import { InputTags } from "@/Components/InputTags";
 import { Button } from "@/Components/ui/button";
 import {
     Card,
     CardContent,
-    CardDescription,
     CardFooter,
     CardHeader,
     CardTitle,
@@ -16,7 +16,9 @@ import { ScrollArea } from "@/Components/ui/scroll-area";
 import { Textarea } from "@/Components/ui/textarea";
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import { PageProps } from "@/types";
+import { useForm } from "@inertiajs/react";
 import { useState } from "react";
+import { toast } from "sonner";
 
 const breadcrumbItems = [
     { label: "Dashboard", href: "/dashboard" },
@@ -25,7 +27,53 @@ const breadcrumbItems = [
 ];
 
 const AddActivity = ({ auth }: PageProps) => {
-    const [values, setValues] = useState<string[]>([]);
+    // Menggunakan useForm untuk mengelola state form
+    const { data, setData, post, processing, errors } = useForm({
+        title: '',
+        location: '',
+        category: [''],
+        schedule: new Date(),
+        deadline: new Date(),
+        max: '',
+        domicile: '',
+        description: '',
+        requirement: '',
+        jobdesk: '',
+        addtional_information: '',
+        banner: null, // Tambahkan key untuk file gambar
+    });
+
+    const [categoryTags, setCategoryTags] = useState<string[]>([]);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const key = e.target.id as keyof typeof data;
+        setData(key, e.target.value);
+    };
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setData('banner', e.target.files?.[0] || null); // Menangani file gambar
+    };
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+
+        const formData = new FormData();
+        Object.entries(data).forEach(([key, value]) => {
+            formData.append(key, value);
+        });
+
+        post(route('activity.store'), {
+            data: formData,
+            onSuccess: () => {
+                toast.success('Activity created successfully');
+            },
+            onError: (e) => {
+                console.log(e);
+                toast.error('Failed to create activity');
+            },
+            preserveScroll: true,
+        });
+    };
 
     return (
         <DashboardLayout user={auth.user}>
@@ -37,100 +85,161 @@ const AddActivity = ({ auth }: PageProps) => {
                         description="Informasi mengenai pengguna dan kelola pengguna."
                     />
 
-                    <Card>
-                        <CardContent className="grid gap-4 pt-4">
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="space-y-1">
-                                    <Label htmlFor="title">Judul</Label>
-                                    <Input
-                                        id="title"
-                                        placeholder="Masukan Judul"
-                                    />
+                    <form onSubmit={handleSubmit}>
+                        <Card>
+                            <CardContent className="grid gap-4 pt-4">
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="space-y-1">
+                                        <Label htmlFor="title">Judul</Label>
+                                        <Input
+                                            id="title"
+                                            placeholder="Masukan Judul"
+                                            value={data.title}
+                                            onChange={handleChange}
+                                            required
+                                        />
+                                        {errors.title && <div>{errors.title}</div>}
+                                    </div>
+                                    <div className="space-y-1">
+                                        <Label htmlFor="location">Lokasi</Label>
+                                        <Input
+                                            id="location"
+                                            type="text"
+                                            placeholder="Masukan Lokasi"
+                                            value={data.location}
+                                            onChange={handleChange}
+                                            required
+                                        />
+                                        {errors.location && <div>{errors.location}</div>}
+                                    </div>
+                                </div>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="space-y-1">
+                                        <Label htmlFor="category">Kategori</Label>
+                                        <InputTags
+                                            id="category"
+                                            value={data.category}
+                                            onChange={(e) => {
+                                                // @ts-ignore
+                                                setData('category', e);
+                                            }}
+                                            placeholder="Masukan Kategori"
+                                        />
+                                        {errors.category && <div>{errors.category}</div>}
+                                    </div>
+                                    <div className="space-y-1">
+                                        <Label htmlFor="schedule">
+                                            Tanggal Pelaksanaan
+                                        </Label>
+                                        <DatePicker
+                                            value={data.schedule}
+                                            onApply={(e) => setData('schedule', e as Date)}
+                                        />
+                                        {errors.schedule && <div>{errors.schedule}</div>}
+                                    </div>
+                                    <div className="space-y-1">
+                                        <Label htmlFor="deadline">
+                                            Batas Pendaftaran
+                                        </Label>
+                                        <DatePicker
+                                            value={data.deadline}
+                                            onApply={(e) => setData('deadline', e as Date)}
+                                        />
+                                        {errors.deadline && <div>{errors.deadline}</div>}
+                                    </div>
+                                    <div className="space-y-1">
+                                        <Label htmlFor="max">
+                                            Maksimal Relawan
+                                        </Label>
+                                        <Input
+                                            id="max"
+                                            placeholder="Masukan Maksimal Relawan"
+                                            type="number"
+                                            value={data.max}
+                                            onChange={handleChange}
+                                            required
+                                        />
+                                        {errors.max && <div>{errors.max}</div>}
+                                    </div>
+                                    <div className="space-y-1">
+                                        <Label htmlFor="domicile">Domisili</Label>
+                                        <Input
+                                            id="domicile"
+                                            placeholder="Masukan Domisili"
+                                            type="text"
+                                            value={data.domicile}
+                                            onChange={handleChange}
+                                            required
+                                        />
+                                        {errors.domicile && <div>{errors.domicile}</div>}
+                                    </div>
                                 </div>
                                 <div className="space-y-1">
-                                    <Label htmlFor="location">Lokasi</Label>
-                                    <Input
-                                        id="loication"
-                                        type="text"
-                                        placeholder="Masukan Lokasi"
+                                    <Label htmlFor="description">Deskripsi</Label>
+                                    <Textarea
+                                        id="description"
+                                        placeholder="Masukan Deskripsi"
+                                        value={data.description}
+                                        onChange={handleChange}
+                                        required
                                     />
-                                </div>
-                            </div>
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="space-y-1">
-                                    <Label htmlFor="category">Kategori</Label>
-                                    <InputTags
-                                        id="category"
-                                        value={values}
-                                        onChange={setValues}
-                                        placeholder="Masukan Kategori"
-                                    />
+                                    {errors.description && <div>{errors.description}</div>}
                                 </div>
                                 <div className="space-y-1">
-                                    <Label htmlFor="schedule">
-                                        Tanggal Pelaksanaan
+                                    <Label htmlFor="jobdesk">Tugas</Label>
+                                    <Textarea
+                                        id="jobdesk"
+                                        placeholder="Masukan Tugas"
+                                        value={data.jobdesk}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                    {errors.jobdesk && <div>{errors.jobdesk}</div>}
+                                </div>
+                                <div className="space-y-1">
+                                    <Label htmlFor="requirement">Kriteria</Label>
+                                    <Textarea
+                                        id="requirement"
+                                        placeholder="Masukan Tugas"
+                                        value={data.requirement}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                    {errors.requirement && <div>{errors.requirement}</div>}
+                                </div>
+                                <div className="space-y-1">
+                                    <Label htmlFor="addtional_information">
+                                        Informasi Tambahan
                                     </Label>
-                                    <Input
-                                        id="schedule"
-                                        placeholder="Masukan Tanggal Pelaksanaan"
+                                    <Textarea
+                                        id="addtional_information"
+                                        placeholder="Masukan Informasi Tambahan"
+                                        value={data.addtional_information}
+                                        onChange={handleChange}
+                                        required
                                     />
+                                    {errors.addtional_information && <div>{errors.addtional_information}</div>}
                                 </div>
+
+                                {/* Input file untuk banner */}
                                 <div className="space-y-1">
-                                    <Label htmlFor="schedule">
-                                        Batas Pendaftaran
-                                    </Label>
+                                    <Label htmlFor="banner">Banner</Label>
                                     <Input
-                                        id="schedule"
-                                        placeholder="Masukan Tanggal Pelaksanaan"
+                                        id="banner"
+                                        type="file"
+                                        onChange={handleFileChange}
+                                        required
                                     />
+                                    {errors.banner && <div>{errors.banner}</div>}
                                 </div>
-                                <div className="space-y-1">
-                                    <Label htmlFor="max">
-                                        Maksimal Relawan
-                                    </Label>
-                                    <Input
-                                        id="max"
-                                        placeholder="Masukan Maksimal Relawan"
-                                        type="number"
-                                    />
-                                </div>
-                                <div className="space-y-1">
-                                    <Label htmlFor="domicile">Domisili</Label>
-                                    <Input
-                                        id="domicile"
-                                        placeholder="Masukan Domisili"
-                                        type="text"
-                                    />
-                                </div>
-                            </div>
-                            <div className="space-y-1">
-                                <Label htmlFor="description">Deskripsi</Label>
-                                <Textarea
-                                    id="description"
-                                    placeholder="Masukan Deskripsi"
-                                />
-                            </div>
-                            <div className="space-y-1">
-                                <Label htmlFor="jobdesk">Tugas</Label>
-                                <Textarea
-                                    id="jobdesk"
-                                    placeholder="Masukan Tugas"
-                                />
-                            </div>
-                            <div className="space-y-1">
-                                <Label htmlFor="addtional_information">
-                                    Informasi Tambahan
-                                </Label>
-                                <Textarea
-                                    id="addtional_information"
-                                    placeholder="Masukan Informasi Tambahan"
-                                />
-                            </div>
-                        </CardContent>
-                        <CardFooter>
-                            <Button type="submit">Create Client</Button>
-                        </CardFooter>
-                    </Card>
+                            </CardContent>
+                            <CardFooter>
+                                <Button type="submit" disabled={processing}>
+                                    Create Activity
+                                </Button>
+                            </CardFooter>
+                        </Card>
+                    </form>
                 </div>
             </ScrollArea>
         </DashboardLayout>
