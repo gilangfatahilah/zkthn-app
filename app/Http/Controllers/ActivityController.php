@@ -6,6 +6,7 @@ use App\Models\Activity;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
+
 class ActivityController extends Controller
 {
     /**
@@ -13,8 +14,10 @@ class ActivityController extends Controller
      */
     public function index()
     {
+        $activityModel = new Activity();
+
         $data = [
-            'activity' => Activity::all(),
+            'activity' => $activityModel->activityJoin()
         ];
 
         return Inertia::render('....', $data);
@@ -68,9 +71,13 @@ class ActivityController extends Controller
      */
     public function show(string $id)
     {
+        $activityModel = new Activity();
+
         $data = [
-            'activity' => Activity::where('id', $id)->get(),
+            'activity' => $activityModel->activityJoin($id)
         ];
+
+
 
         return Inertia::render('....', $data);
     }
@@ -80,8 +87,10 @@ class ActivityController extends Controller
      */
     public function edit(string $id)
     {
+        $activityModel = new Activity();
+
         $data = [
-            'activity' => Activity::where('id', $id)->get(),
+            'activity' => $activityModel->activityJoin($id)
         ];
 
         return Inertia::render('....', $data);

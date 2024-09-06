@@ -20,7 +20,7 @@ return new class extends Migration
             $table->enum('role', ['administrator', 'organization', 'personal'])->default('personal');
             $table->string('image')->nullable();
             $table->enum('gender', ['Pria', 'Wanita', 'Lainnya']);
-            $table->string('dob')->nullable();
+            $table->timestamp('dob');
             $table->string('phone', length: 15)->nullable();
             $table->string('address')->nullable();
             $table->string('cv')->nullable();

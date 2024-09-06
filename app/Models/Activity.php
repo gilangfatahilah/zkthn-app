@@ -25,4 +25,24 @@ class Activity extends Model
         'domicile',
         'addtional_information'
     ];
+
+    public function activityJoin($id = null)
+    {
+        $query = $this->join('users', 'users.id', '=', 'activity.publised_by')
+            ->select('activity.*', 'users.name as publised_name');
+
+        if ($id) {
+            $query->where('activity.id', $id);
+        }
+
+        return $query->get();
+    }
+
+    public function activityPublised($id)
+    {
+        $query = $this->join('users', 'users.id', '=', 'activity.publised_by')
+            ->select('activity.*', 'users.name as publised_name')
+            ->where('publised_by', $id)
+            ->get();
+    }
 }
