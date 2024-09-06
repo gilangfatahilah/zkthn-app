@@ -59,7 +59,7 @@ class ActivityController extends Controller
             Activity::create($validated);
 
             // Redirect atau beri respons sukses
-            return redirect()->back()->with('success', 'Activity berhasil disimpan.');
+            return redirect()->back();
         }
     }
 
@@ -68,7 +68,11 @@ class ActivityController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $data = [
+            'activity' => Activity::where('id', $id)->get(),
+        ];
+
+        return Inertia::render('....', $data);
     }
 
     /**
@@ -76,7 +80,11 @@ class ActivityController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $data = [
+            'activity' => Activity::where('id', $id)->get(),
+        ];
+
+        return Inertia::render('....', $data);
     }
 
     /**
@@ -92,6 +100,12 @@ class ActivityController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $activity = Activity::findOrFail($id);
+
+        // Hapus Activity
+        $activity->delete();
+
+        // Redirect ke halaman index dengan pesan sukses
+        return redirect()->route('activity');
     }
 }

@@ -23,8 +23,9 @@ class HomeController extends Controller
             'personal' => User::where('role', 'personal')->count(),
             'organization' => User::where('role', 'organization')->count(),
             'activity' => Activity::count(),
-            'newactivity' => Activity::latest()->take(6)->get(),
+            'newActivity' => Activity::latest()->take(6)->get(),
         ];
+        // dd($data);
         return Inertia::render('Home', $data);
     }
 
@@ -34,6 +35,7 @@ class HomeController extends Controller
         $data = [
             'activity' => Activity::all(),
         ];
+        dd($data);
         return Inertia::render('....', $data);
     }
 }

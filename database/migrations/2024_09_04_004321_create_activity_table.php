@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title', length: 50);
             $table->string('banner', length: 100);
-            $table->string('publised_by', length: 30);
+            $table->integer('publised_by');
             $table->string('location', length: 30);
             $table->string('category');
             $table->dateTime('schedule');

@@ -35,7 +35,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-    //
+        //
     }
 
     /**
@@ -61,6 +61,6 @@ class UserController extends Controller
         $user->delete();
 
         // Redirect ke halaman index dengan pesan sukses
-        return redirect()->route('user')->with('success', 'User berhasil dihapus.');
+        return redirect()->route('user');
     }
 }
