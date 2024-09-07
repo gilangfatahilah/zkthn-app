@@ -14,9 +14,10 @@ import { id } from "date-fns/locale";
 import { Activity, PageProps, User } from "@/types";
 import HomeLayout from "@/Layouts/HomeLayout";
 import { useEffect, useState } from "react";
-import { router } from "@inertiajs/react";
+import { router, useForm } from "@inertiajs/react";
 import { useToastStore } from "@/hooks/useToastStore";
 import { AlertModal } from "@/Components/AlertModal";
+import { toast } from "sonner";
 
 interface ActivityDetailProps {
     auth: PageProps["auth"];
@@ -27,10 +28,14 @@ const ActivityDetailPage = ({ auth, activity }: ActivityDetailProps) => {
     const { setToast } = useToastStore();
     const [open, setOpen] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
+    const path = window.location.pathname;
+    const activityId = path.match(/\d+/)?.[0];
 
     useEffect(() => {
         console.log(auth.user);
     }, []);
+
+    const { post } = useForm();
 
     const formatDate = (date: any) => {
         const parsedISO = parseISO(date);
@@ -81,8 +86,20 @@ const ActivityDetailPage = ({ auth, activity }: ActivityDetailProps) => {
         }
     };
 
-    const handleConfirm = () => {
-        //
+    const handleConfirm = async () => {
+        try {
+            setLoading(true);
+
+            post(route('apply', activityId), {
+                onSuccess: () => {
+                    toast.success('Berhasil, Kamu telah mendaftar ke aktivitas.')
+                }
+            })
+        } catch (error) {
+            // 
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
