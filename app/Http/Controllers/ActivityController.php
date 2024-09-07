@@ -117,8 +117,6 @@ class ActivityController extends Controller
         $data = [
             'activity' => $activityModel->activityJoin($id),
             'registrants' => $activityDetailModel->getRegistrants($id),
-            'activity' => $activityModel->activityJoin($id),
-            'registrants' => $activityDetailModel->getRegistrants($id),
         ];
 
         dd($data);
@@ -146,6 +144,8 @@ class ActivityController extends Controller
 
     public function update(Request $request, string $id)
     {
+        dd($request->all());
+
         $user = Auth::user();
 
         dd($request->all());

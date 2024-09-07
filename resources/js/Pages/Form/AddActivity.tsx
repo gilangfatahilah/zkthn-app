@@ -73,8 +73,9 @@ const AddActivity = ({
             put(route("activity.update", activity[0].id), {
                 data: formData,
                 onSuccess: () => {
-                    setToast('diperbarui');
-                    router.visit('/dashboard/activity');
+                    console.log(e);
+                    setToast("diperbarui");
+                    router.visit("/dashboard/activity");
                 },
                 onError: (e) => {
                     console.log(e);
@@ -86,8 +87,8 @@ const AddActivity = ({
             post(route("activity.store"), {
                 data: formData,
                 onSuccess: () => {
-                    setToast('ditambahkan');
-                    router.visit('/dashboard/activity');
+                    setToast("ditambahkan");
+                    router.visit("/dashboard/activity");
                 },
                 onError: () => {
                     toast.error("Failed to create activity");
@@ -98,7 +99,9 @@ const AddActivity = ({
     };
 
     const [file, setFile] = useState(null);
-    const [preview, setPreview] = useState(activity?.[0]?.banner ? `/images/${activity[0].banner}` : null);
+    const [preview, setPreview] = useState(
+        activity?.[0]?.banner ? `/images/${activity[0].banner}` : null
+    );
 
     const handleImgChange = (e: any) => {
         const selectedFile = e.target.files[0];

@@ -32,19 +32,36 @@ class ProfileController extends Controller
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
 
-        // dd($request->all());
-        // Isi data user dengan data yang sudah divalidasi
-        $request->user()->fill($request->validated());
+        // Ambil pengguna yang sedang login
+        $user = $request->user();
 
-        // dd($request->hasFile('cv'));
-        if ($request->has('cv')) {
-            $file = $request->file('cv'); // Ambil file dari request
-            $fileName = $file->getClientOriginalName(); // Dapatkan nama file asli
-            // dd($fileName); // Menampilkan nama file
+        // Isi data pengguna dengan data yang sudah tervalidasi
+        $user->fill($request->validated());
+
+        // Cek jika ada file gambar profil
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $destinationPath = public_path('images');
+
+            $file->move($destinationPath, $fileName);
+
+            $user->image = $fileName; // Simpan nama file di database
         }
 
-        // Simpan data user
-        $request->user()->save();
+        // Cek jika ada file CV
+        if ($request->hasFile('cv')) {
+            $file = $request->file('cv');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $destinationPath = public_path('file');
+
+            $file->move($destinationPath, $fileName);
+
+            $user->cv = $fileName; // Simpan nama file di database
+        }
+
+        // Simpan data pengguna
+        $user->save();
 
         // Redirect kembali ke halaman profile edit dengan pesan sukses
         return Redirect::route('profile.edit');

@@ -54,7 +54,10 @@ const HomeCampaign = ({ newActivity }: NewActivityProps) => {
                             key={activity.id}
                             className="relative overflow-hidden rounded-lg shadow-lg flex flex-col justify-between transition-transform duration-300 ease-in-out hover:-translate-y-2 hover:shadow-xl"
                         >
-                            <Link href="#" className="absolute inset-0 z-10">
+                            <Link
+                                href={`/activity${activity.id}`}
+                                className="absolute inset-0 z-10"
+                            >
                                 <span className="sr-only">View campaign</span>
                             </Link>
                             <img

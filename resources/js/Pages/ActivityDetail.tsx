@@ -38,29 +38,33 @@ const ActivityDetailPage = ({ auth, activity }: ActivityDetailProps) => {
         const isDataComplete = (data: any) => {
             for (const key in data) {
                 if (data.hasOwnProperty(key)) {
-                    if (key === 'image') {
+                    if (key === "image") {
                         continue;
                     }
-                    if (data[key] === null || data[key] === undefined || data[key] === '') {
+                    if (
+                        data[key] === null ||
+                        data[key] === undefined ||
+                        data[key] === ""
+                    ) {
                         return false;
                     }
                 }
             }
             return true;
-        }
+        };
 
         const user = auth.user;
 
         if (user === null) {
-            router.visit('/login')
+            router.visit("/login");
 
             return;
         }
 
         if (user && !isDataComplete(user)) {
-            setToast('Data is not complete');
+            setToast("Data is not complete");
 
-            router.visit('/profile')
+            router.visit("/profile");
 
             return;
         }
@@ -70,8 +74,7 @@ const ActivityDetailPage = ({ auth, activity }: ActivityDetailProps) => {
 
             return;
         }
-
-    }
+    };
 
     return (
         <HomeLayout user={auth.user}>
@@ -158,7 +161,10 @@ const ActivityDetailPage = ({ auth, activity }: ActivityDetailProps) => {
 
                         {/* Footer */}
                         <CardFooter className="flex flex-col space-y-4">
-                            <Button onClick={onApplyActivity} className="bg-primary w-full">
+                            <Button
+                                onClick={onApplyActivity}
+                                className="bg-primary w-full"
+                            >
                                 Jadi Relawan
                             </Button>
                             {/* <Button variant="outline" className="w-full">Kontak Organisasi</Button> */}
@@ -204,7 +210,7 @@ const ActivityDetailPage = ({ auth, activity }: ActivityDetailProps) => {
                                 <h3 className="text-lg font-bold">Domisili</h3>
                             </CardHeader>
                             <CardContent>
-                                <p>{activity[0].domicile}</p>
+                                <p>{activity[0].domicile}, Indonesia</p>
                             </CardContent>
                         </Card>
                     </div>
