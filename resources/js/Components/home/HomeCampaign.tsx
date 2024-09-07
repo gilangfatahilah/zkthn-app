@@ -27,20 +27,19 @@ const truncateText = (text: string, maxWords: number) => {
 };
 
 const HomeCampaign = ({ newActivity }: NewActivityProps) => {
-
     return (
         <section>
             <div className="max-w-6xl mx-auto py-12 md:py-20">
                 <header className="pb-12 md:pb-20">
                     <div className="max-w-3xl mx-auto text-center">
                         <h2 className="text-4xl font-bold mb-4">
-                            The majority our customers do not understand their
-                            workflows.
+                            {newActivity.length > 6
+                                ? `${newActivity.length}+`
+                                : newActivity.length}{" "}
+                            Aktivitas membutuhkan bantuan.
                         </h2>
                         <p className="text-xl text-gray-400">
-                            Excepteur sint occaecat cupidatat non proident, sunt
-                            in culpa qui officia deserunt mollit anim id est
-                            laborum.
+                            Setiap kontribusi anda sangatlah membantu.
                         </p>
                     </div>
                 </header>
