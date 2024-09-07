@@ -19,15 +19,15 @@ import { Activity, PageProps } from "@/types";
 import { useForm } from "@inertiajs/react";
 import { toast } from "sonner";
 
-const breadcrumbItems = [
-    { label: "Dashboard", href: "/dashboard" },
-    { label: "Activity", href: "/dashboard/activity" },
-    { label: "Create" },
-];
 
 
 const AddActivity = ({ auth, activity }: PageProps & { activity?: Activity[] }) => {
-    // Menggunakan useForm untuk mengelola state form, dengan nilai default jika activity tersedia
+    const breadcrumbItems = [
+        { label: "Dashboard", href: "/dashboard" },
+        { label: "Activity", href: "/dashboard/activity" },
+        { label: activity?.[0] ? "Edit" : "Create" },
+    ];
+
     const { data, setData, put, post, processing, errors } = useForm({
         title: activity?.[0]?.title || '',
         location: activity?.[0]?.location || '',
@@ -81,6 +81,7 @@ const AddActivity = ({ auth, activity }: PageProps & { activity?: Activity[] }) 
                 data: formData,
                 onSuccess: () => {
                     toast.success('Activity created successfully');
+                    window.location.href = '/dashboard/activity';
                 },
                 onError: () => {
                     toast.error('Failed to create activity');
