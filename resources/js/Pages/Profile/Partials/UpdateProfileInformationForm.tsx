@@ -14,6 +14,8 @@ import { Transition } from "@headlessui/react";
 import { FormEventHandler, useState } from "react";
 import { PageProps } from "@/types";
 import { DatePicker } from "@/Components/Calendar";
+import { toast } from "sonner";
+import { Textarea } from "@/Components/ui/textarea";
 
 export default function UpdateProfileInformation({
     mustVerifyEmail,
@@ -34,41 +36,64 @@ export default function UpdateProfileInformation({
             dob: user.dob,
             phone: user.phone,
             address: user.address,
-            cv: null, // Menambahkan file CV ke state form
+            image: null,
+            cv: null,
         });
 
-    const [cvFile, setCvFile] = useState<File | null>(null); // Menyimpan file CV
+    const handleChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
+        const key = e.target.id as keyof typeof data;
+        setData(key, e.target.value);
+    };
 
-    const submit: FormEventHandler = (e) => {
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        const formData = new FormData(); // Menggunakan FormData untuk menangani file
-        formData.append("name", data.name);
-        formData.append("email", data.email);
-        formData.append("role", data.role);
-        formData.append("dob", data.dob.toString());
-        formData.append("phone", data.phone);
-        formData.append("address", data.address);
-
-        if (cvFile) {
-            formData.append("cv", cvFile); // Tambahkan file CV ke FormData
-            console.log(formData);
-        }
+        const formData = new FormData();
+        Object.entries(data).forEach(([key, value]) => {
+            // Menambahkan data form ke FormData, termasuk file jika ada
+            formData.append(key, value instanceof File ? value : String(value));
+        });
 
         post(route("profile.update"), {
             data: formData,
-            headers: {
-                "Content-Type": "multipart/form-data", // Tambahkan header Content-Type
+            onSuccess: () => {
+                toast.success('Berhasil memperbarui biodata diri');
             },
             onError: () => {
-                console.log("error", e);
+                toast.error("Gagal memperbarui biodata diri");
             },
-            onSuccess: () => {
-                console.log("success", e);
-            },
-            preserveScroll: true, // Agar scroll tidak reset setelah submit
+            preserveScroll: true,
         });
     };
+
+    const [file, setFile] = useState(null);
+    const [preview, setPreview] = useState(user.image ? `/images/${user.image}` : null);
+
+    // Fungsi untuk menangani perubahan file
+    const handleImgChange = (e: any) => {
+        const selectedFile = e.target.files[0];
+
+        setData("image", selectedFile || null);
+
+        // Jika file dipilih, buat URL untuk pratinjau
+        if (selectedFile) {
+            setFile(selectedFile);
+            const previewUrl = URL.createObjectURL(selectedFile);
+            // @ts-ignore
+            setPreview(previewUrl);
+        } else {
+            setFile(null);
+            setPreview(null); // Hapus pratinjau jika tidak ada file
+        }
+    };
+
+    const handleCvChange = (e: any) => {
+        const file = e.target.files[0]
+
+        setData("cv", file);
+    }
 
     return (
         <Card>
@@ -79,8 +104,28 @@ export default function UpdateProfileInformation({
                 </CardDescription>
             </CardHeader>
 
-            <form onSubmit={submit}>
+            <form onSubmit={handleSubmit}>
                 <CardContent className="space-y-6">
+                    {/* Input file untuk image */}
+                    <div>
+                        {preview && (
+                            <div className="mt-2">
+                                <img
+                                    src={preview}
+                                    alt="Preview"
+                                    className="h-40 w-auto border"
+                                />
+                            </div>
+                        )}
+                        <Label htmlFor="image">Foto Profil</Label>
+                        <Input
+                            id="image"
+                            type="file"
+                            accept=".png, .jpg, .svg, .webp, .jpeg"
+                            onChange={handleImgChange}
+                        />
+                    </div>
+
                     <div>
                         <Label htmlFor="name">Nama</Label>
                         <Input
@@ -173,10 +218,10 @@ export default function UpdateProfileInformation({
                         <Input
                             id="phone"
                             type="text"
-                            pattern="\d*" // Membatasi input agar hanya angka yang bisa dimasukkan
+                            pattern="\d*"
                             className="mt-1 block w-full"
-                            value={data.phone} // Pastikan 'data.phone' disimpan sebagai string
-                            onChange={(e) => setData("phone", e.target.value)} // Set sebagai string
+                            value={data.phone}
+                            onChange={(e) => setData("phone", e.target.value)}
                             required
                             autoFocus
                         />
@@ -186,11 +231,50 @@ export default function UpdateProfileInformation({
                             </p>
                         )}
                     </div>
+
+                    <div>
+                        <Label htmlFor="cv">CV</Label>
+                        <div className="mt-1 block w-full">
+                            {user.cv ? (
+                                <>
+                                    {/* Tampilkan link ke CV yang diunggah sebelumnya */}
+                                    <a
+                                        href={`/file/${user.cv}`}
+                                        target="_blank"
+                                        className="text-primary underline"
+                                    >
+                                        {user.cv}
+                                    </a>
+
+                                    {/* Opsi untuk mengubah CV */}
+                                    <div className="mt-2">
+                                        <Label htmlFor="cv-change">Ganti CV</Label>
+                                        <Input
+                                            id="cv-change"
+                                            type="file"
+                                            accept=".pdf"
+                                            onChange={handleCvChange}
+                                        />
+                                    </div>
+                                </>
+                            ) : (
+                                <Input
+                                    id="cv"
+                                    type="file"
+                                    accept=".pdf"
+                                    onChange={handleCvChange}
+                                />
+                            )}
+                        </div>
+                        {errors.cv && (
+                            <p className="mt-2 text-sm text-red-600">{errors.cv}</p>
+                        )}
+                    </div>
+
                     <div>
                         <Label htmlFor="address">Alamat</Label>
-                        <Input
+                        <Textarea
                             id="address"
-                            type="text"
                             className="mt-1 block w-full"
                             value={data.address}
                             onChange={(e) => setData("address", e.target.value)}
@@ -204,23 +288,6 @@ export default function UpdateProfileInformation({
                         )}
                     </div>
 
-                    <div>
-                        <Label htmlFor="cv">CV</Label>
-                        <Input
-                            id="cv"
-                            type="file"
-                            className="mt-1 block w-full"
-                            accept=".pdf"
-                            onChange={(e) =>
-                                setCvFile(e.target.files?.[0] || null)
-                            } // Simpan file yang dipilih
-                        />
-                        {errors.cv && (
-                            <p className="mt-2 text-sm text-red-600">
-                                {errors.cv}
-                            </p>
-                        )}
-                    </div>
                 </CardContent>
                 <CardFooter className="flex items-center gap-4">
                     <Button disabled={processing}>Save</Button>

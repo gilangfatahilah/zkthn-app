@@ -100,13 +100,11 @@ const AddActivity = ({
     const [file, setFile] = useState(null);
     const [preview, setPreview] = useState(activity?.[0]?.banner ? `/images/${activity[0].banner}` : null);
 
-    // Fungsi untuk menangani perubahan file
     const handleImgChange = (e: any) => {
         const selectedFile = e.target.files[0];
 
         setData("banner", selectedFile || null);
 
-        // Jika file dipilih, buat URL untuk pratinjau
         if (selectedFile) {
             setFile(selectedFile);
             const previewUrl = URL.createObjectURL(selectedFile);
@@ -114,7 +112,7 @@ const AddActivity = ({
             setPreview(previewUrl);
         } else {
             setFile(null);
-            setPreview(null); // Hapus pratinjau jika tidak ada file
+            setPreview(null);
         }
     };
 

@@ -36,11 +36,11 @@ class ProfileController extends Controller
         // Isi data user dengan data yang sudah divalidasi
         $request->user()->fill($request->validated());
 
-        dd($request->hasFile('cv'));
+        // dd($request->hasFile('cv'));
         if ($request->has('cv')) {
             $file = $request->file('cv'); // Ambil file dari request
             $fileName = $file->getClientOriginalName(); // Dapatkan nama file asli
-            dd($fileName); // Menampilkan nama file
+            // dd($fileName); // Menampilkan nama file
         }
 
         // Simpan data user

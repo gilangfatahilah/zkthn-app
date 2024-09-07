@@ -148,6 +148,8 @@ class ActivityController extends Controller
     {
         $user = Auth::user();
 
+        dd($request->all());
+
         // Validasi input
         $validated = $request->validate([
             'title' => 'required|string|max:255',

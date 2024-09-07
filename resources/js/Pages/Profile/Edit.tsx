@@ -7,6 +7,9 @@ import { PageProps } from "@/types";
 import { ScrollArea } from "@/Components/ui/scroll-area";
 import Breadcrumbs from "@/Components/Breadcrumb";
 import { Heading } from "@/Components/Heading";
+import { useEffect } from "react";
+import { useToastStore } from "@/hooks/useToastStore";
+import { toast } from "sonner";
 
 const breadcrumbItems = [
     { label: "Dashboard", href: "/dashboard" },
@@ -18,6 +21,16 @@ export default function Edit({
     mustVerifyEmail,
     status,
 }: PageProps<{ mustVerifyEmail: boolean; status?: string }>) {
+    const { showToast, hideToast } = useToastStore();
+
+    useEffect(() => {
+        if (showToast) {
+            toast.error('Mohon lengkapi data pribadi anda !');
+
+            hideToast();
+        }
+    }, [])
+
     return (
         <AuthenticatedLayout user={auth.user}>
             <Head title="Profile" />
