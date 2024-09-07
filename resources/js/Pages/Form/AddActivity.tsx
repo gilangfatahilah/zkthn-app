@@ -17,11 +17,13 @@ import { Textarea } from "@/Components/ui/textarea";
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import { Activity, PageProps } from "@/types";
 import { useForm } from "@inertiajs/react";
+import { useState } from "react";
 import { toast } from "sonner";
 
-
-
-const AddActivity = ({ auth, activity }: PageProps & { activity?: Activity[] }) => {
+const AddActivity = ({
+    auth,
+    activity,
+}: PageProps & { activity?: Activity[] }) => {
     const breadcrumbItems = [
         { label: "Dashboard", href: "/dashboard" },
         { label: "Activity", href: "/dashboard/activity" },
@@ -29,29 +31,28 @@ const AddActivity = ({ auth, activity }: PageProps & { activity?: Activity[] }) 
     ];
 
     const { data, setData, put, post, processing, errors } = useForm({
-        title: activity?.[0]?.title || '',
-        location: activity?.[0]?.location || '',
-        category: activity?.[0]?.category ? JSON.parse(activity[0].category) : [],
+        title: activity?.[0]?.title || "",
+        location: activity?.[0]?.location || "",
+        category: activity?.[0]?.category
+            ? JSON.parse(activity[0].category)
+            : [],
         schedule: activity?.[0]?.schedule || new Date(),
         deadline: activity?.[0]?.deadline || new Date(),
-        max: activity?.[0]?.max || '',
-        domicile: activity?.[0]?.domicile || '',
-        description: activity?.[0]?.description || '',
-        requirement: activity?.[0]?.requirement || '',
-        jobdesk: activity?.[0]?.jobdesk || '',
-        addtional_information: activity?.[0]?.addtional_information || '',
+        max: activity?.[0]?.max || "",
+        domicile: activity?.[0]?.domicile || "",
+        description: activity?.[0]?.description || "",
+        requirement: activity?.[0]?.requirement || "",
+        jobdesk: activity?.[0]?.jobdesk || "",
+        addtional_information: activity?.[0]?.addtional_information || "",
         banner: null, // File gambar default null
     });
 
     // Mengubah nilai input teks dan textarea
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const handleChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
         const key = e.target.id as keyof typeof data;
         setData(key, e.target.value);
-    };
-
-    // Mengubah nilai input file
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setData("banner", e.target.files?.[0] || null); // Menangani file gambar
     };
 
     // Menangani submit form
@@ -66,28 +67,49 @@ const AddActivity = ({ auth, activity }: PageProps & { activity?: Activity[] }) 
 
         // Cek apakah activity ada, jika ada lakukan update, jika tidak buat activity baru
         if (activity?.[0]) {
-            put(route('activity.update', activity[0].id), {
+            put(route("activity.update", activity[0].id), {
                 data: formData,
                 onSuccess: () => {
-                    toast.success('Activity updated successfully');
+                    toast.success("Activity updated successfully");
                 },
                 onError: () => {
-                    toast.error('Failed to update activity');
+                    toast.error("Failed to update activity");
                 },
                 preserveScroll: true,
             });
         } else {
-            post(route('activity.store'), {
+            post(route("activity.store"), {
                 data: formData,
                 onSuccess: () => {
-                    toast.success('Activity created successfully');
-                    window.location.href = '/dashboard/activity';
+                    toast.success("Activity created successfully");
+                    window.location.href = "/dashboard/activity";
                 },
                 onError: () => {
-                    toast.error('Failed to create activity');
+                    toast.error("Failed to create activity");
                 },
                 preserveScroll: true,
             });
+        }
+    };
+
+    const [file, setFile] = useState(null);
+    const [preview, setPreview] = useState(null);
+
+    // Fungsi untuk menangani perubahan file
+    const handleImgChange = (e: any) => {
+        const selectedFile = e.target.files[0];
+
+        setData("banner", selectedFile || null);
+
+        // Jika file dipilih, buat URL untuk pratinjau
+        if (selectedFile) {
+            setFile(selectedFile);
+            const previewUrl = URL.createObjectURL(selectedFile);
+            // @ts-ignore
+            setPreview(previewUrl);
+        } else {
+            setFile(null);
+            setPreview(null); // Hapus pratinjau jika tidak ada file
         }
     };
 
@@ -278,11 +300,16 @@ const AddActivity = ({ auth, activity }: PageProps & { activity?: Activity[] }) 
                                         id="banner"
                                         type="file"
                                         accept=".png, .jpg, .svg, .webp, .jpeg"
-                                        onChange={handleFileChange}
-                                        required
+                                        onChange={handleImgChange}
                                     />
-                                    {errors.banner && (
-                                        <div>{errors.banner}</div>
+                                    {preview && (
+                                        <div className="mt-2">
+                                            <img
+                                                src={preview}
+                                                alt="Preview"
+                                                className="h-40 w-auto border"
+                                            />
+                                        </div>
                                     )}
                                 </div>
                             </CardContent>
