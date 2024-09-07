@@ -14,7 +14,7 @@ export default function ChangeAccount({ className = '' }: { className?: string }
   const {
     data,
     setData,
-    delete: destroy,
+    post,
     processing,
     reset,
     errors,
@@ -29,17 +29,17 @@ export default function ChangeAccount({ className = '' }: { className?: string }
   const deleteUser: FormEventHandler = (e) => {
     e.preventDefault();
 
-    //some logic
-
-    // destroy(route('profile.destroy'), {
-    //   preserveScroll: true,
-    //   onSuccess: () => {
-    //     closeModal();
-    //     toast.success('Account deleted successfully');
-    //   },
-    //   onError: () => passwordInput.current?.focus(),
-    //   onFinish: () => reset(),
-    // });
+    post(route('changeaccount'), {
+      data,
+      onSuccess: () => {
+        closeModal();
+        toast.success('Berhasil membuat permintaan')
+      },
+      onError: () => {
+        closeModal();
+        toast.error('Gagal membuat permintaan')
+      }
+    })
   };
 
   const closeModal = () => {

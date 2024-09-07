@@ -12,7 +12,7 @@ import { useToastStore } from "@/hooks/useToastStore";
 import { toast } from "sonner";
 import ChangeAccount from "./Partials/ChangeAccount";
 import { Alert, AlertDescription, AlertTitle } from "@/Components/ui/alert";
-import { Clock9 } from "lucide-react";
+import { BadgeCheck, CircleX, Clock9 } from "lucide-react";
 
 const breadcrumbItems = [
     { label: "Dashboard", href: "/dashboard" },
@@ -22,7 +22,15 @@ const breadcrumbItems = [
 const AlertInfo = ({ color, message, description }: { color: string, message: string, description: string }) => {
     return (
         <Alert className={`border-${color}-300`}>
-            <Clock9 className="h-4 w-4" />
+            {
+                color === 'yellow' ? (
+                    <Clock9 className="h-4 w-4" />
+                ) : color === 'red' ? (
+                    <CircleX className="h-4 w-4" />
+                ) : (
+                    <BadgeCheck className="h-4 w-4" />
+                )
+            }
             <AlertTitle>{message}</AlertTitle>
             <AlertDescription>
                 {description}

@@ -22,9 +22,10 @@ import { toast } from "sonner";
 interface ActivityDetailProps {
     auth: PageProps["auth"];
     activity: Activity[];
+    joined: boolean;
 }
 
-const ActivityDetailPage = ({ auth, activity }: ActivityDetailProps) => {
+const ActivityDetailPage = ({ auth, activity, joined }: ActivityDetailProps) => {
     const { setToast } = useToastStore();
     const [open, setOpen] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
@@ -32,7 +33,7 @@ const ActivityDetailPage = ({ auth, activity }: ActivityDetailProps) => {
     const activityId = path.match(/\d+/)?.[0];
 
     useEffect(() => {
-        console.log(auth.user);
+        console.log(joined);
     }, []);
 
     const formatDate = (date: any) => {
@@ -196,8 +197,9 @@ const ActivityDetailPage = ({ auth, activity }: ActivityDetailProps) => {
                             <Button
                                 onClick={onApplyActivity}
                                 className="bg-primary w-full"
+                                disabled={joined}
                             >
-                                Jadi Relawan
+                                {joined ? 'Anda telah mendaftar' : 'Daftar'}
                             </Button>
                             {/* <Button variant="outline" className="w-full">Kontak Organisasi</Button> */}
                         </CardFooter>
