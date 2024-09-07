@@ -110,7 +110,7 @@ class ActivityController extends Controller
 
         dd($data);
 
-        return Inertia::render('....', $data);
+        return Inertia::render('Tables/Activity/ActivityDetail', $data);
     }
 
     /**
@@ -124,7 +124,7 @@ class ActivityController extends Controller
             'activity' => $activityModel->activityJoin($id)
         ];
 
-        return Inertia::render('....', $data);
+        return Inertia::render('Form/AddActivity', $data);
     }
 
     /**

@@ -10,7 +10,7 @@ import {
 import { Edit, MoreHorizontal, Trash } from 'lucide-react';
 import { AlertModal } from '@/Components/AlertModal';
 import { Activity } from '@/types';
-import { useForm } from '@inertiajs/react';
+import { Link, useForm } from '@inertiajs/react';
 import { toast } from 'sonner';
 
 interface CellActionProps {
@@ -69,9 +69,17 @@ export const CellAction: React.FC<CellActionProps> = ({ data }: CellActionProps)
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-          <DropdownMenuItem onClick={() => setOpenDetail(true)}>
-            <Edit className="mr-2 h-4 w-4" /> Detail
-          </DropdownMenuItem>
+          <Link href={`/dashboard/activity${data.id}`}>
+            <DropdownMenuItem>
+              <Edit className="mr-2 h-4 w-4" /> detail
+            </DropdownMenuItem>
+          </Link>
+
+          <Link href={`/dashboard/activity/${data.id}/edit`}>
+            <DropdownMenuItem>
+              <Edit className="mr-2 h-4 w-4" /> Edit
+            </DropdownMenuItem>
+          </Link>
 
           <DropdownMenuItem className='text-red-600' onClick={() => setOpen(true)}>
             <Trash className="mr-2 h-4 w-4" /> Delete

@@ -15,9 +15,8 @@ import { Label } from "@/Components/ui/label";
 import { ScrollArea } from "@/Components/ui/scroll-area";
 import { Textarea } from "@/Components/ui/textarea";
 import DashboardLayout from "@/Layouts/DashboardLayout";
-import { PageProps } from "@/types";
+import { Activity, PageProps } from "@/types";
 import { useForm } from "@inertiajs/react";
-import { useState } from "react";
 import { toast } from "sonner";
 
 const breadcrumbItems = [
@@ -26,55 +25,69 @@ const breadcrumbItems = [
     { label: "Create" },
 ];
 
-const AddActivity = ({ auth }: PageProps) => {
-    // Menggunakan useForm untuk mengelola state form
-    const { data, setData, post, processing, errors } = useForm({
-        title: "",
-        location: "",
-        category: [""],
-        schedule: new Date(),
-        deadline: new Date(),
-        max: "",
-        domicile: "",
-        description: "",
-        requirement: "",
-        jobdesk: "",
-        addtional_information: "",
-        banner: null, // Tambahkan key untuk file gambar
+
+const AddActivity = ({ auth, activity }: PageProps & { activity?: Activity[] }) => {
+    // Menggunakan useForm untuk mengelola state form, dengan nilai default jika activity tersedia
+    const { data, setData, put, post, processing, errors } = useForm({
+        title: activity?.[0]?.title || '',
+        location: activity?.[0]?.location || '',
+        category: activity?.[0]?.category ? JSON.parse(activity[0].category) : [],
+        schedule: activity?.[0]?.schedule || new Date(),
+        deadline: activity?.[0]?.deadline || new Date(),
+        max: activity?.[0]?.max || '',
+        domicile: activity?.[0]?.domicile || '',
+        description: activity?.[0]?.description || '',
+        requirement: activity?.[0]?.requirement || '',
+        jobdesk: activity?.[0]?.jobdesk || '',
+        addtional_information: activity?.[0]?.addtional_information || '',
+        banner: null, // File gambar default null
     });
 
-    const [categoryTags, setCategoryTags] = useState<string[]>([]);
-
-    const handleChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => {
+    // Mengubah nilai input teks dan textarea
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const key = e.target.id as keyof typeof data;
         setData(key, e.target.value);
     };
 
+    // Mengubah nilai input file
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setData("banner", e.target.files?.[0] || null); // Menangani file gambar
     };
 
+    // Menangani submit form
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
         const formData = new FormData();
         Object.entries(data).forEach(([key, value]) => {
-            formData.append(key, value);
+            // Menambahkan data form ke FormData, termasuk file jika ada
+            formData.append(key, value instanceof File ? value : String(value));
         });
 
-        post(route("activity.store"), {
-            data: formData,
-            onSuccess: () => {
-                toast.success("Activity created successfully");
-            },
-            onError: (e) => {
-                console.log(e);
-                toast.error("Failed to create activity");
-            },
-            preserveScroll: true,
-        });
+        // Cek apakah activity ada, jika ada lakukan update, jika tidak buat activity baru
+        if (activity?.[0]) {
+            put(route('activity.update', activity[0].id), {
+                data: formData,
+                onSuccess: () => {
+                    toast.success('Activity updated successfully');
+                },
+                onError: () => {
+                    toast.error('Failed to update activity');
+                },
+                preserveScroll: true,
+            });
+        } else {
+            post(route('activity.store'), {
+                data: formData,
+                onSuccess: () => {
+                    toast.success('Activity created successfully');
+                },
+                onError: () => {
+                    toast.error('Failed to create activity');
+                },
+                preserveScroll: true,
+            });
+        }
     };
 
     return (
@@ -263,6 +276,7 @@ const AddActivity = ({ auth }: PageProps) => {
                                     <Input
                                         id="banner"
                                         type="file"
+                                        accept=".png, .jpg, .svg, .webp, .jpeg"
                                         onChange={handleFileChange}
                                         required
                                     />

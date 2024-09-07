@@ -17,7 +17,7 @@ export interface Activity {
     category: string;
     created_at: string;
     updated_at: string;
-    deadline: string;
+    deadline: Date;
     description: string;
     domicile: string;
     jobdesk: string;
@@ -25,7 +25,7 @@ export interface Activity {
     max: number;
     publised_by: number;
     requirement: string;
-    schedule: string;
+    schedule: Date;
     addtional_information?: string;
     publised_name: string;
 }
