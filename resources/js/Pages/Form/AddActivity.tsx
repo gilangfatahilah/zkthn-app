@@ -62,10 +62,16 @@ const AddActivity = ({
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
+        console.log(data);
+
         const formData = new FormData();
         Object.entries(data).forEach(([key, value]) => {
-            // Menambahkan data form ke FormData, termasuk file jika ada
-            formData.append(key, value instanceof File ? value : String(value));
+            // Menambahkan file atau data biasa ke FormData
+            if (key === "banner" && value instanceof File) {
+                formData.append(key, value);
+            } else {
+                formData.append(key, value instanceof File ? value : String(value));
+            }
         });
 
         // Cek apakah activity ada, jika ada lakukan update, jika tidak buat activity baru

@@ -119,7 +119,7 @@ class ActivityController extends Controller
             'registrants' => $activityDetailModel->getRegistrants($id),
         ];
 
-        dd($data);
+        // dd($data);
 
         return Inertia::render('Tables/Activity/ActivityDetail', $data);
     }
@@ -148,7 +148,7 @@ class ActivityController extends Controller
 
         $user = Auth::user();
 
-        dd($request->all());
+        // dd($request->all());
 
         // Validasi input
         $validated = $request->validate([
@@ -176,8 +176,6 @@ class ActivityController extends Controller
 
             // Tentukan path tujuan di folder public/images
             $destinationPath = public_path('images');
-
-
 
             // Pindahkan file baru ke folder public/images
             $file->move($destinationPath, $fileName);

@@ -82,7 +82,20 @@ export default function UserDetail({ user, isOpen, onClose }: UserDetailProps) {
                             <div className="text-sm font-medium text-muted-foreground">
                                 CV
                             </div>
-                            <a href="#">{user.cv ?? "-"}</a>
+                            {
+                                user.cv ? (
+
+                                    <a
+                                        href={`/file/${user.cv}`}
+                                        target="_blank"
+                                        className="text-pretty underline"
+                                    >
+                                        {user.cv ?? '-'}
+                                    </a>
+                                ) : (
+                                    <p> - </p>
+                                )
+                            }
                         </div>
                     </div>
                 </div>
