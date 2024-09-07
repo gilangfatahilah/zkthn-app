@@ -82,8 +82,8 @@ const ActivityDetailPage = ({ auth, activity }: ActivityDetailProps) => {
     };
 
     const handleConfirm = () => {
-        // 
-    }
+        //
+    };
 
     return (
         <HomeLayout user={auth.user}>
@@ -103,7 +103,7 @@ const ActivityDetailPage = ({ auth, activity }: ActivityDetailProps) => {
                         {/* Image */}
 
                         <img
-                            src="https://picsum.photos/200/300"
+                            src={`/images/${activity[0].banner}`}
                             alt={activity[0].title}
                             className="w-full h-auto object-cover rounded-lg max-h-[400px]"
                         />
