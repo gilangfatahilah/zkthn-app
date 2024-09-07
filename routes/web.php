@@ -38,7 +38,7 @@ Route::middleware('auth', 'role:administrator,organization', 'verified')->group(
     Route::delete('dashboard/activity/{id}', [ActivityController::class, 'destroy'])->name('activity.destroy');
 });
 Route::middleware('auth', 'role:personal', 'verified')->group(function () {
-    Route::post('applay', [ActivityDetailController::class, 'applay'])->name('applay');
+    Route::post('/apply', [ActivityDetailController::class, 'apply'])->name('apply');
 });
 
 

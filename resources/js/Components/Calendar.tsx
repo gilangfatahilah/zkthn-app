@@ -22,7 +22,8 @@ export function DatePicker({ value, limit = false, onApply }: DatePickerProps) {
 
     const [open, setOpen] = React.useState(false);
 
-    const dateToRender = typeof value !== 'string' ? value.toISOString() : value;
+    const dateToRender =
+        typeof value !== "string" ? value?.toISOString() : value;
 
     return (
         <Popover open={open} onOpenChange={setOpen}>
@@ -35,7 +36,11 @@ export function DatePicker({ value, limit = false, onApply }: DatePickerProps) {
                     )}
                 >
                     <CalendarIcon className="mr-2 h-4 w-4" />
-                    {value !== null ? formatDate(dateToRender) : <span>Pick a date</span>}
+                    {value !== null ? (
+                        formatDate(dateToRender)
+                    ) : (
+                        <span>Pick a date</span>
+                    )}
                 </Button>
             </PopoverTrigger>
             <PopoverContent align="start" className=" w-full p-0">

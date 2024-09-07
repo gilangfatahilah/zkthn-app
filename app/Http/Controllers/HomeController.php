@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Activity;
+use App\Models\ActivityDetail;
 use App\Models\User;
 use Illuminate\Console\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+
 
 
 use Inertia\Inertia;
@@ -53,9 +56,16 @@ class HomeController extends Controller
     public function detailActivity(string $id)
     {
         $activityModel = new Activity();
+        $user = Auth::user();
+
+        $alreadyRegistered = ActivityDetail::where('user_id', $user->id)
+            ->where('activity_id', $id)
+            ->exists();
+
 
         $data = [
-            'activity' => $activityModel->activityJoin($id)
+            'activity' => $activityModel->activityJoin($id),
+            'joined' => $alreadyRegistered
         ];
 
         return Inertia::render('ActivityDetail', $data);

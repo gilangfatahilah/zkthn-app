@@ -88,9 +88,9 @@ const ActivityDetailPage = ({ auth, activity }: ActivityDetailProps) => {
         try {
             setLoading(true);
 
-            router.post('/apply', { id: activityId })
+            router.post("/apply", { id: activityId });
         } catch (error) {
-            // 
+            //
         } finally {
             setLoading(false);
         }

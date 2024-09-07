@@ -117,9 +117,11 @@ class ActivityController extends Controller
         $data = [
             'activity' => $activityModel->activityJoin($id),
             'registrants' => $activityDetailModel->getRegistrants($id),
+            'activity' => $activityModel->activityJoin($id),
+            'registrants' => $activityDetailModel->getRegistrants($id),
         ];
 
-        // dd($data);
+        dd($data);
 
         return Inertia::render('Tables/Activity/ActivityDetail', $data);
     }
@@ -144,11 +146,9 @@ class ActivityController extends Controller
 
     public function update(Request $request, string $id)
     {
-        dd($request->all());
-
         $user = Auth::user();
 
-        // dd($request->all());
+        dd($request->all());
 
         // Validasi input
         $validated = $request->validate([
@@ -176,6 +176,8 @@ class ActivityController extends Controller
 
             // Tentukan path tujuan di folder public/images
             $destinationPath = public_path('images');
+
+
 
             // Pindahkan file baru ke folder public/images
             $file->move($destinationPath, $fileName);
@@ -215,6 +217,7 @@ class ActivityController extends Controller
      */
     public function destroy(string $id)
     {
+        dd($id);
         $activity = Activity::findOrFail($id);
 
         // Hapus Activity
