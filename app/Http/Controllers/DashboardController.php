@@ -36,10 +36,23 @@ class DashboardController extends Controller
                     ->join('activity_detail', 'activity_detail.activity_id', '=', 'activity.id')
                     ->select('activity.*', 'users.name as publised_name', 'activity_detail.status as status_daftar')
                     ->where('activity_detail.user_id', '=', $user->id) // Sesuaikan dengan user ID yang ingin dicari
-                    ->get()
+                    ->get(),
+                'pending' => Activity::join('users', 'users.id', '=', 'activity.publised_by')
+                    ->join('activity_detail', 'activity_detail.activity_id', '=', 'activity.id')
+                    ->select('activity.*', 'users.name as publised_name', 'activity_detail.status as status_daftar')
+                    ->where('activity_detail.user_id', '=', $user->id)
+                    ->where('activity_detail.status', '=', '1') // Sesuaikan dengan user ID yang ingin dicari
+                    ->count(),
+                'accepted' => Activity::join('users', 'users.id', '=', 'activity.publised_by')
+                    ->join('activity_detail', 'activity_detail.activity_id', '=', 'activity.id')
+                    ->select('activity.*', 'users.name as publised_name', 'activity_detail.status as status_daftar')
+                    ->where('activity_detail.user_id', '=', $user->id)
+                    ->where('activity_detail.status', '=', '2') // Sesuaikan dengan user ID yang ingin dicari
+                    ->count(),
             ];
         }
-        // dd($data);
+
+        dd($data);
 
         return Inertia::render('Dashboard', $data);
     }
