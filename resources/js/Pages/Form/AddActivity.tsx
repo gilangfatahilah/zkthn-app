@@ -62,8 +62,6 @@ const AddActivity = ({
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        console.log(data);
-
         const formData = new FormData();
         Object.entries(data).forEach(([key, value]) => {
             // Menambahkan file atau data biasa ke FormData
@@ -79,12 +77,10 @@ const AddActivity = ({
             put(route("activity.update", activity[0].id), {
                 data: formData,
                 onSuccess: () => {
-                    console.log(e);
                     setToast("diperbarui");
                     router.visit("/dashboard/activity");
                 },
                 onError: (e) => {
-                    console.log(e);
                     toast.error("Failed to update activity");
                 },
                 preserveScroll: true,

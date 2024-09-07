@@ -39,7 +39,7 @@ class DashboardController extends Controller
                     ->get()
             ];
         }
-        dd($data);
+        // dd($data);
 
         return Inertia::render('Dashboard', $data);
     }

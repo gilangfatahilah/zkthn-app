@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
 import { DashboardNav } from './dashboard-nav';
-import { navItems } from '@/constans';
+import { getNavItem } from '@/constans';
 import { cn } from '@/lib/utils';
 import { ChevronLeft } from 'lucide-react';
 import { useSidebar } from '@/hooks/useSidebar';
 
 type SidebarProps = {
   className?: string;
+  role: 'administrator' | 'personal' | 'organization';
 };
 
-export default function Sidebar({ className }: SidebarProps) {
+export default function Sidebar({ className, role }: SidebarProps) {
   const { isMinimized, toggle } = useSidebar();
   const [status, setStatus] = useState(false);
+
+  const navItems = getNavItem(role);
 
   const handleToggle = () => {
     setStatus(true);

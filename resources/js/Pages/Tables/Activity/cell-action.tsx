@@ -7,7 +7,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger
 } from '@/Components/ui/dropdown-menu';
-import { Edit, MoreHorizontal, Trash } from 'lucide-react';
+import { Edit, Eye, MoreHorizontal, Trash } from 'lucide-react';
 import { AlertModal } from '@/Components/AlertModal';
 import { Activity } from '@/types';
 import { Link, useForm } from '@inertiajs/react';
@@ -20,7 +20,6 @@ interface CellActionProps {
 export const CellAction: React.FC<CellActionProps> = ({ data }: CellActionProps) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
-  const [openDetail, setOpenDetail] = useState(false);
 
   const { delete: deleteActivity } = useForm();
 
@@ -57,8 +56,6 @@ export const CellAction: React.FC<CellActionProps> = ({ data }: CellActionProps)
         loading={loading}
       />
 
-      {/* <UserDetail user={data} isOpen={openDetail} onClose={() => setOpenDetail(false)} /> */}
-
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">
@@ -71,7 +68,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }: CellActionProps)
 
           <Link href={`/dashboard/activity${data.id}`}>
             <DropdownMenuItem>
-              <Edit className="mr-2 h-4 w-4" /> detail
+              <Eye className="mr-2 h-4 w-4" /> detail
             </DropdownMenuItem>
           </Link>
 
@@ -81,7 +78,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }: CellActionProps)
             </DropdownMenuItem>
           </Link>
 
-          <DropdownMenuItem className='text-red-600' onClick={() => setOpen(true)}>
+          <DropdownMenuItem className='text-destructive' onClick={() => setOpen(true)}>
             <Trash className="mr-2 h-4 w-4" /> Delete
           </DropdownMenuItem>
         </DropdownMenuContent>

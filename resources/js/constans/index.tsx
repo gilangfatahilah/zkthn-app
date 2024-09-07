@@ -47,3 +47,59 @@ export const navItems: NavItem[] = [
         label: "Activity",
     },
 ];
+
+export const getNavItem = (type: 'personal' | 'organization' | 'administrator'): NavItem[] => {
+    switch (type) {
+        case 'personal':
+            return [
+                {
+                    title: "Beranda",
+                    href: "/dashboard",
+                    icon: "dashboard",
+                    label: "Dashboard",
+                },
+                {
+                    title: "Aktivitas",
+                    href: "/activity",
+                    icon: "calendar",
+                    label: "Activity",
+                },
+            ]
+        case 'organization':
+            return [
+                {
+                    title: "Beranda",
+                    href: "/dashboard",
+                    icon: "dashboard",
+                    label: "Dashboard",
+                },
+                {
+                    title: "Aktivitas",
+                    href: "/activity",
+                    icon: "calendar",
+                    label: "Activity",
+                },
+            ]
+        case 'administrator':
+            return [
+                {
+                    title: "Beranda",
+                    href: "/dashboard",
+                    icon: "dashboard",
+                    label: "Dashboard",
+                },
+                {
+                    title: "Pengguna",
+                    href: "/dashboard/user",
+                    icon: "user",
+                    label: "User",
+                },
+                {
+                    title: "Aktivitas",
+                    href: "/dashboard/activity",
+                    icon: "calendar",
+                    label: "Activity",
+                },
+            ]
+    }
+}

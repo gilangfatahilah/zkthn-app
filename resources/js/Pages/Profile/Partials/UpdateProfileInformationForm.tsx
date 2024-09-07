@@ -295,7 +295,6 @@ export default function UpdateProfileInformation({
 
                                     {/* Opsi untuk mengubah CV */}
                                     <div className="mt-2">
-                                        <Label htmlFor="cv-change">Ganti CV</Label>
                                         <Input
                                             id="cv-change"
                                             type="file"

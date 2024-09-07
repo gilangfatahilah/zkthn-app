@@ -129,9 +129,11 @@ const ActivityCard = ({ activities }: ActivityProps) => {
 
                 {/* Menampilkan aktivitas dengan pagination */}
                 <main className="container mx-auto grid grid-cols-1 gap-6 px-4 md:grid-cols-2 lg:grid-cols-4 lg:px-0">
-                    {paginatedActivities.map((activity) => (
+                    {paginatedActivities.map((activity, index) => (
                         <Card
                             key={activity.id}
+                            data-aos="fade-up"
+                            data-aos-delay={(index + 1) * 200}
                             className="relative overflow-hidden rounded-lg shadow-lg flex flex-col justify-between transition-transform duration-300 ease-in-out hover:-translate-y-2 hover:shadow-xl"
                         >
                             <Link

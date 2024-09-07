@@ -1,7 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Activity } from "@/types";
 import { Checkbox } from "@/Components/ui/checkbox";
-import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar";
 import { Badge } from "@/Components/ui/badge";
 import { CellAction } from "./cell-action";
 import { Button } from "@/Components/ui/button";

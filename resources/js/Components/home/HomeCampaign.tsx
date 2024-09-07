@@ -5,7 +5,6 @@ import { Badge } from "../ui/badge";
 import { MdDateRange } from "react-icons/md";
 import { FaLocationDot } from "react-icons/fa6";
 import { newActivity } from "@/types";
-import { useEffect } from "react";
 import { format, parseISO } from "date-fns";
 import { id } from "date-fns/locale"; // Import locale ID for Indonesian
 
@@ -28,9 +27,6 @@ const truncateText = (text: string, maxWords: number) => {
 };
 
 const HomeCampaign = ({ newActivity }: NewActivityProps) => {
-    useEffect(() => {
-        console.log(newActivity);
-    }, []);
 
     return (
         <section>
@@ -49,9 +45,11 @@ const HomeCampaign = ({ newActivity }: NewActivityProps) => {
                     </div>
                 </header>
                 <main className="container mx-auto grid grid-cols-1 gap-6 px-4 md:grid-cols-2 lg:grid-cols-3 lg:px-0">
-                    {newActivity.map((activity) => (
+                    {newActivity.map((activity, index) => (
                         <Card
                             key={activity.id}
+                            data-aos="fade-up"
+                            data-aos-delay={(index + 1) * 200}
                             className="relative overflow-hidden rounded-lg shadow-lg flex flex-col justify-between transition-transform duration-300 ease-in-out hover:-translate-y-2 hover:shadow-xl"
                         >
                             <Link

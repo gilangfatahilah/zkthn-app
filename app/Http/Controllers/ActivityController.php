@@ -213,7 +213,7 @@ class ActivityController extends Controller
      */
     public function destroy(string $id)
     {
-        dd($id);
+        // dd($id);
         $activity = Activity::findOrFail($id);
 
         // Hapus Activity

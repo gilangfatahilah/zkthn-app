@@ -31,7 +31,6 @@ export const CellAction: React.FC<CellActionProps> = ({ data }: CellActionProps)
     try {
       deleteUser(route('user.destroy', { id: data.id }), {
         onSuccess: () => {
-          console.log('cok')
           setOpen(false); // Close the modal after successful deletion
           return toast.success('Berhasil menghapus pengguna');
         },

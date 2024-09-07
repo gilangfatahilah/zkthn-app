@@ -18,8 +18,6 @@ interface DatePickerProps {
 }
 
 export function DatePicker({ value, limit = false, onApply }: DatePickerProps) {
-    console.log(value, typeof value);
-
     const [open, setOpen] = React.useState(false);
 
     const dateToRender =

@@ -24,17 +24,21 @@ interface UserDetailProps {
     onClose: () => void;
 }
 
+
 export default function UserDetail({ user, isOpen, onClose }: UserDetailProps) {
     const [open, setOpen] = useState<boolean>(false);
     const [actionType, setActionType] = useState<'accept' | 'decline'>('accept');
 
     const handleSubmit = () => {
+        const path = window.location.pathname;
+        const activityId = path.match(/\d+/)?.[0];
+
         const body = {
-            id: user.id,
+            id: user.register_status === 1 ? activityId : user.id,
             status: actionType === 'accept' ? 2 : 3
         }
 
-        router.post('/handleaccount', body);
+        user.register_status === 1 ? router.post('/handleapplier', body) : router.post('/handleaccount', body);
 
         toast.success('Berhasil mengkonfirmasi user')
         setOpen(false);
@@ -51,7 +55,7 @@ export default function UserDetail({ user, isOpen, onClose }: UserDetailProps) {
                             <DialogTitle></DialogTitle>
                         </DialogHeader>
                         {
-                            user.status === 1 && (
+                            (user.status === 1 && !user.register_status) && (
                                 <Alert className={`border-yellow-300`}>
                                     <Clock9 className="h-4 w-4" />
                                     <AlertTitle>Perlu Verifikasi</AlertTitle>
@@ -139,7 +143,7 @@ export default function UserDetail({ user, isOpen, onClose }: UserDetailProps) {
 
 
                                 {
-                                    user.status === 1 && (
+                                    (user.status === 1 || user.register_status === 1) && (
 
                                         <div className="col-span-2 flex-col gap-2 space-y-2">
                                             <Button className="w-full" onClick={() => {

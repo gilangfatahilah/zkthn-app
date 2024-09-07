@@ -11,9 +11,9 @@ import { FaCalendarAlt, FaMapMarkerAlt } from "react-icons/fa";
 import { MdEventAvailable } from "react-icons/md";
 import { format, parseISO } from "date-fns";
 import { id } from "date-fns/locale";
-import { Activity, PageProps, User } from "@/types";
+import { Activity, PageProps } from "@/types";
 import HomeLayout from "@/Layouts/HomeLayout";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { router, useForm } from "@inertiajs/react";
 import { useToastStore } from "@/hooks/useToastStore";
 import { AlertModal } from "@/Components/AlertModal";
@@ -31,10 +31,6 @@ const ActivityDetailPage = ({ auth, activity, joined }: ActivityDetailProps) => 
     const [loading, setLoading] = useState<boolean>(false);
     const path = window.location.pathname;
     const activityId = path.match(/\d+/)?.[0];
-
-    useEffect(() => {
-        console.log(joined);
-    }, []);
 
     const formatDate = (date: any) => {
         const parsedISO = parseISO(date);

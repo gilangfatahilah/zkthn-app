@@ -9,6 +9,7 @@ export interface User {
     dob: Date;
     phone: string;
     address: string;
+    register_status: number;
     gender: string;
     cv: string
 }

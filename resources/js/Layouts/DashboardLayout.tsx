@@ -12,7 +12,7 @@ export default function DashboardLayout({ user, header, children }: PropsWithChi
             <ThemeProvider defaultTheme="light" storageKey="theme">
                 <Header user={user} />
                 <div className="flex h-screen overflow-hidden">
-                    <Sidebar />
+                    <Sidebar role={user.role as 'personal' | 'administrator' | 'organization'} />
                     <main className="w-full pt-16">
                         {children}
                         <Toaster expand={true} richColors />
