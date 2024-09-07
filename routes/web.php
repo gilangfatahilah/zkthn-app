@@ -28,6 +28,9 @@ Route::middleware('auth', 'role:administrator,organization', 'verified')->group(
     Route::get('dashboard/user', [UserController::class, 'index'])->name('user');
     Route::delete('dashboard/user/{id}', [UserController::class, 'destroy'])->name('user.destroy');
 
+    Route::post('/handleaccount', [UserController::class, 'handleaccount'])->name('handleaccount');
+
+
 
     Route::get('dashboard/activity', [ActivityController::class, 'index'])->name('activity');
     Route::get('dashboard/activity/create', [ActivityController::class, 'create'])->name('activity.create');
@@ -39,6 +42,7 @@ Route::middleware('auth', 'role:administrator,organization', 'verified')->group(
 });
 Route::middleware('auth', 'role:personal', 'verified')->group(function () {
     Route::post('/apply', [ActivityDetailController::class, 'apply'])->name('apply');
+    Route::post('/changeaccount', [UserController::class, 'changeaccount'])->name('changeaccount');
 });
 
 

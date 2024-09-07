@@ -117,11 +117,10 @@ class ActivityController extends Controller
         $data = [
             'activity' => $activityModel->activityJoin($id),
             'registrants' => $activityDetailModel->getRegistrants($id),
-            'activity' => $activityModel->activityJoin($id),
-            'registrants' => $activityDetailModel->getRegistrants($id),
         ];
 
         dd($data);
+
 
         return Inertia::render('Tables/Activity/ActivityDetail', $data);
     }

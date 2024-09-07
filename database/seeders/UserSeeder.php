@@ -21,6 +21,8 @@ class UserSeeder extends Seeder
             'role' => 'administrator',
             'gender' => 'Pria',
             'dob' => '1990-01-01',
+            'address' => 'Bekasi',
+            'phone' => '0895330944736',
 
         ]);
 
@@ -30,7 +32,9 @@ class UserSeeder extends Seeder
             'password' => Hash::make('password123'),
             'role' => 'organization',
             'gender' => 'Pria',
-            'dob' => '2024-09-03T17:00:00.000Z',
+            'dob' => '1990-01-01',
+            'address' => 'Bekasi',
+            'phone' => '0895330944736',
 
 
         ]);
@@ -42,6 +46,8 @@ class UserSeeder extends Seeder
             'role' => 'personal',
             'gender' => 'Pria',
             'dob' => '1990-01-01',
+            'address' => 'Bekasi',
+            'phone' => '0895330944736',
 
 
         ]);

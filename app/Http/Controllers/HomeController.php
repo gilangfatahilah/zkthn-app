@@ -58,15 +58,20 @@ class HomeController extends Controller
         $activityModel = new Activity();
         $user = Auth::user();
 
-        $alreadyRegistered = ActivityDetail::where('user_id', $user->id)
-            ->where('activity_id', $id)
-            ->exists();
-
+        if ($user == null) {
+            $alreadyRegistered = false;
+        } else {
+            $alreadyRegistered = ActivityDetail::where('user_id', $user->id)
+                ->where('activity_id', $id)
+                ->exists();
+        }
 
         $data = [
             'activity' => $activityModel->activityJoin($id),
             'joined' => $alreadyRegistered
         ];
+
+        dd($data);
 
         return Inertia::render('ActivityDetail', $data);
     }
