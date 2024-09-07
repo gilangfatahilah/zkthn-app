@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\ActivityDetailController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
@@ -35,6 +36,9 @@ Route::middleware('auth', 'role:administrator,organization', 'verified')->group(
     Route::get('dashboard/activity/{id}/edit', [ActivityController::class, 'edit'])->name('activity.edit');
     Route::put('dashboard/activity/{id}', [ActivityController::class, 'update'])->name('activity.update');
     Route::delete('dashboard/activity/{id}', [ActivityController::class, 'destroy'])->name('activity.destroy');
+});
+Route::middleware('auth', 'role:personal', 'verified')->group(function () {
+    Route::get('applay', [ActivityDetailController::class, 'applay'])->name('applay');
 });
 
 

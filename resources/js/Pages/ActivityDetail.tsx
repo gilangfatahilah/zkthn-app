@@ -13,9 +13,10 @@ import { format, parseISO } from "date-fns";
 import { id } from "date-fns/locale";
 import { Activity, PageProps, User } from "@/types";
 import HomeLayout from "@/Layouts/HomeLayout";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { router } from "@inertiajs/react";
 import { useToastStore } from "@/hooks/useToastStore";
+import { AlertModal } from "@/Components/AlertModal";
 
 interface ActivityDetailProps {
     auth: PageProps["auth"];
@@ -24,6 +25,8 @@ interface ActivityDetailProps {
 
 const ActivityDetailPage = ({ auth, activity }: ActivityDetailProps) => {
     const { setToast } = useToastStore();
+    const [open, setOpen] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
         console.log(auth.user);
@@ -62,7 +65,7 @@ const ActivityDetailPage = ({ auth, activity }: ActivityDetailProps) => {
         }
 
         if (user && !isDataComplete(user)) {
-            setToast("Data is not complete");
+            setToast("notComplete");
 
             router.visit("/profile");
 
@@ -72,12 +75,27 @@ const ActivityDetailPage = ({ auth, activity }: ActivityDetailProps) => {
         if (user && isDataComplete(user)) {
             // do something
 
+            setOpen(true);
+
             return;
         }
     };
 
+    const handleConfirm = () => {
+        // 
+    }
+
     return (
         <HomeLayout user={auth.user}>
+            <AlertModal
+                isOpen={open}
+                onConfirm={handleConfirm}
+                description="Apakah kamu ingin mendaftar sebagai relawan aktivitas ini ?"
+                loading={loading}
+                onClose={() => setOpen(false)}
+                variant="primary"
+            />
+
             <section className="max-w-6xl mx-auto py-12 md:py-20 space-y-6">
                 {/* Header Section */}
                 <div className="flex justify-between gap-8 items-start">
