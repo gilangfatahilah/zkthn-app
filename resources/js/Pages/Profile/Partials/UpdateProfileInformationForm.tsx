@@ -9,13 +9,14 @@ import {
 import { Button } from "@/Components/ui/button";
 import { Input } from "@/Components/ui/input";
 import { Label } from "@/Components/ui/label";
-import { useForm, usePage } from "@inertiajs/react";
+import { router, useForm, usePage } from "@inertiajs/react";
 import { Transition } from "@headlessui/react";
 import { FormEventHandler, useState } from "react";
 import { PageProps } from "@/types";
 import { DatePicker } from "@/Components/Calendar";
 import { toast } from "sonner";
 import { Textarea } from "@/Components/ui/textarea";
+import { useToastStore } from "@/hooks/useToastStore";
 
 export default function UpdateProfileInformation({
     mustVerifyEmail,
@@ -27,6 +28,8 @@ export default function UpdateProfileInformation({
     className?: string;
 }) {
     const user = usePage<PageProps>().props.auth.user;
+
+    const { message } = useToastStore();
 
     const { data, setData, post, errors, processing, recentlySuccessful } =
         useForm({
@@ -59,6 +62,12 @@ export default function UpdateProfileInformation({
         post(route("profile.update"), {
             data: formData,
             onSuccess: () => {
+                if (message === 'notComplete') {
+                    window.history.back();
+
+                    return;
+                }
+
                 toast.success('Berhasil memperbarui biodata diri');
             },
             onError: () => {
@@ -299,7 +308,7 @@ export default function UpdateProfileInformation({
                         leave="transition ease-in-out"
                         leaveTo="opacity-0"
                     >
-                        <p className="text-sm text-gray-600">Saved.</p>
+                        <p className="text-sm text-pretty">Saved.</p>
                     </Transition>
                 </CardFooter>
             </form>

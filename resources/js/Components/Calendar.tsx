@@ -9,6 +9,7 @@ import {
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
+import { formatDate } from "@/lib/formatter";
 
 interface DatePickerProps {
     value: Date;
@@ -30,7 +31,7 @@ export function DatePicker({ value, limit = false, onApply }: DatePickerProps) {
                     )}
                 >
                     <CalendarIcon className="mr-2 h-4 w-4" />
-                    {value ? format(value, "PPP") : <span>Pick a date</span>}
+                    {value ? formatDate(value) : <span>Pick a date</span>}
                 </Button>
             </PopoverTrigger>
             <PopoverContent align="start" className=" w-full p-0">

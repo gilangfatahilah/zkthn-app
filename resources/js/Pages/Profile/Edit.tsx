@@ -10,6 +10,7 @@ import { Heading } from "@/Components/Heading";
 import { useEffect } from "react";
 import { useToastStore } from "@/hooks/useToastStore";
 import { toast } from "sonner";
+import ChangeAccount from "./Partials/ChangeAccount";
 
 const breadcrumbItems = [
     { label: "Dashboard", href: "/dashboard" },
@@ -49,6 +50,12 @@ export default function Edit({
                     />
 
                     <UpdatePasswordForm />
+
+                    {
+                        auth.user.role === 'personal' && (
+                            <ChangeAccount />
+                        )
+                    }
 
                     <DeleteUserForm />
                 </div>
