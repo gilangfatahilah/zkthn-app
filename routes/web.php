@@ -29,6 +29,7 @@ Route::middleware('auth', 'role:administrator,organization', 'verified')->group(
     Route::delete('dashboard/user/{id}', [UserController::class, 'destroy'])->name('user.destroy');
 
     Route::post('/handleaccount', [UserController::class, 'handleaccount'])->name('handleaccount');
+    Route::post('/handleapplier', [UserController::class, 'handleapplier'])->name('handleapplier');
 
 
 

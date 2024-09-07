@@ -25,9 +25,9 @@ export default function Footer() {
                                 </Link>
                             </div>
                             <div className="text-gray-400">
-                                Lorem ipsum is placeholder text commonly used in
-                                the graphic, print, and publishing industries
-                                for previewing layouts and visual mockups.
+                                Jl. Matraman Raya No.134, Kb. Manggis, Kec.
+                                Matraman, Kota Jakarta Timur, Daerah Khusus
+                                Ibukota Jakarta 13150
                             </div>
                         </div>
 
