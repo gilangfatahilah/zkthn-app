@@ -71,7 +71,6 @@ class HomeController extends Controller
             'joined' => $alreadyRegistered
         ];
 
-        dd($data);
 
         return Inertia::render('ActivityDetail', $data);
     }

@@ -119,9 +119,6 @@ class ActivityController extends Controller
             'registrants' => $activityDetailModel->getRegistrants($id),
         ];
 
-        dd($data);
-
-
         return Inertia::render('Tables/Activity/ActivityDetail', $data);
     }
 

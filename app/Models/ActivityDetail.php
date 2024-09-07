@@ -20,7 +20,7 @@ class ActivityDetail extends Model
     public function getRegistrants($id)
     {
         $query = $this->join('users', 'users.id', '=', 'activity_detail.user_id')
-            ->select('users.*', 'activity_detail.*')
+            ->select('users.*', 'activity_detail.*', 'activity_detail.status as register_status')
             ->where('activity_id', $id)
             ->get();
 
