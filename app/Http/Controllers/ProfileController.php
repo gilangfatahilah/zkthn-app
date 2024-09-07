@@ -32,6 +32,7 @@ class ProfileController extends Controller
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
 
+        // dd($request->all());
         // Ambil pengguna yang sedang login
         $user = $request->user();
 

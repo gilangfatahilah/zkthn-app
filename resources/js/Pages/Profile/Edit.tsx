@@ -11,11 +11,25 @@ import { useEffect } from "react";
 import { useToastStore } from "@/hooks/useToastStore";
 import { toast } from "sonner";
 import ChangeAccount from "./Partials/ChangeAccount";
+import { Alert, AlertDescription, AlertTitle } from "@/Components/ui/alert";
+import { Clock9 } from "lucide-react";
 
 const breadcrumbItems = [
     { label: "Dashboard", href: "/dashboard" },
     { label: "Profile", href: "/profile" },
 ];
+
+const AlertInfo = ({ color, message, description }: { color: string, message: string, description: string }) => {
+    return (
+        <Alert className={`border-${color}-300`}>
+            <Clock9 className="h-4 w-4" />
+            <AlertTitle>{message}</AlertTitle>
+            <AlertDescription>
+                {description}
+            </AlertDescription>
+        </Alert>
+    )
+}
 
 export default function Edit({
     auth,
@@ -23,12 +37,23 @@ export default function Edit({
     status,
 }: PageProps<{ mustVerifyEmail: boolean; status?: string }>) {
     const { showToast, hideToast } = useToastStore();
+    const [showAlert, setShowAlert] = useState(false);
 
     useEffect(() => {
         if (showToast) {
             toast.error('Mohon lengkapi data pribadi anda !');
 
             hideToast();
+        }
+    }, []);
+
+    useEffect(() => {
+        const successAlertShown = localStorage.getItem('successAlertShown');
+        const errorAlertShown = localStorage.getItem('errorAlertShown');
+
+        if (auth.user.status === 2 && !successAlertShown) {
+            setShowAlert(true);
+            localStorage.setItem('successAlertShown', "true")
         }
     }, [])
 
@@ -43,6 +68,16 @@ export default function Edit({
                         title="Profil"
                         description="Kelola informasi pribadi anda di sini."
                     />
+
+                    {
+                        auth.user.status === 1 ? (
+                            <AlertInfo color="yellow" message="Menunggu Konfirmasi" description="Permintaan pergantian tipe akun anda sedang di proses." />
+                        ) : auth.user.status === 2 ? (
+                            <AlertInfo color="green" message="Berhasil" description="Tipe akun anda kini adalah Organisasi." />
+                        ) : (
+                            <AlertInfo color="red" message="Gagal" description="Permintaan pergantian tipe akun anda ditolak." />
+                        )
+                    }
 
                     <UpdateProfileInformationForm
                         mustVerifyEmail={mustVerifyEmail}

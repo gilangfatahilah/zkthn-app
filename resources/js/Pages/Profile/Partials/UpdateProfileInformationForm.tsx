@@ -6,6 +6,15 @@ import {
     CardContent,
     CardFooter,
 } from "@/Components/ui/card";
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from "@/Components/ui/select"
 import { Button } from "@/Components/ui/button";
 import { Input } from "@/Components/ui/input";
 import { Label } from "@/Components/ui/label";
@@ -37,6 +46,7 @@ export default function UpdateProfileInformation({
             email: user.email,
             role: user.role,
             dob: user.dob,
+            gender: user.gender,
             phone: user.phone,
             address: user.address,
             image: null,
@@ -222,6 +232,34 @@ export default function UpdateProfileInformation({
                             </p>
                         )}
                     </div>
+
+                    <div>
+                        <Label>Jenis Kelamin</Label>
+                        <Select
+                            value={data.gender}
+                            onValueChange={(value) => setData("gender", value)}
+                        >
+                            <SelectTrigger className="w-full mt-1">
+                                <SelectValue placeholder={data.gender || 'Pilih Jenis Kelamin'} />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectGroup>
+                                    <SelectLabel>Jenis Kelamin</SelectLabel>
+                                    <SelectItem value="Pria">Pria</SelectItem>
+                                    <SelectItem value="Wanita">Wanita</SelectItem>
+                                    <SelectItem value="Lainnya">Lainnya</SelectItem>
+                                </SelectGroup>
+                            </SelectContent>
+                        </Select>
+
+                        {errors.gender && (
+                            <p className="mt-2 text-sm text-red-600">
+                                {errors.gender}
+                            </p>
+                        )}
+                    </div>
+
+
                     <div>
                         <Label htmlFor="phone">Nomor Telepon</Label>
                         <Input

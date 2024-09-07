@@ -12,8 +12,10 @@ import { Input } from "@/Components/ui/input";
 import { ScrollArea } from "@/Components/ui/scroll-area";
 import { Textarea } from "@/Components/ui/textarea";
 import DashboardLayout from "@/Layouts/DashboardLayout";
-import { Activity, PageProps } from "@/types";
+import { Activity, PageProps, User } from "@/types";
 import { useEffect } from "react";
+import { DataTable } from "../User/data-table";
+import { columns } from "../User/columns";
 
 const breadcrumbItems = [
     { label: "Dashboard", href: "/dashboard" },
@@ -24,11 +26,12 @@ const breadcrumbItems = [
 const DashboardActivityDetail = ({
     auth,
     activity,
-}: PageProps<{ activity: Activity[] }>) => {
+    registrants
+}: PageProps<{ activity: Activity[], registrants: User[] }>) => {
     const data = activity[0];
 
     useEffect(() => {
-        console.log(data);
+        console.log(registrants);
     }, []);
 
     return (
@@ -41,7 +44,7 @@ const DashboardActivityDetail = ({
                         description="Informasi detail aktivitas."
                     />
 
-                    <div className="w-full mx-auto mt-6">
+                    <div className="w-full mx-auto mt-6 space-y-6">
                         {/* Card Container */}
                         <Card>
                             {/* Card Header */}
@@ -55,9 +58,9 @@ const DashboardActivityDetail = ({
                                 <CardTitle className="text-primary text-4xl font-bold">
                                     {data.title}
                                 </CardTitle>
-                                <CardDescription className="text-sm text-pretty">
-                                    Published by: {data.publised_name} |
-                                    Location: {data.location}
+                                <CardDescription className="w-full flex items-center justify-between text-base text-pretty">
+                                    <span>Penyelenggara : {data.publised_name} </span>
+                                    <span>Lokasi : {data.location} </span>
                                 </CardDescription>
                             </CardHeader>
 
@@ -166,6 +169,21 @@ const DashboardActivityDetail = ({
                                         {data.addtional_information}
                                     </Textarea>
                                 </div>
+                            </CardContent>
+                        </Card>
+
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>
+                                    Daftar Peserta
+                                </CardTitle>
+                                <CardDescription>
+                                    Informasi peserta untuk aktivitas "{data.title}"
+                                </CardDescription>
+                            </CardHeader>
+
+                            <CardContent>
+                                <DataTable columns={columns} data={registrants} />
                             </CardContent>
                         </Card>
                     </div>

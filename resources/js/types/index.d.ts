@@ -5,6 +5,7 @@ export interface User {
     email_verified_at?: string;
     image?: string | null;
     role: string;
+    status: number;
     dob: Date;
     phone: string;
     address: string;
