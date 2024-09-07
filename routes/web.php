@@ -33,7 +33,7 @@ Route::middleware('auth', 'role:administrator,organization', 'verified')->group(
     Route::post('dashboard/activity', [ActivityController::class, 'store'])->name('activity.store');
     Route::get('dashboard/activity{id}', [ActivityController::class, 'show'])->name('activity.show');
     Route::get('dashboard/activity/{id}/edit', [ActivityController::class, 'edit'])->name('activity.edit');
-    Route::patch('dashboard/activity/{id}', [ActivityController::class, 'update'])->name('activity.update');
+    Route::put('dashboard/activity/{id}', [ActivityController::class, 'update'])->name('activity.update');
     Route::delete('dashboard/activity/{id}', [ActivityController::class, 'destroy'])->name('activity.destroy');
 });
 
