@@ -101,6 +101,31 @@ export const columns: ColumnDef<User>[] = [
         },
     },
     {
+        accessorKey: "status",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() =>
+                        column.toggleSorting(column.getIsSorted() === "asc")
+                    }
+                >
+                    Status
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            );
+        },
+        cell: ({ row }) => {
+            const str = row.original.status === 1 ? 'Perlu Verifikasi' : 'Aktif';
+
+
+            if (str === 'Perlu Verifikasi') {
+                return <Badge className="bg-yellow-300">{str}</Badge>;
+            }
+            return <Badge>{str}</Badge>;
+        },
+    },
+    {
         id: "actions",
         header: "Opsi",
         cell: ({ row }) => <CellAction data={row.original} />,
