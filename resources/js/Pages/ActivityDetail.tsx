@@ -89,10 +89,13 @@ const ActivityDetailPage = ({ auth, activity }: ActivityDetailProps) => {
             setLoading(true);
 
             router.post("/apply", { id: activityId });
+
+            toast.success("Berhasil, anda telah mendaftar aktivitas ini!");
         } catch (error) {
-            //
+            toast.error("Terjadi kesalahan, silahkan coba lagi");
         } finally {
             setLoading(false);
+            setOpen(false);
         }
     };
 
