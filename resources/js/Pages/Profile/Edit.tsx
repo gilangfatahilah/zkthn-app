@@ -7,7 +7,7 @@ import { PageProps } from "@/types";
 import { ScrollArea } from "@/Components/ui/scroll-area";
 import Breadcrumbs from "@/Components/Breadcrumb";
 import { Heading } from "@/Components/Heading";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useToastStore } from "@/hooks/useToastStore";
 import { toast } from "sonner";
 import ChangeAccount from "./Partials/ChangeAccount";
@@ -54,6 +54,9 @@ export default function Edit({
         if (auth.user.status === 2 && !successAlertShown) {
             setShowAlert(true);
             localStorage.setItem('successAlertShown', "true")
+        } else if (auth.user.status === 3 && !errorAlertShown) {
+            setShowAlert(true);
+            localStorage.setItem('errorAlertShown', "true")
         }
     }, [])
 
@@ -70,11 +73,19 @@ export default function Edit({
                     />
 
                     {
-                        auth.user.status === 1 ? (
-                            <AlertInfo color="yellow" message="Menunggu Konfirmasi" description="Permintaan pergantian tipe akun anda sedang di proses." />
-                        ) : auth.user.status === 2 ? (
+                        auth.user.status === 1 && (
+                            <AlertInfo color="yellow" message="Menunggu Konfirmasi" description="Permintaan pergantian tipe akun anda sedang di verifikasi." />
+                        )
+                    }
+
+                    {
+                        showAlert && auth.user.status === 2 && (
                             <AlertInfo color="green" message="Berhasil" description="Tipe akun anda kini adalah Organisasi." />
-                        ) : (
+                        )
+                    }
+
+                    {
+                        showAlert && auth.user.status === 3 && (
                             <AlertInfo color="red" message="Gagal" description="Permintaan pergantian tipe akun anda ditolak." />
                         )
                     }
