@@ -14,9 +14,10 @@ import { Input } from "@/Components/ui/input";
 import { Label } from "@/Components/ui/label";
 import { ScrollArea } from "@/Components/ui/scroll-area";
 import { Textarea } from "@/Components/ui/textarea";
+import { useToastStore } from "@/hooks/useToastStore";
 import DashboardLayout from "@/Layouts/DashboardLayout";
 import { Activity, PageProps } from "@/types";
-import { useForm } from "@inertiajs/react";
+import { router, useForm } from "@inertiajs/react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -29,6 +30,8 @@ const AddActivity = ({
         { label: "Activity", href: "/dashboard/activity" },
         { label: activity?.[0] ? "Edit" : "Create" },
     ];
+
+    const { setToast } = useToastStore();
 
     const { data, setData, put, post, processing, errors } = useForm({
         title: activity?.[0]?.title || "",
@@ -44,7 +47,7 @@ const AddActivity = ({
         requirement: activity?.[0]?.requirement || "",
         jobdesk: activity?.[0]?.jobdesk || "",
         addtional_information: activity?.[0]?.addtional_information || "",
-        banner: null, // File gambar default null
+        banner: null,
     });
 
     // Mengubah nilai input teks dan textarea
@@ -70,9 +73,11 @@ const AddActivity = ({
             put(route("activity.update", activity[0].id), {
                 data: formData,
                 onSuccess: () => {
-                    toast.success("Activity updated successfully");
+                    setToast('diperbarui');
+                    router.visit('/dashboard/activity');
                 },
-                onError: () => {
+                onError: (e) => {
+                    console.log(e);
                     toast.error("Failed to update activity");
                 },
                 preserveScroll: true,
@@ -81,8 +86,8 @@ const AddActivity = ({
             post(route("activity.store"), {
                 data: formData,
                 onSuccess: () => {
-                    toast.success("Activity created successfully");
-                    window.location.href = "/dashboard/activity";
+                    setToast('ditambahkan');
+                    router.visit('/dashboard/activity');
                 },
                 onError: () => {
                     toast.error("Failed to create activity");
@@ -93,7 +98,7 @@ const AddActivity = ({
     };
 
     const [file, setFile] = useState(null);
-    const [preview, setPreview] = useState(null);
+    const [preview, setPreview] = useState(activity?.[0]?.banner ? `/images/${activity[0].banner}` : null);
 
     // Fungsi untuk menangani perubahan file
     const handleImgChange = (e: any) => {

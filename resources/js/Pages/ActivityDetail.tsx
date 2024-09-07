@@ -11,9 +11,11 @@ import { FaCalendarAlt, FaMapMarkerAlt } from "react-icons/fa";
 import { MdEventAvailable } from "react-icons/md";
 import { format, parseISO } from "date-fns";
 import { id } from "date-fns/locale";
-import { Activity, PageProps } from "@/types";
+import { Activity, PageProps, User } from "@/types";
 import HomeLayout from "@/Layouts/HomeLayout";
 import { useEffect } from "react";
+import { router } from "@inertiajs/react";
+import { useToastStore } from "@/hooks/useToastStore";
 
 interface ActivityDetailProps {
     auth: PageProps["auth"];
@@ -21,14 +23,55 @@ interface ActivityDetailProps {
 }
 
 const ActivityDetailPage = ({ auth, activity }: ActivityDetailProps) => {
+    const { setToast } = useToastStore();
+
     useEffect(() => {
-        console.log(activity);
+        console.log(auth.user);
     }, []);
 
     const formatDate = (date: any) => {
         const parsedISO = parseISO(date);
         return format(parsedISO, "dd MMMM yyyy", { locale: id });
     };
+
+    const onApplyActivity = () => {
+        const isDataComplete = (data: any) => {
+            for (const key in data) {
+                if (data.hasOwnProperty(key)) {
+                    if (key === 'image') {
+                        continue;
+                    }
+                    if (data[key] === null || data[key] === undefined || data[key] === '') {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        const user = auth.user;
+
+        if (user === null) {
+            router.visit('/login')
+
+            return;
+        }
+
+        if (user && !isDataComplete(user)) {
+            setToast('Data is not complete');
+
+            router.visit('/profile')
+
+            return;
+        }
+
+        if (user && isDataComplete(user)) {
+            // do something
+
+            return;
+        }
+
+    }
 
     return (
         <HomeLayout user={auth.user}>
@@ -39,7 +82,7 @@ const ActivityDetailPage = ({ auth, activity }: ActivityDetailProps) => {
                         {/* Image */}
 
                         <img
-                            src="https://picsum.photos/200/300" // ganti dengan activity.banner jika tersedia
+                            src="https://picsum.photos/200/300"
                             alt={activity[0].title}
                             className="w-full h-auto object-cover rounded-lg max-h-[400px]"
                         />
@@ -115,7 +158,7 @@ const ActivityDetailPage = ({ auth, activity }: ActivityDetailProps) => {
 
                         {/* Footer */}
                         <CardFooter className="flex flex-col space-y-4">
-                            <Button className="bg-primary w-full">
+                            <Button onClick={onApplyActivity} className="bg-primary w-full">
                                 Jadi Relawan
                             </Button>
                             {/* <Button variant="outline" className="w-full">Kontak Organisasi</Button> */}
