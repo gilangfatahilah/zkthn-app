@@ -38,7 +38,7 @@ export default function Register() {
 
                 <div className="hidden bg-muted lg:block">
                     <img
-                        src="/placeholder.svg"
+                        src="/images/profil.jpeg"
                         alt="Image"
                         width="1920"
                         height="1080"

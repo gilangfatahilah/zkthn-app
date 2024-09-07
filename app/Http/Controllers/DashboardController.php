@@ -26,11 +26,20 @@ class DashboardController extends Controller
             $data = [
                 'activity' => $activityModel->activityPublised($user->id),
             ];
-        } else {
+        } else if ($user->role == 'administrator') {
             $data = [
                 'activity' => $activityModel->activityJoin()
             ];
+        } else {
+            $data = [
+                'activity' => Activity::join('users', 'users.id', '=', 'activity.publised_by')
+                    ->join('activity_detail', 'activity_detail.activity_id', '=', 'activity.id')
+                    ->select('activity.*', 'users.name as publised_name', 'activity_detail.status as status_daftar')
+                    ->where('activity_detail.user_id', '=', $user->id) // Sesuaikan dengan user ID yang ingin dicari
+                    ->get()
+            ];
         }
+        dd($data);
 
         return Inertia::render('Dashboard', $data);
     }
