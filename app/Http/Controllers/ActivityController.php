@@ -17,10 +17,20 @@ class ActivityController extends Controller
     public function index()
     {
         $activityModel = new Activity();
+        $user = Auth::user();
 
-        $data = [
-            'activity' => $activityModel->activityJoin()
-        ];
+        // dd($user->name);
+
+        // jika role nya organisasi, maka tampilkan aktifitas yang sesuai dengan organisasi tersebut 
+        if ($user->role == 'organization') {
+            $data = [
+                'activity' => $activityModel->activityPublised($user->id),
+            ];
+        } else {
+            $data = [
+                'activity' => $activityModel->activityJoin()
+            ];
+        }
 
         return Inertia::render('Tables/Activity/ActivityTable', $data);
     }
@@ -40,18 +50,18 @@ class ActivityController extends Controller
     {
 
         $validated = $request->validate([
-            'title' => 'required',
-            'banner' => 'required',
-            'location' => 'required',
-            'category' => 'required',
-            'schedule' => 'required',
-            'deadline' => 'required',
-            'description' => 'required',
-            'max' => 'required',
-            'jobdesk' => 'required',
-            'requirement' => 'required',
-            'domicile' => 'required',
-            'addtional_information' => 'required',
+            'title' => 'required|string|max:255',
+            'banner' => 'required|file|mimes:jpeg,png,jpg,pdf|max:2048', // file boleh kosong (nullable)
+            'location' => 'required|string|max:255',
+            'category' => 'required|array',
+            'schedule' => 'required|date',
+            'deadline' => 'required|date',
+            'description' => 'required|string',
+            'max' => 'required|integer',
+            'jobdesk' => 'required|string',
+            'requirement' => 'required|string',
+            'domicile' => 'required|string|max:255',
+            'addtional_information' => 'required|string',
         ]);
         $user = Auth::user();
         if ($request->hasFile('banner')) {
@@ -102,8 +112,11 @@ class ActivityController extends Controller
     {
         $activityModel = new Activity();
         $activityDetailModel = new ActivityDetail();
+        $activityDetailModel = new ActivityDetail();
 
         $data = [
+            'activity' => $activityModel->activityJoin($id),
+            'registrants' => $activityDetailModel->getRegistrants($id),
             'activity' => $activityModel->activityJoin($id),
             'registrants' => $activityDetailModel->getRegistrants($id),
         ];
@@ -130,9 +143,71 @@ class ActivityController extends Controller
     /**
      * Update the specified resource in storage.
      */
+
     public function update(Request $request, string $id)
     {
-        //
+        $user = Auth::user();
+
+        // Validasi input
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'banner' => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:2048', // file boleh kosong (nullable)
+            'location' => 'required|string|max:255',
+            'category' => 'required|array',
+            'schedule' => 'required|date',
+            'deadline' => 'required|date',
+            'description' => 'required|string',
+            'max' => 'required|integer',
+            'jobdesk' => 'required|string',
+            'requirement' => 'required|string',
+            'domicile' => 'required|string|max:255',
+            'addtional_information' => 'required|string',
+        ]);
+
+        // Cari data activity berdasarkan ID
+        $activity = Activity::findOrFail($id);
+
+        // Jika ada file baru yang diunggah
+        if ($request->hasFile('banner')) {
+            $file = $request->file('banner');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+
+            // Tentukan path tujuan di folder public/images
+            $destinationPath = public_path('images');
+
+
+
+            // Pindahkan file baru ke folder public/images
+            $file->move($destinationPath, $fileName);
+
+            // Hapus file lama jika ada
+            if ($activity->banner && file_exists(public_path('images/' . $activity->banner))) {
+                unlink(public_path('images/' . $activity->banner));
+            }
+
+            // Update nama file baru ke database
+            $activity->banner = $fileName;
+        }
+
+        // Simpan data lain ke database
+        $activity->title = $validated['title'];
+        $activity->location = $validated['location'];
+        $activity->category = json_encode($validated['category']); // Ubah menjadi JSON
+        $activity->schedule = $validated['schedule'];
+        $activity->deadline = $validated['deadline'];
+        $activity->description = $validated['description'];
+        $activity->max = $validated['max'];
+        $activity->jobdesk = $validated['jobdesk'];
+        $activity->requirement = $validated['requirement'];
+        $activity->domicile = $validated['domicile'];
+        $activity->addtional_information = $validated['addtional_information'];
+        $activity->publised_by = $request->user()->id; // User yang memperbarui
+
+        // Simpan perubahan ke database
+        $activity->save();
+
+        // Redirect atau beri respons sukses
+        return redirect()->back()->with('success', 'Data dan file berhasil diperbarui.');
     }
 
     /**
