@@ -35,8 +35,6 @@ const ActivityDetailPage = ({ auth, activity }: ActivityDetailProps) => {
         console.log(auth.user);
     }, []);
 
-    const { post } = useForm();
-
     const formatDate = (date: any) => {
         const parsedISO = parseISO(date);
         return format(parsedISO, "dd MMMM yyyy", { locale: id });
@@ -90,11 +88,7 @@ const ActivityDetailPage = ({ auth, activity }: ActivityDetailProps) => {
         try {
             setLoading(true);
 
-            post(route('apply', activityId), {
-                onSuccess: () => {
-                    toast.success('Berhasil, Kamu telah mendaftar ke aktivitas.')
-                }
-            })
+            router.post('/apply', { id: activityId })
         } catch (error) {
             // 
         } finally {
