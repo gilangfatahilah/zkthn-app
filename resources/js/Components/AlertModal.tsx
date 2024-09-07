@@ -9,6 +9,7 @@ interface AlertModalProps {
   onConfirm: () => (void | Promise<void>);
   loading: boolean;
   description?: string;
+  title?: string;
   variant?: 'danger' | 'primary';
 }
 
@@ -18,6 +19,7 @@ export const AlertModal: React.FC<AlertModalProps> = ({
   onConfirm,
   loading,
   description,
+  title = 'Apakah anda yakin?',
   variant = 'danger',
 }) => {
   const [isMounted, setIsMounted] = useState(false);
@@ -32,7 +34,7 @@ export const AlertModal: React.FC<AlertModalProps> = ({
 
   return (
     <Modal
-      title="Are you sure?"
+      title={title}
       description={description ?? "This action cannot be undone."}
       isOpen={isOpen}
       onClose={onClose}
