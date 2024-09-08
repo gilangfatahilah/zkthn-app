@@ -40,6 +40,7 @@ export default function UserDetail({ user, isOpen, onClose }: UserDetailProps) {
 
         user.register_status === 1 ? router.post('/handleapplier', body) : router.post('/handleaccount', body);
 
+        window.location.reload();
         toast.success('Berhasil mengkonfirmasi user')
         setOpen(false);
     }

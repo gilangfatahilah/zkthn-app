@@ -17,6 +17,7 @@ class DashboardController extends Controller
     {
 
         $activityModel = new Activity();
+        $userModel = new User();
         $user = Auth::user();
 
         // dd($user->name);
@@ -28,7 +29,8 @@ class DashboardController extends Controller
             ];
         } else if ($user->role == 'administrator') {
             $data = [
-                'activity' => $activityModel->activityJoin()
+                'activity' => $activityModel->activityJoin(),
+                'users' => $userModel->count(),
             ];
         } else {
             $data = [
