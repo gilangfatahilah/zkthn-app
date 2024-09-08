@@ -24,6 +24,7 @@ export interface Activity {
     deadline: Date;
     description: string;
     domicile: string;
+    status_daftar?: number;
     jobdesk: string;
     location: string;
     max: number;
