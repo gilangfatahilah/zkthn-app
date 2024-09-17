@@ -69,7 +69,6 @@ class ActivityDetailController extends Controller
         $detail = ActivityDetail::where('id', $request->id)->first();
 
 
-
         if ($request->status == 2) {
             $detail->status = $request->status; // Ambil status dari request
         }
