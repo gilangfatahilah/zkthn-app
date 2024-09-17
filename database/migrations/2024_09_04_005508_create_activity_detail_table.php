@@ -16,6 +16,7 @@ return new class extends Migration
             $table->integer('activity_id');
             $table->integer('user_id');
             $table->integer('status')->default(0);
+            $table->text('note')->nullable();
             $table->timestamps();
         });
     }

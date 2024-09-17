@@ -15,6 +15,7 @@ class ActivityDetail extends Model
         'activity_id',
         'user_id',
         'status',
+        'note'
     ];
 
     public function getRegistrants($id)

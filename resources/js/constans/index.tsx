@@ -7,23 +7,23 @@ export const features = [
     {
         id: 1,
         icon: <FaHandHoldingHeart className="w-12 h-12 text-white/90" />,
-        title: "Jadi Relawan",
+        title: "High Quality",
         description:
-            "Bergabunglah sebagai relawan dan berikan kontribusi terbaik dengan dukungan teknologi mutakhir dan fitur yang memudahkan.",
+            "Experience the best quality service with cutting-edge technology and top-notch features.",
     },
     {
         id: 2,
         icon: <GiThreeFriends className="w-12 h-12 text-white/90" />,
-        title: "Mencari Relawan",
+        title: "Responsive Design",
         description:
-            "Temukan relawan yang sesuai dengan kebutuhan organisasi Anda, dengan desain platform yang responsif untuk akses mudah di berbagai perangkat.",
+            "Our designs are fully responsive, ensuring seamless user experience across all devices.",
     },
     {
         id: 3,
         icon: <FaHandsHelping className="w-12 h-12 text-white/90" />,
-        title: "Kolaborasi Organisasi",
+        title: "Clean Code",
         description:
-            "Bekerja sama dengan berbagai organisasi melalui platform yang terstruktur, bersih, dan mudah dipelihara untuk memperluas dampak sosial.",
+            "We write clean, well-documented code to ensure maintainability and ease of use.",
     },
 ];
 
@@ -48,11 +48,9 @@ export const navItems: NavItem[] = [
     },
 ];
 
-export const getNavItem = (
-    type: "personal" | "organization" | "administrator"
-): NavItem[] => {
+export const getNavItem = (type: 'personal' | 'organization' | 'administrator'): NavItem[] => {
     switch (type) {
-        case "personal":
+        case 'personal':
             return [
                 {
                     title: "Beranda",
@@ -66,8 +64,8 @@ export const getNavItem = (
                     icon: "calendar",
                     label: "Activity",
                 },
-            ];
-        case "organization":
+            ]
+        case 'organization':
             return [
                 {
                     title: "Beranda",
@@ -81,8 +79,8 @@ export const getNavItem = (
                     icon: "calendar",
                     label: "Activity",
                 },
-            ];
-        case "administrator":
+            ]
+        case 'administrator':
             return [
                 {
                     title: "Beranda",
@@ -102,6 +100,6 @@ export const getNavItem = (
                     icon: "calendar",
                     label: "Activity",
                 },
-            ];
+            ]
     }
-};
+}

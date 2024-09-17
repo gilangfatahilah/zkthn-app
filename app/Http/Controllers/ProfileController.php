@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
 
+
+
+
+
 class ProfileController extends Controller
 {
     /**
@@ -32,7 +36,6 @@ class ProfileController extends Controller
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
 
-        // dd($request->all());
         // Ambil pengguna yang sedang login
         $user = $request->user();
 
@@ -56,9 +59,19 @@ class ProfileController extends Controller
             $fileName = time() . '_' . $file->getClientOriginalName();
             $destinationPath = public_path('file');
 
+            // Pastikan folder tujuan ada
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true); // Membuat folder jika tidak ada
+            }
+
+            // Pindahkan file CV ke direktori 'files'
             $file->move($destinationPath, $fileName);
 
-            $user->cv = $fileName; // Simpan nama file di database
+            $user->cv = $fileName;
+
+
+            // Path lengkap ke file yang sudah dipindahkan
+            $filePath = $destinationPath . DIRECTORY_SEPARATOR . $fileName;
         }
 
         // Simpan data pengguna
