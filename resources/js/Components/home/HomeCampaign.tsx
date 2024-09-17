@@ -6,7 +6,7 @@ import { MdDateRange } from "react-icons/md";
 import { FaLocationDot } from "react-icons/fa6";
 import { newActivity } from "@/types";
 import { format, parseISO } from "date-fns";
-import { id } from "date-fns/locale"; // Import locale ID for Indonesian
+import { id } from "date-fns/locale";
 
 interface NewActivityProps {
     newActivity: newActivity[];
@@ -27,6 +27,10 @@ const truncateText = (text: string, maxWords: number) => {
 };
 
 const HomeCampaign = ({ newActivity }: NewActivityProps) => {
+    // useEffect(() => {
+    //     console.log(JSON.parse(newActivity[0].category));
+    // }, [])
+
     return (
         <section>
             <div className="max-w-6xl mx-auto py-12 md:py-20">
@@ -39,7 +43,7 @@ const HomeCampaign = ({ newActivity }: NewActivityProps) => {
                             Aktivitas membutuhkan bantuan.
                         </h2>
                         <p className="text-xl text-gray-400">
-                            Setiap kontribusi anda sangatlah membantu.
+                            Ciptakan perubahan dengan langkah sederhana.
                         </p>
                     </div>
                 </header>
