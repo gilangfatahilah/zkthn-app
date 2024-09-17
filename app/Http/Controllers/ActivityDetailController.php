@@ -27,6 +27,7 @@ class ActivityDetailController extends Controller
         // mengambil data 
         $userCV = User::where('id', $user->id)->select('cv')->first();
         $persyaratan = Activity::where('id', $request->id)->select('requirement')->first();
+
         $destinationPath = public_path('file');
         $filePath = $destinationPath . DIRECTORY_SEPARATOR . $userCV['cv'];
 
