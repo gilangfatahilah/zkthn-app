@@ -37,8 +37,10 @@ const HomeCampaign = ({ newActivity }: NewActivityProps) => {
                 <header className="pb-12 md:pb-20">
                     <div className="max-w-3xl mx-auto text-center">
                         <h2 className="text-4xl font-bold mb-4">
-                            The majority our customers do not understand their
-                            workflows.
+                            {newActivity.length > 6
+                                ? `${newActivity.length}+`
+                                : newActivity.length}{" "}
+                            Aktivitas membutuhkan bantuan.
                         </h2>
                         <p className="text-xl text-gray-400">
                             Ciptakan perubahan dengan langkah sederhana.
