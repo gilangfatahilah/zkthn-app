@@ -54,12 +54,13 @@ export default function UserDetail({ user, isOpen, onClose }: UserDetailProps) {
 
         const body = {
             id: user.register_status === 1 ? activityId : user.id,
+            userId: user.id,
             status: actionType === 'accept' ? 2 : 3
         }
 
         user.register_status === 1 ? router.post('/handleapplier', body) : router.post('/handleaccount', body);
 
-        window.location.reload();
+        // window.location.reload();
         toast.success('Berhasil mengkonfirmasi user')
         setOpen(false);
     }
