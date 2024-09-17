@@ -12,6 +12,7 @@ export interface User {
     register_status: number;
     gender: string;
     cv: string
+    note?: string
 }
 
 export interface Activity {
@@ -33,6 +34,7 @@ export interface Activity {
     schedule: Date;
     addtional_information?: string;
     publised_name: string;
+    publised_image?: string;
 }
 
 export interface newActivity {

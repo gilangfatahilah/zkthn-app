@@ -5,7 +5,6 @@ import {
     CardContent,
     CardFooter,
     CardHeader,
-    CardTitle,
 } from "@/Components/ui/card";
 import { FaCalendarAlt, FaMapMarkerAlt } from "react-icons/fa";
 import { MdEventAvailable } from "react-icons/md";
@@ -14,7 +13,7 @@ import { id } from "date-fns/locale";
 import { Activity, PageProps } from "@/types";
 import HomeLayout from "@/Layouts/HomeLayout";
 import { useState } from "react";
-import { router, useForm } from "@inertiajs/react";
+import { router } from "@inertiajs/react";
 import { useToastStore } from "@/hooks/useToastStore";
 import { AlertModal } from "@/Components/AlertModal";
 import { toast } from "sonner";
@@ -129,9 +128,8 @@ const ActivityDetailPage = ({
                             <div className="flex  gap-2 items-center">
                                 <Avatar className="border border-slate">
                                     <AvatarImage
-                                        src={`/images/${
-                                            activity[0].publised_image as string
-                                        }`}
+                                        src={`/images/${activity[0].publised_image as string
+                                            }`}
                                         alt={activity[0].publised_name}
                                     />
                                     <AvatarFallback>

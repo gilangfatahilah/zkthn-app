@@ -3,15 +3,21 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/Components/ui/avatar";
 import {
     Dialog,
     DialogContent,
-    DialogFooter,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
-} from "@/Components/ui/dialog";
+} //@ts-ignore
+    from "@/Components/ui/dialog";
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from "@/Components/ui/accordion"
 import { User } from "@/types";
 import { formatDate } from "@/lib/formatter";
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 import { Clock9 } from "lucide-react";
+import { SiGooglegemini } from "react-icons/si";
 import { AlertModal } from "./AlertModal";
 import { useState } from "react";
 import { router } from "@inertiajs/react";
@@ -24,6 +30,19 @@ interface UserDetailProps {
     onClose: () => void;
 }
 
+const formatSummary = (str: string): React.ReactNode => {
+    const filteredString = str.replaceAll('*', '');
+
+    const firstSentence = filteredString.split('.')[0] + '.';
+    const restOfText = filteredString.substring(firstSentence.length);
+
+    return (
+        <>
+            <strong>{firstSentence}</strong>
+            {restOfText}
+        </>
+    )
+}
 
 export default function UserDetail({ user, isOpen, onClose }: UserDetailProps) {
     const [open, setOpen] = useState<boolean>(false);
@@ -145,18 +164,37 @@ export default function UserDetail({ user, isOpen, onClose }: UserDetailProps) {
 
                                 {
                                     (user.status === 1 || user.register_status === 1) && (
+                                        <>
+                                            <div className="w-full col-span-2">
+                                                <Accordion type="single" collapsible>
+                                                    <AccordionItem value="item-1">
+                                                        <AccordionTrigger>
+                                                            <span className="flex gap-2 items-center">
+                                                                <SiGooglegemini />
+                                                                Rekomendasi oleh Google Gemini
+                                                            </span>
+                                                        </AccordionTrigger>
+                                                        <AccordionContent>
+                                                            {
+                                                                formatSummary(user.note ?? 'Tidak ada Rekomendasi.')
+                                                            }
+                                                        </AccordionContent>
+                                                    </AccordionItem>
+                                                </Accordion>
+                                            </div>
 
-                                        <div className="col-span-2 flex-col gap-2 space-y-2">
-                                            <Button className="w-full" onClick={() => {
-                                                setActionType('accept');
-                                                setOpen(true);
-                                            }}>Verifikasi</Button>
-                                            <Button className="w-full" variant={'destructive'}
-                                                onClick={() => {
-                                                    setActionType('decline');
+                                            <div className="col-span-2 flex-col gap-2 space-y-2">
+                                                <Button className="w-full" onClick={() => {
+                                                    setActionType('accept');
                                                     setOpen(true);
-                                                }}>Tolak</Button>
-                                        </div>
+                                                }}>Verifikasi</Button>
+                                                <Button className="w-full" variant={'destructive'}
+                                                    onClick={() => {
+                                                        setActionType('decline');
+                                                        setOpen(true);
+                                                    }}>Tolak</Button>
+                                            </div>
+                                        </>
                                     )
                                 }
                             </div>

@@ -13,16 +13,20 @@ import { User } from '@/types';
 import UserDetail from '@/Components/UserDetail';
 import { useForm } from '@inertiajs/react';
 import { toast } from 'sonner';
+import { Badge } from '@/Components/ui/badge';
 
 interface CellActionProps {
   data: User;
+  fromActivity?: boolean;
+  activityLabel?: string;
 }
 
-export const CellAction: React.FC<CellActionProps> = ({ data }: CellActionProps) => {
+export const CellAction: React.FC<CellActionProps> = ({ data, fromActivity = false, activityLabel = 'Perlu Verifikasi' }: CellActionProps) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [openDetail, setOpenDetail] = useState(false);
 
+  const badgeSeverity = activityLabel === 'Perlu Verifikasi' ? 'warning' : activityLabel === 'Diterima' ? 'default' : 'destructive'
   const { delete: deleteUser } = useForm();
 
   const onConfirm = async () => {
@@ -60,25 +64,34 @@ export const CellAction: React.FC<CellActionProps> = ({ data }: CellActionProps)
 
       <UserDetail user={data} isOpen={openDetail} onClose={() => setOpenDetail(false)} />
 
-      <DropdownMenu modal={false}>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="h-8 w-8 p-0">
-            <span className="sr-only">Open menu</span>
-            <MoreHorizontal className="h-4 w-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+      {
+        fromActivity ? (
+          <Badge className='cursor-pointer' variant={badgeSeverity} onClick={() => setOpenDetail(true)}>
+            {activityLabel}
+          </Badge>
+        ) :
+          (
+            <DropdownMenu modal={false}>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="h-8 w-8 p-0">
+                  <span className="sr-only">Open menu</span>
+                  <MoreHorizontal className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-          <DropdownMenuItem onClick={() => setOpenDetail(true)}>
-            <Edit className="mr-2 h-4 w-4" /> Detail
-          </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setOpenDetail(true)}>
+                  <Edit className="mr-2 h-4 w-4" /> Detail
+                </DropdownMenuItem>
 
-          <DropdownMenuItem className='text-red-600' onClick={() => setOpen(true)}>
-            <Trash className="mr-2 h-4 w-4" /> Delete
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+                <DropdownMenuItem className='text-red-600' onClick={() => setOpen(true)}>
+                  <Trash className="mr-2 h-4 w-4" /> Delete
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )
+      }
     </>
   );
 };

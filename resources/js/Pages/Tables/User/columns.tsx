@@ -206,57 +206,13 @@ export const activityColumns: ColumnDef<User>[] = [
         },
     },
     {
-        accessorKey: "role",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() =>
-                        column.toggleSorting(column.getIsSorted() === "asc")
-                    }
-                >
-                    Tipe Akun
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            );
-        },
-        cell: ({ row }) => {
-            const str = row.original.role;
-
-            return <Badge>{str.charAt(0).toUpperCase() + str.slice(1)}</Badge>;
-        },
-    },
-    {
-        accessorKey: "status",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() =>
-                        column.toggleSorting(column.getIsSorted() === "asc")
-                    }
-                >
-                    Status
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            );
-        },
+        id: "actions",
+        header: "Status",
         cell: ({ row }) => {
             const status = row.original.register_status;
             const str = status === 1 ? 'Perlu Verifikasi' : status === 2 ? 'Diterima' : 'Ditolak';
 
-
-            if (str === 'Perlu Verifikasi') {
-                return <Badge className="bg-yellow-300">{str}</Badge>;
-            } else if (str === 'Ditolak') {
-                return <Badge className="bg-destructive">{str}</Badge>;
-            }
-            return <Badge>{str}</Badge>;
+            return <CellAction data={row.original} activityLabel={str} fromActivity />
         },
-    },
-    {
-        id: "actions",
-        header: "Opsi",
-        cell: ({ row }) => <CellAction data={row.original} />,
     },
 ];
