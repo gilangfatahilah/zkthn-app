@@ -10,10 +10,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Smalot\PdfParser\Parser;
+use Gemini\Laravel\Facades\Gemini;
 
 
 
 use Inertia\Inertia;
+
+use function Laravel\Prompts\text;
 
 class HomeController extends Controller
 {
@@ -71,7 +75,52 @@ class HomeController extends Controller
             'joined' => $alreadyRegistered
         ];
 
-
         return Inertia::render('ActivityDetail', $data);
+    }
+    public function recomActivity()
+    {
+        // Mengambil category
+        $allCategories = Activity::select('category')->get()->map(function ($activity) {
+            return json_decode($activity->category, true);
+        })->toArray();
+
+        $mergedCategories = array_merge(...$allCategories);
+
+        $uniqueCategories = array_unique($mergedCategories);
+
+        // Tambahkan kutip di setiap elemen
+        $quotedCategories = array_map(function ($item) {
+            return '"' . $item . '"';
+        }, $uniqueCategories);
+
+        // Format hasil sebagai string dengan format ["1", "2", "3", ...]
+        $category = '[' . implode(', ', $quotedCategories) . ']';
+
+        // extrak cv
+        $user = Auth::user();
+
+        // mengambil data 
+        $userCV = User::where('id', $user->id)->select('cv')->first();
+
+        $destinationPath = public_path('file');
+        $filePath = $destinationPath . DIRECTORY_SEPARATOR . $userCV['cv'];
+
+        $parser = new Parser();
+        $pdf = $parser->parseFile($filePath);
+        $text = $pdf->getText();  // Ekstrak teks dari file PDF
+
+        try {
+            // Mendapatkan API key dari konfigurasi
+            $prompt = "Berdasarkan CV berikut: " . $text . "\n\n" .
+                "Dan array kategori ini  :" . $category . "\n\n" .
+                "Berikan array cateory yang cocok dengan cv berikut";
+            $result = Gemini::geminiPro()->generateContent($prompt);
+            // $user->cv_review = $result;
+            // Menampilkan hasil untuk debugging
+        } catch (\Exception $e) {
+            dd("Error: " . $e->getMessage());
+        }
+
+        return response()->json($result->text());
     }
 }

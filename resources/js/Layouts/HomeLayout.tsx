@@ -8,7 +8,7 @@ import { PropsWithChildren, ReactNode } from 'react';
 export default function HomeLayout({ user, children }: PropsWithChildren<{ user: User, }>) {
     return (
         <ThemeProvider defaultTheme="light" storageKey="theme">
-            <Head title="My App" />
+            <Head title="Home" />
             <Navbar user={user} />
             {children}
             <Footer />

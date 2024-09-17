@@ -4,21 +4,18 @@ import { Button } from "@/Components/ui/button";
 import { Badge } from "./ui/badge";
 import { MdDateRange } from "react-icons/md";
 import { FaLocationDot } from "react-icons/fa6";
-import { Activity } from "@/types";
+import { Activity, User } from "@/types";
 import { useState } from "react";
 import { format, parseISO } from "date-fns";
 import { id } from "date-fns/locale";
 import { Input } from "@/Components/ui/input";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/Components/ui/select";
+import { MultiSelect } from "./MultiSelect"; // Import MultiSelect component
+import { SiGooglegemini } from "react-icons/si";
+import { Skeleton } from "./ui/skeleton";
 
 interface ActivityProps {
     activities: Activity[];
+    user: User;
 }
 
 const ITEMS_PER_PAGE = 12;
@@ -36,33 +33,37 @@ const truncateText = (text: string, maxWords: number) => {
     return text;
 };
 
-const ActivityCard = ({ activities }: ActivityProps) => {
-    const [searchTerm, setSearchTerm] = useState(""); // State untuk search
-    const [selectedCategory, setSelectedCategory] = useState(""); // State untuk filter kategori
-    const [currentPage, setCurrentPage] = useState(1); // State untuk pagination
+const ActivityCard = ({ activities, user }: ActivityProps) => {
+    const [searchTerm, setSearchTerm] = useState(""); // State for search
+    const [selectedCategories, setSelectedCategories] = useState<string[]>([]); // Updated state for multi-category filter
+    const [currentPage, setCurrentPage] = useState(1);
+    const [loading, setLoading] = useState<boolean>(false);
 
-    // Handle pencarian dan filter
+    // Handle search and filter
     const filteredActivities = activities.filter((activity) => {
         const matchesSearch = activity.title
             .toLowerCase()
             .includes(searchTerm.toLowerCase());
-        const matchesCategory = selectedCategory
-            ? JSON.parse(activity.category).includes(selectedCategory)
-            : true;
+        const matchesCategory =
+            selectedCategories.length > 0
+                ? selectedCategories.some((category) =>
+                    JSON.parse(activity.category).includes(category)
+                )
+                : true;
         return matchesSearch && matchesCategory;
     });
 
-    // Dapatkan semua kategori unik dari activities untuk dropdown
+    // Get all unique categories from activities for the multi-select
     const allCategories = [
         ...new Set(
             activities.flatMap((activity) => JSON.parse(activity.category))
         ),
     ];
 
-    // Menghitung total halaman
+    // Calculate total pages
     const totalPages = Math.ceil(filteredActivities.length / ITEMS_PER_PAGE);
 
-    // Menghitung data yang ditampilkan berdasarkan halaman saat ini
+    // Paginate data based on current page
     const paginatedActivities = filteredActivities.slice(
         (currentPage - 1) * ITEMS_PER_PAGE,
         currentPage * ITEMS_PER_PAGE
@@ -77,6 +78,23 @@ const ActivityCard = ({ activities }: ActivityProps) => {
     const handlePrevPage = () => {
         if (currentPage > 1) {
             setCurrentPage(currentPage - 1);
+        }
+    };
+
+    const getRecommendation = async () => {
+        try {
+            setLoading(true);
+            const response = await fetch('/recomactivity');
+            const result = await response.json();
+
+            const parsedResult = JSON.parse(result);
+            console.log(parsedResult);
+
+            setSelectedCategories(parsedResult);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -101,35 +119,62 @@ const ActivityCard = ({ activities }: ActivityProps) => {
                             className="w-1/3"
                         />
 
-                        {/* Select Category */}
-                        <Select
-                            onValueChange={(value) =>
-                                setSelectedCategory(
-                                    value === "all" ? "" : value
-                                )
-                            }
-                            value={selectedCategory || "all"}
-                        >
-                            <SelectTrigger className="w-1/3">
-                                <SelectValue placeholder="Pilih Kategori" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="all">
-                                    Semua Kategori
-                                </SelectItem>
-                                {allCategories.map((category) => (
-                                    <SelectItem key={category} value={category}>
-                                        {category}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
+                        {/* MultiSelect for Category */}
+                        <div className="w-1/3">
+
+                            <MultiSelect
+                                selected={selectedCategories}
+                                setSelected={setSelectedCategories}
+                                options={allCategories.map((category) => ({
+                                    value: category,
+                                    label: category,
+                                }))}
+                            />
+                        </div>
+
+                        {
+                            user?.role === 'personal' && (
+                                <Button onClick={getRecommendation} disabled={loading}>
+                                    <SiGooglegemini className="mr-2" />
+                                    {loading ? 'Mencari...' : 'Rekomendasi Aktivitas'}
+                                </Button>
+                            )
+                        }
                     </div>
                 </header>
 
-                {/* Menampilkan aktivitas dengan pagination */}
+                {/* Display activities with pagination */}
                 <main className="container mx-auto grid grid-cols-1 gap-6 px-4 md:grid-cols-2 lg:grid-cols-4 lg:px-0">
-                    {paginatedActivities.map((activity, index) => (
+                    {loading ? Array.from({ length: 4 }).map((_, index) => (
+                        <div
+                            key={index}
+                            className="relative overflow-hidden rounded-lg shadow-lg flex flex-col justify-between transition-transform duration-300 ease-in-out hover:-translate-y-2 hover:shadow-xl"
+                        >
+                            <Skeleton className="h-48 w-full" />
+                            <div className="p-4 flex-1">
+                                <div className="flex flex-wrap items-center gap-2 mb-2">
+                                    <Skeleton className="w-12 h-6" />
+                                    <Skeleton className="w-12 h-6" />
+                                </div>
+                                <Skeleton className="w-3/4 h-8 mb-2" />
+                                <Skeleton className="w-full h-4" />
+                                <Skeleton className="w-5/6 h-4 mt-2" />
+                                <div className="mt-4 flex flex-col gap-3">
+                                    <div className="flex gap-1 items-center">
+                                        <Skeleton className="w-5 h-5" />
+                                        <Skeleton className="w-24 h-4" />
+                                    </div>
+                                    <div className="flex gap-1 items-center">
+                                        <Skeleton className="w-5 h-5" />
+                                        <Skeleton className="w-32 h-4" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="flex-col gap-2 p-4">
+                                <Skeleton className="w-full h-10" />
+                            </div>
+                        </div>
+                    )) : paginatedActivities.map((activity, index) => (
                         <Card
                             key={activity.id}
                             data-aos="fade-up"
@@ -154,7 +199,7 @@ const ActivityCard = ({ activities }: ActivityProps) => {
                                 }}
                             />
                             <CardContent className="p-4 flex-1">
-                                <div className="flex items-center gap-2 mb-2">
+                                <div className="flex flex-wrap items-center gap-2 mb-2">
                                     {JSON.parse(activity.category).map(
                                         (c: string) => (
                                             <Badge

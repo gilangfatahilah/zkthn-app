@@ -30,7 +30,7 @@ class Activity extends Model
     public function activityJoin($id = null)
     {
         $query = $this->join('users', 'users.id', '=', 'activity.publised_by')
-            ->select('activity.*', 'users.name as publised_name');
+            ->select('activity.*', 'users.name as publised_name', 'users.image as publised_image');
 
         if ($id) {
             $query->where('activity.id', $id);

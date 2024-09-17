@@ -21,9 +21,8 @@ import { ScrollArea } from "@/Components/ui/scroll-area";
 const BadgeStatus = ({ status }: { status: number }) => {
     return (
         <Badge
-            className={`bg-${
-                status === 1 ? "yellow" : status === 3 ? "red" : "green"
-            }-300`}
+            className={`bg-${status === 1 ? "yellow" : status === 3 ? "red" : "green"
+                }-300`}
         >
             {status === 1 ? "Menunggu" : status === 3 ? "Ditolak" : "Diterima"}
         </Badge>
@@ -47,7 +46,7 @@ const ActivityCard = ({ activity }: { activity: Activity[] }) => {
                         <img
                             src={`/images/${a.banner}`}
                             alt="banner"
-                            className="max-w-32 max-h-32 rounded-lg"
+                            className="max-w-48 max-h-48 rounded-lg"
                         />
 
                         <div className="flex gap-2 items-center">

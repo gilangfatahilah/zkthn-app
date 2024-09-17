@@ -27,7 +27,7 @@ export default function Hero() {
                             className="text-6xl text-primary/70 font-bold mb-4"
                             data-aos="fade-up"
                         >
-                            Lorem ipsum dolor.
+                            Aksi Nyata Bersama kami
                         </h1>
                         <p
                             className="text-xl text-gray-400 mb-8"

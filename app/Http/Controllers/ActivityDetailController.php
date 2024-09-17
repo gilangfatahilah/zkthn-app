@@ -27,6 +27,7 @@ class ActivityDetailController extends Controller
         // mengambil data 
         $userCV = User::where('id', $user->id)->select('cv')->first();
         $persyaratan = Activity::where('id', $request->id)->select('requirement')->first();
+
         $destinationPath = public_path('file');
         $filePath = $destinationPath . DIRECTORY_SEPARATOR . $userCV['cv'];
 
@@ -65,7 +66,7 @@ class ActivityDetailController extends Controller
     }
     public function handleapplier(Request $request)
     {
-        $detail = ActivityDetail::findOrFail($request->id);
+        $detail = ActivityDetail::where('activity_id', $request->activity_id)->get();
 
         if ($request->status == 2) {
             $detail->status = $request->status; // Ambil status dari request

@@ -18,6 +18,7 @@ import { router, useForm } from "@inertiajs/react";
 import { useToastStore } from "@/hooks/useToastStore";
 import { AlertModal } from "@/Components/AlertModal";
 import { toast } from "sonner";
+import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar";
 
 interface ActivityDetailProps {
     auth: PageProps["auth"];
@@ -25,7 +26,11 @@ interface ActivityDetailProps {
     joined: boolean;
 }
 
-const ActivityDetailPage = ({ auth, activity, joined }: ActivityDetailProps) => {
+const ActivityDetailPage = ({
+    auth,
+    activity,
+    joined,
+}: ActivityDetailProps) => {
     const { setToast } = useToastStore();
     const [open, setOpen] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
@@ -121,9 +126,25 @@ const ActivityDetailPage = ({ auth, activity, joined }: ActivityDetailProps) => 
 
                         {/* Organization and Details */}
                         <div className="flex justify-between items-center">
-                            <p className="text-md font-medium text-primary">
-                                Bersama : {activity[0].publised_name}
-                            </p>
+                            <div className="flex  gap-2 items-center">
+                                <Avatar className="border border-slate">
+                                    <AvatarImage
+                                        src={`/images/${
+                                            activity[0].publised_image as string
+                                        }`}
+                                        alt={activity[0].publised_name}
+                                    />
+                                    <AvatarFallback>
+                                        {" "}
+                                        {activity[0].publised_name
+                                            ?.substring(0, 1)
+                                            .toUpperCase()}{" "}
+                                    </AvatarFallback>
+                                </Avatar>
+                                <p className="text-md font-medium text-primary">
+                                    {activity[0].publised_name}
+                                </p>
+                            </div>
                             <p className="text-md font-medium">
                                 {activity[0].max} Relawan
                             </p>
@@ -190,13 +211,15 @@ const ActivityDetailPage = ({ auth, activity, joined }: ActivityDetailProps) => 
 
                         {/* Footer */}
                         <CardFooter className="flex flex-col space-y-4">
-                            <Button
-                                onClick={onApplyActivity}
-                                className="bg-primary w-full"
-                                disabled={joined}
-                            >
-                                {joined ? 'Anda telah mendaftar' : 'Daftar'}
-                            </Button>
+                            {auth.user?.role === "personal" && (
+                                <Button
+                                    onClick={onApplyActivity}
+                                    className="bg-primary w-full"
+                                    disabled={joined}
+                                >
+                                    {joined ? "Anda telah mendaftar" : "Daftar"}
+                                </Button>
+                            )}
                             {/* <Button variant="outline" className="w-full">Kontak Organisasi</Button> */}
                         </CardFooter>
                     </Card>

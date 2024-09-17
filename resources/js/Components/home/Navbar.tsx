@@ -53,21 +53,6 @@ export default function Navbar({ user }: NavbarProps) {
                                     <Link href="#">Tentang Kami</Link>
                                 </Button>
                             </li>
-
-                            <li>
-                                <Button
-                                    variant={"link"}
-                                    asChild
-                                    className="text-md font-semibold tracking-wide"
-                                >
-                                    <a
-                                        href="https://donasi.baznas.go.id/pemberdayaanekonomi"
-                                        target="_blank"
-                                    >
-                                        Donasi
-                                    </a>
-                                </Button>
-                            </li>
                         </ul>
                     </nav>
 

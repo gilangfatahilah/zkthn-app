@@ -5,7 +5,7 @@ import { Activity, PageProps } from "@/types";
 const ActivityPage = ({ auth, activity }: PageProps<{ activity: Activity[] }>) => {
   return (
     <HomeLayout user={auth.user}>
-      <ActivityCard activities={activity} />
+      <ActivityCard activities={activity} user={auth.user} />
     </HomeLayout>
   );
 };

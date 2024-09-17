@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/activity', [HomeController::class, 'allActivity'])->name('allActivity');
 Route::get('/activity{id}', [HomeController::class, 'detailActivity'])->name('detailActivity');
+Route::get('/recomactivity', [HomeController::class, 'recomActivity'])->name('recomActivity');
 
 // allrole
 Route::middleware('auth', 'role:administrator,organization,personal', 'verified')->group(function () {
