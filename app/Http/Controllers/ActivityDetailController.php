@@ -66,7 +66,9 @@ class ActivityDetailController extends Controller
     }
     public function handleapplier(Request $request)
     {
-        $detail = ActivityDetail::where('activity_id', $request->activity_id)->get();
+        $detail = ActivityDetail::where('id', $request->id)->first();
+
+
 
         if ($request->status == 2) {
             $detail->status = $request->status; // Ambil status dari request

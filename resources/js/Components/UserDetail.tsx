@@ -4,15 +4,14 @@ import {
     Dialog,
     DialogContent,
     DialogHeader,
-    DialogTitle,
-} //@ts-ignore
-    from "@/Components/ui/dialog";
+    DialogTitle, //@ts-ignore
+} from "@/Components/ui/dialog";
 import {
     Accordion,
     AccordionContent,
     AccordionItem,
     AccordionTrigger,
-} from "@/Components/ui/accordion"
+} from "@/Components/ui/accordion";
 import { User } from "@/types";
 import { formatDate } from "@/lib/formatter";
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
@@ -31,9 +30,9 @@ interface UserDetailProps {
 }
 
 const formatSummary = (str: string): React.ReactNode => {
-    const filteredString = str.replaceAll('*', '');
+    const filteredString = str.replaceAll("*", "");
 
-    const firstSentence = filteredString.split('.')[0] + '.';
+    const firstSentence = filteredString.split(".")[0] + ".";
     const restOfText = filteredString.substring(firstSentence.length);
 
     return (
@@ -41,53 +40,57 @@ const formatSummary = (str: string): React.ReactNode => {
             <strong>{firstSentence}</strong>
             {restOfText}
         </>
-    )
-}
+    );
+};
 
 export default function UserDetail({ user, isOpen, onClose }: UserDetailProps) {
     const [open, setOpen] = useState<boolean>(false);
-    const [actionType, setActionType] = useState<'accept' | 'decline'>('accept');
+    const [actionType, setActionType] = useState<"accept" | "decline">(
+        "accept"
+    );
 
     const handleSubmit = () => {
-        const path = window.location.pathname;
-        const activityId = path.match(/\d+/)?.[0];
-
         const body = {
-            id: user.register_status === 1 ? activityId : user.id,
-            userId: user.id,
-            status: actionType === 'accept' ? 2 : 3
-        }
+            id: user.id,
+            status: actionType === "accept" ? 2 : 3,
+        };
 
-        user.register_status === 1 ? router.post('/handleapplier', body) : router.post('/handleaccount', body);
+        user.register_status === 1
+            ? router.post("/handleapplier", body)
+            : router.post("/handleaccount", body);
 
         // window.location.reload();
-        toast.success('Berhasil mengkonfirmasi user')
+        toast.success("Berhasil mengkonfirmasi user");
         setOpen(false);
-    }
+    };
 
     return (
         <>
-            <AlertModal isOpen={open} variant="primary" description="Aksi ini tidak dapat diulangi?" onClose={() => setOpen(false)} onConfirm={handleSubmit} loading={false} />
+            <AlertModal
+                isOpen={open}
+                variant="primary"
+                description="Aksi ini tidak dapat diulangi?"
+                onClose={() => setOpen(false)}
+                onConfirm={handleSubmit}
+                loading={false}
+            />
             <ScrollArea className="h-full">
-
                 <Dialog open={isOpen} onOpenChange={onClose}>
                     <DialogContent className="sm:max-w-[500px]">
                         <DialogHeader>
                             <DialogTitle></DialogTitle>
                         </DialogHeader>
-                        {
-                            (user.status === 1 && !user.register_status) && (
-                                <Alert className={`border-yellow-300`}>
-                                    <Clock9 className="h-4 w-4" />
-                                    <AlertTitle>Perlu Verifikasi</AlertTitle>
-                                    <AlertDescription>
-                                        Pengguna {user.name} ingin mengubah tipe akun menjadi organisasi.
-                                    </AlertDescription>
-                                </Alert>
-                            )
-                        }
+                        {user.status === 1 && !user.register_status && (
+                            <Alert className={`border-yellow-300`}>
+                                <Clock9 className="h-4 w-4" />
+                                <AlertTitle>Perlu Verifikasi</AlertTitle>
+                                <AlertDescription>
+                                    Pengguna {user.name} ingin mengubah tipe
+                                    akun menjadi organisasi.
+                                </AlertDescription>
+                            </Alert>
+                        )}
                         <div className="bg-muted rounded-md p-4 sm:p-6">
-
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-4">
                                     <Avatar className="h-12 w-12">
@@ -96,7 +99,9 @@ export default function UserDetail({ user, isOpen, onClose }: UserDetailProps) {
                                             alt="user image"
                                         />
                                         <AvatarFallback>
-                                            {user.name.charAt(0).toLocaleUpperCase()}
+                                            {user.name
+                                                .charAt(0)
+                                                .toLocaleUpperCase()}
                                         </AvatarFallback>
                                     </Avatar>
                                     <div className="grid gap-1">
@@ -146,66 +151,73 @@ export default function UserDetail({ user, isOpen, onClose }: UserDetailProps) {
                                     <div className="text-sm font-medium text-muted-foreground">
                                         CV
                                     </div>
-                                    {
-                                        user.cv ? (
-
-                                            <a
-                                                href={`/file/${user.cv}`}
-                                                target="_blank"
-                                                className="text-pretty underline"
-                                            >
-                                                {user.cv ?? '-'}
-                                            </a>
-                                        ) : (
-                                            <p> - </p>
-                                        )
-                                    }
+                                    {user.cv ? (
+                                        <a
+                                            href={`/file/${user.cv}`}
+                                            target="_blank"
+                                            className="text-pretty underline"
+                                        >
+                                            {user.cv ?? "-"}
+                                        </a>
+                                    ) : (
+                                        <p> - </p>
+                                    )}
                                 </div>
 
+                                {(user.status === 1 ||
+                                    user.register_status === 1) && (
+                                    <>
+                                        <div className="w-full col-span-2">
+                                            <Accordion
+                                                type="single"
+                                                collapsible
+                                            >
+                                                <AccordionItem value="item-1">
+                                                    <AccordionTrigger>
+                                                        <span className="flex gap-2 items-center">
+                                                            <SiGooglegemini />
+                                                            Rekomendasi oleh
+                                                            Google Gemini
+                                                        </span>
+                                                    </AccordionTrigger>
+                                                    <AccordionContent>
+                                                        {formatSummary(
+                                                            user.note ??
+                                                                "Tidak ada Rekomendasi."
+                                                        )}
+                                                    </AccordionContent>
+                                                </AccordionItem>
+                                            </Accordion>
+                                        </div>
 
-                                {
-                                    (user.status === 1 || user.register_status === 1) && (
-                                        <>
-                                            <div className="w-full col-span-2">
-                                                <Accordion type="single" collapsible>
-                                                    <AccordionItem value="item-1">
-                                                        <AccordionTrigger>
-                                                            <span className="flex gap-2 items-center">
-                                                                <SiGooglegemini />
-                                                                Rekomendasi oleh Google Gemini
-                                                            </span>
-                                                        </AccordionTrigger>
-                                                        <AccordionContent>
-                                                            {
-                                                                formatSummary(user.note ?? 'Tidak ada Rekomendasi.')
-                                                            }
-                                                        </AccordionContent>
-                                                    </AccordionItem>
-                                                </Accordion>
-                                            </div>
-
-                                            <div className="col-span-2 flex-col gap-2 space-y-2">
-                                                <Button className="w-full" onClick={() => {
-                                                    setActionType('accept');
+                                        <div className="col-span-2 flex-col gap-2 space-y-2">
+                                            <Button
+                                                className="w-full"
+                                                onClick={() => {
+                                                    setActionType("accept");
                                                     setOpen(true);
-                                                }}>Verifikasi</Button>
-                                                <Button className="w-full" variant={'destructive'}
-                                                    onClick={() => {
-                                                        setActionType('decline');
-                                                        setOpen(true);
-                                                    }}>Tolak</Button>
-                                            </div>
-                                        </>
-                                    )
-                                }
+                                                }}
+                                            >
+                                                Verifikasi
+                                            </Button>
+                                            <Button
+                                                className="w-full"
+                                                variant={"destructive"}
+                                                onClick={() => {
+                                                    setActionType("decline");
+                                                    setOpen(true);
+                                                }}
+                                            >
+                                                Tolak
+                                            </Button>
+                                        </div>
+                                    </>
+                                )}
                             </div>
                         </div>
                     </DialogContent>
                 </Dialog>
-
             </ScrollArea>
-
-
         </>
     );
 }

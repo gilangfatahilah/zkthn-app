@@ -11,8 +11,8 @@ export interface User {
     address: string;
     register_status: number;
     gender: string;
-    cv: string
-    note?: string
+    cv: string;
+    note?: string;
 }
 
 export interface Activity {
