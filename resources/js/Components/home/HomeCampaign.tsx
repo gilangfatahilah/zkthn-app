@@ -18,12 +18,17 @@ const formatDate = (date: any) => {
     return format(parsedISO, "dd MMMM yyyy", { locale: id });
 };
 
+const stripHtmlTags = (text: string) => {
+    return text.replace(/<\/?[^>]+>/gi, "");
+};
+
 const truncateText = (text: string, maxWords: number) => {
-    const words = text.split(" ");
+    const plainText = stripHtmlTags(text);
+    const words = plainText.split(" ");
     if (words.length > maxWords) {
         return words.slice(0, maxWords).join(" ") + "...";
     }
-    return text;
+    return plainText;
 };
 
 const HomeCampaign = ({ newActivity }: NewActivityProps) => {

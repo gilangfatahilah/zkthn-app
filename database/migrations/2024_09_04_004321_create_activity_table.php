@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('activity', function (Blueprint $table) {
             $table->id();
-            $table->string('title', length: 50);
+            $table->string('title', length: 150);
             $table->string('banner', length: 100);
             $table->integer('publised_by');
-            $table->string('location', length: 30);
+            $table->string('location', length: 100);
             $table->string('category');
             $table->dateTime('schedule');
             $table->dateTime('deadline');

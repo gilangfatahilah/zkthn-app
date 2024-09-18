@@ -25,12 +25,17 @@ const formatDate = (date: any) => {
     return format(parsedISO, "dd MMMM yyyy", { locale: id });
 };
 
+const stripHtmlTags = (text: string) => {
+    return text.replace(/<\/?[^>]+>/gi, "");
+};
+
 const truncateText = (text: string, maxWords: number) => {
-    const words = text.split(" ");
+    const plainText = stripHtmlTags(text);
+    const words = plainText.split(" ");
     if (words.length > maxWords) {
         return words.slice(0, maxWords).join(" ") + "...";
     }
-    return text;
+    return plainText;
 };
 
 const ActivityCard = ({ activities, user }: ActivityProps) => {
@@ -47,8 +52,8 @@ const ActivityCard = ({ activities, user }: ActivityProps) => {
         const matchesCategory =
             selectedCategories.length > 0
                 ? selectedCategories.some((category) =>
-                    JSON.parse(activity.category).includes(category)
-                )
+                      JSON.parse(activity.category).includes(category)
+                  )
                 : true;
         return matchesSearch && matchesCategory;
     });
@@ -84,7 +89,7 @@ const ActivityCard = ({ activities, user }: ActivityProps) => {
     const getRecommendation = async () => {
         try {
             setLoading(true);
-            const response = await fetch('/recomactivity');
+            const response = await fetch("/recomactivity");
             const result = await response.json();
 
             const parsedResult = JSON.parse(result);
@@ -121,7 +126,6 @@ const ActivityCard = ({ activities, user }: ActivityProps) => {
 
                         {/* MultiSelect for Category */}
                         <div className="w-1/3">
-
                             <MultiSelect
                                 selected={selectedCategories}
                                 setSelected={setSelectedCategories}
@@ -132,111 +136,125 @@ const ActivityCard = ({ activities, user }: ActivityProps) => {
                             />
                         </div>
 
-                        {
-                            user?.role === 'personal' && (
-                                <Button onClick={getRecommendation} disabled={loading}>
-                                    <SiGooglegemini className="mr-2" />
-                                    {loading ? 'Mencari...' : 'Rekomendasi Aktivitas'}
-                                </Button>
-                            )
-                        }
+                        {user?.role === "personal" && (
+                            <Button
+                                onClick={getRecommendation}
+                                disabled={loading}
+                            >
+                                <SiGooglegemini className="mr-2" />
+                                {loading
+                                    ? "Mencari..."
+                                    : "Rekomendasi Aktivitas"}
+                            </Button>
+                        )}
                     </div>
                 </header>
 
                 {/* Display activities with pagination */}
                 <main className="container mx-auto grid grid-cols-1 gap-6 px-4 md:grid-cols-2 lg:grid-cols-4 lg:px-0">
-                    {loading ? Array.from({ length: 4 }).map((_, index) => (
-                        <div
-                            key={index}
-                            className="relative overflow-hidden rounded-lg shadow-lg flex flex-col justify-between transition-transform duration-300 ease-in-out hover:-translate-y-2 hover:shadow-xl"
-                        >
-                            <Skeleton className="h-48 w-full" />
-                            <div className="p-4 flex-1">
-                                <div className="flex flex-wrap items-center gap-2 mb-2">
-                                    <Skeleton className="w-12 h-6" />
-                                    <Skeleton className="w-12 h-6" />
-                                </div>
-                                <Skeleton className="w-3/4 h-8 mb-2" />
-                                <Skeleton className="w-full h-4" />
-                                <Skeleton className="w-5/6 h-4 mt-2" />
-                                <div className="mt-4 flex flex-col gap-3">
-                                    <div className="flex gap-1 items-center">
-                                        <Skeleton className="w-5 h-5" />
-                                        <Skeleton className="w-24 h-4" />
-                                    </div>
-                                    <div className="flex gap-1 items-center">
-                                        <Skeleton className="w-5 h-5" />
-                                        <Skeleton className="w-32 h-4" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="flex-col gap-2 p-4">
-                                <Skeleton className="w-full h-10" />
-                            </div>
-                        </div>
-                    )) : paginatedActivities.map((activity, index) => (
-                        <Card
-                            key={activity.id}
-                            data-aos="fade-up"
-                            data-aos-delay={(index + 1) * 200}
-                            className="relative overflow-hidden rounded-lg shadow-lg flex flex-col justify-between transition-transform duration-300 ease-in-out hover:-translate-y-2 hover:shadow-xl"
-                        >
-                            <Link
-                                href={`/activity${activity.id}`}
-                                className="absolute inset-0 z-10"
-                            >
-                                <span className="sr-only">View campaign</span>
-                            </Link>
-                            <img
-                                src={`images/${activity.banner}`}
-                                alt={`${activity.banner}`}
-                                width={500}
-                                height={300}
-                                className="h-48 w-full object-cover"
-                                style={{
-                                    aspectRatio: "500/300",
-                                    objectFit: "cover",
-                                }}
-                            />
-                            <CardContent className="p-4 flex-1">
-                                <div className="flex flex-wrap items-center gap-2 mb-2">
-                                    {JSON.parse(activity.category).map(
-                                        (c: string) => (
-                                            <Badge
-                                                key={c}
-                                                variant={"secondary"}
-                                            >
-                                                {c}
-                                            </Badge>
-                                        )
-                                    )}
-                                </div>
-                                <h2 className="text-xl font-bold">
-                                    {activity.title}
-                                </h2>
-                                <p className="mt-2 text-sm text-muted-foreground">
-                                    {truncateText(activity.description, 11)}
-                                </p>
-                                <div className="mt-4 flex flex-col gap-3">
-                                    <div className="flex gap-1 items-center">
-                                        <MdDateRange className="text-primary" />
-                                        <p className="text-sm text-primary font-semibold">
-                                            {formatDate(activity.schedule)}
-                                        </p>
-                                    </div>
-                                    <div className="flex gap-1 items-center">
-                                        <FaLocationDot className="text-primary" />
-                                        <p className="text-sm text-primary font-semibold">
-                                            {activity.location}, Indonesia
-                                        </p>
-                                    </div>
-                                </div>
-                            </CardContent>
-                            <CardFooter className="flex-col gap-2">
-                                <Button className="w-full">Selengkapnya</Button>
-                            </CardFooter>
-                        </Card>
-                    ))}
+                    {loading
+                        ? Array.from({ length: 4 }).map((_, index) => (
+                              <div
+                                  key={index}
+                                  className="relative overflow-hidden rounded-lg shadow-lg flex flex-col justify-between transition-transform duration-300 ease-in-out hover:-translate-y-2 hover:shadow-xl"
+                              >
+                                  <Skeleton className="h-48 w-full" />
+                                  <div className="p-4 flex-1">
+                                      <div className="flex flex-wrap items-center gap-2 mb-2">
+                                          <Skeleton className="w-12 h-6" />
+                                          <Skeleton className="w-12 h-6" />
+                                      </div>
+                                      <Skeleton className="w-3/4 h-8 mb-2" />
+                                      <Skeleton className="w-full h-4" />
+                                      <Skeleton className="w-5/6 h-4 mt-2" />
+                                      <div className="mt-4 flex flex-col gap-3">
+                                          <div className="flex gap-1 items-center">
+                                              <Skeleton className="w-5 h-5" />
+                                              <Skeleton className="w-24 h-4" />
+                                          </div>
+                                          <div className="flex gap-1 items-center">
+                                              <Skeleton className="w-5 h-5" />
+                                              <Skeleton className="w-32 h-4" />
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div className="flex-col gap-2 p-4">
+                                      <Skeleton className="w-full h-10" />
+                                  </div>
+                              </div>
+                          ))
+                        : paginatedActivities.map((activity, index) => (
+                              <Card
+                                  key={activity.id}
+                                  data-aos="fade-up"
+                                  data-aos-delay={(index + 1) * 200}
+                                  className="relative overflow-hidden rounded-lg shadow-lg flex flex-col justify-between transition-transform duration-300 ease-in-out hover:-translate-y-2 hover:shadow-xl"
+                              >
+                                  <Link
+                                      href={`/activity${activity.id}`}
+                                      className="absolute inset-0 z-10"
+                                  >
+                                      <span className="sr-only">
+                                          View campaign
+                                      </span>
+                                  </Link>
+                                  <img
+                                      src={`images/${activity.banner}`}
+                                      alt={`${activity.banner}`}
+                                      width={500}
+                                      height={300}
+                                      className="h-48 w-full object-cover"
+                                      style={{
+                                          aspectRatio: "500/300",
+                                          objectFit: "cover",
+                                      }}
+                                  />
+                                  <CardContent className="p-4 flex-1">
+                                      <div className="flex flex-wrap items-center gap-2 mb-2">
+                                          {JSON.parse(activity.category).map(
+                                              (c: string) => (
+                                                  <Badge
+                                                      key={c}
+                                                      variant={"secondary"}
+                                                  >
+                                                      {c}
+                                                  </Badge>
+                                              )
+                                          )}
+                                      </div>
+                                      <h2 className="text-xl font-bold">
+                                          {activity.title}
+                                      </h2>
+                                      <p className="mt-2 text-sm text-muted-foreground">
+                                          {truncateText(
+                                              activity.description,
+                                              11
+                                          )}
+                                      </p>
+                                      <div className="mt-4 flex flex-col gap-3">
+                                          <div className="flex gap-1 items-center">
+                                              <MdDateRange className="text-primary" />
+                                              <p className="text-sm text-primary font-semibold">
+                                                  {formatDate(
+                                                      activity.schedule
+                                                  )}
+                                              </p>
+                                          </div>
+                                          <div className="flex gap-1 items-center">
+                                              <FaLocationDot className="text-primary" />
+                                              <p className="text-sm text-primary font-semibold">
+                                                  {activity.location}, Indonesia
+                                              </p>
+                                          </div>
+                                      </div>
+                                  </CardContent>
+                                  <CardFooter className="flex-col gap-2">
+                                      <Button className="w-full">
+                                          Selengkapnya
+                                      </Button>
+                                  </CardFooter>
+                              </Card>
+                          ))}
                 </main>
 
                 {/* Pagination Controls */}

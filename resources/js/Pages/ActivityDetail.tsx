@@ -128,8 +128,9 @@ const ActivityDetailPage = ({
                             <div className="flex  gap-2 items-center">
                                 <Avatar className="border border-slate">
                                     <AvatarImage
-                                        src={`/images/${activity[0].publised_image as string
-                                            }`}
+                                        src={`/images/${
+                                            activity[0].publised_image as string
+                                        }`}
                                         alt={activity[0].publised_name}
                                     />
                                     <AvatarFallback>
@@ -225,10 +226,13 @@ const ActivityDetailPage = ({
 
                 <div className="flex-col space-y-4">
                     {/* Description */}
-                    <div className="bg-baackround p-4 rounded-lg">
-                        <p className="text-gray-600 dark:text-white">
-                            {activity[0].description}
-                        </p>
+                    <div className="bg-background p-4 rounded-lg">
+                        <div
+                            className="text-gray-600 dark:text-white text-justify"
+                            dangerouslySetInnerHTML={{
+                                __html: activity[0].description,
+                            }}
+                        />
                     </div>
 
                     {/* Activity[0] Details */}
@@ -243,7 +247,12 @@ const ActivityDetailPage = ({
                                 </h3>
                             </CardHeader>
                             <CardContent>
-                                <p>{activity[0].requirement}</p>
+                                <div
+                                    className="text-gray-600 dark:text-white text-justify"
+                                    dangerouslySetInnerHTML={{
+                                        __html: activity[0].requirement,
+                                    }}
+                                />
                             </CardContent>
                         </Card>
                         <Card className="mt-2">
@@ -253,7 +262,12 @@ const ActivityDetailPage = ({
                                 </h3>
                             </CardHeader>
                             <CardContent>
-                                <p>{activity[0].jobdesk}</p>
+                                <div
+                                    className="text-gray-600 dark:text-white text-justify"
+                                    dangerouslySetInnerHTML={{
+                                        __html: activity[0].jobdesk,
+                                    }}
+                                />
                             </CardContent>
                         </Card>
                         <Card className="mt-2">
@@ -262,6 +276,16 @@ const ActivityDetailPage = ({
                             </CardHeader>
                             <CardContent>
                                 <p>{activity[0].domicile}, Indonesia</p>
+                            </CardContent>
+                        </Card>
+                        <Card className="mt-2">
+                            <CardHeader>
+                                <h3 className="text-lg font-bold">
+                                    Informasi Tambahan
+                                </h3>
+                            </CardHeader>
+                            <CardContent>
+                                <p>{activity[0].addtional_information}</p>
                             </CardContent>
                         </Card>
                     </div>
