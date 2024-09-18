@@ -152,7 +152,12 @@ export default function Dashboard({
                     </div>
 
                     {role === "personal" && (
-                        <ActivityCard activity={activity} />
+                        <>
+                            <h2 className="text-3xl font-bold tracking-tight">
+                                Aktivitas anda :
+                            </h2>
+                            <ActivityCard activity={activity} />
+                        </>
                     )}
                 </div>
             </ScrollArea>

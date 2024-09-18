@@ -32,9 +32,6 @@ const truncateText = (text: string, maxWords: number) => {
 };
 
 const HomeCampaign = ({ newActivity }: NewActivityProps) => {
-    // useEffect(() => {
-    //     console.log(JSON.parse(newActivity[0].category));
-    // }, [])
 
     return (
         <section>

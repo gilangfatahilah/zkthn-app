@@ -46,11 +46,11 @@ export const AlertModal: React.FC<AlertModalProps> = ({
         {
           loading ? (
             <Button disabled={loading} variant={variant === 'danger' ? 'destructive' : 'default'} onClick={onConfirm}>
-              <Icons.spinner className="mr-2 w-4 h-4 animate-spin" /> Please wait
+              <Icons.spinner className="mr-2 w-4 h-4 animate-spin" /> Mohon tunggu
             </Button>
           ) : (
             <Button disabled={loading} variant={variant === 'danger' ? 'destructive' : 'default'} onClick={onConfirm}>
-              Continue
+              Konfirmasi
             </Button>
           )
         }

@@ -18,7 +18,7 @@ import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 import { Clock9 } from "lucide-react";
 import { SiGooglegemini } from "react-icons/si";
 import { AlertModal } from "./AlertModal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { router } from "@inertiajs/react";
 import { toast } from "sonner";
 import { ScrollArea } from "./ui/scroll-area";
@@ -49,6 +49,7 @@ export default function UserDetail({ user, isOpen, onClose }: UserDetailProps) {
         "accept"
     );
 
+    useEffect(() => { console.log(user) }, []);
     const handleSubmit = () => {
         const body = {
             id: user.id,
@@ -166,53 +167,53 @@ export default function UserDetail({ user, isOpen, onClose }: UserDetailProps) {
 
                                 {(user.status === 1 ||
                                     user.register_status === 1) && (
-                                    <>
-                                        <div className="w-full col-span-2">
-                                            <Accordion
-                                                type="single"
-                                                collapsible
-                                            >
-                                                <AccordionItem value="item-1">
-                                                    <AccordionTrigger>
-                                                        <span className="flex gap-2 items-center">
-                                                            <SiGooglegemini />
-                                                            Rekomendasi oleh
-                                                            Google Gemini
-                                                        </span>
-                                                    </AccordionTrigger>
-                                                    <AccordionContent>
-                                                        {formatSummary(
-                                                            user.note ??
+                                        <>
+                                            <div className="w-full col-span-2">
+                                                <Accordion
+                                                    type="single"
+                                                    collapsible
+                                                >
+                                                    <AccordionItem value="item-1">
+                                                        <AccordionTrigger>
+                                                            <span className="flex gap-2 items-center">
+                                                                <SiGooglegemini />
+                                                                Rekomendasi oleh
+                                                                Google Gemini
+                                                            </span>
+                                                        </AccordionTrigger>
+                                                        <AccordionContent>
+                                                            {formatSummary(
+                                                                user.note ??
                                                                 "Tidak ada Rekomendasi."
-                                                        )}
-                                                    </AccordionContent>
-                                                </AccordionItem>
-                                            </Accordion>
-                                        </div>
+                                                            )}
+                                                        </AccordionContent>
+                                                    </AccordionItem>
+                                                </Accordion>
+                                            </div>
 
-                                        <div className="col-span-2 flex-col gap-2 space-y-2">
-                                            <Button
-                                                className="w-full"
-                                                onClick={() => {
-                                                    setActionType("accept");
-                                                    setOpen(true);
-                                                }}
-                                            >
-                                                Verifikasi
-                                            </Button>
-                                            <Button
-                                                className="w-full"
-                                                variant={"destructive"}
-                                                onClick={() => {
-                                                    setActionType("decline");
-                                                    setOpen(true);
-                                                }}
-                                            >
-                                                Tolak
-                                            </Button>
-                                        </div>
-                                    </>
-                                )}
+                                            <div className="col-span-2 flex-col gap-2 space-y-2">
+                                                <Button
+                                                    className="w-full"
+                                                    onClick={() => {
+                                                        setActionType("accept");
+                                                        setOpen(true);
+                                                    }}
+                                                >
+                                                    Verifikasi
+                                                </Button>
+                                                <Button
+                                                    className="w-full"
+                                                    variant={"destructive"}
+                                                    onClick={() => {
+                                                        setActionType("decline");
+                                                        setOpen(true);
+                                                    }}
+                                                >
+                                                    Tolak
+                                                </Button>
+                                            </div>
+                                        </>
+                                    )}
                             </div>
                         </div>
                     </DialogContent>

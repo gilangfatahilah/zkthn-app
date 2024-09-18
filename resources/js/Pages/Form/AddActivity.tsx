@@ -20,6 +20,8 @@ import { Activity, PageProps } from "@/types";
 import { router, useForm } from "@inertiajs/react";
 import { useState } from "react";
 import { toast } from "sonner";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const AddActivity = ({
     auth,
@@ -27,8 +29,8 @@ const AddActivity = ({
 }: PageProps & { activity?: Activity[] }) => {
     const breadcrumbItems = [
         { label: "Dashboard", href: "/dashboard" },
-        { label: "Activity", href: "/dashboard/activity" },
-        { label: activity?.[0] ? "Edit" : "Create" },
+        { label: "Aktivitas", href: "/dashboard/activity" },
+        { label: activity?.[0] ? "Ubah" : "Tambah" },
     ];
 
     const { setToast } = useToastStore();
@@ -64,28 +66,31 @@ const AddActivity = ({
 
         const formData = new FormData();
         Object.entries(data).forEach(([key, value]) => {
-            // Menambahkan file atau data biasa ke FormData
-            if (key === "banner" && value instanceof File) {
-                formData.append(key, value);
+            if (key === "banner") {
+                if (value) {
+                    formData.append(key, value instanceof File ? value : String(value));
+                }
             } else {
-                formData.append(key, value instanceof File ? value : String(value));
+                formData.append(key, String(value));
             }
         });
 
-        // Cek apakah activity ada, jika ada lakukan update, jika tidak buat activity baru
         if (activity?.[0]) {
-            put(route("activity.update", activity[0].id), {
+            console.log([...formData.entries()]);
+
+            post(route("activity.update", { id: activity[0].id }), {
                 data: formData,
                 onSuccess: () => {
                     setToast("diperbarui");
                     router.visit("/dashboard/activity");
                 },
-                onError: (e) => {
+                onError: () => {
                     toast.error("Failed to update activity");
                 },
                 preserveScroll: true,
             });
         } else {
+            console.log([...formData.entries()]);
             post(route("activity.store"), {
                 data: formData,
                 onSuccess: () => {
@@ -244,12 +249,13 @@ const AddActivity = ({
                                     <Label htmlFor="description">
                                         Deskripsi
                                     </Label>
-                                    <Textarea
+                                    <ReactQuill
                                         id="description"
-                                        placeholder="Masukan Deskripsi"
                                         value={data.description}
-                                        onChange={handleChange}
-                                        required
+                                        className="bg-background rounded"
+                                        onChange={(value) =>
+                                            setData("description", value)
+                                        }
                                     />
                                     {errors.description && (
                                         <div>{errors.description}</div>
@@ -257,12 +263,13 @@ const AddActivity = ({
                                 </div>
                                 <div className="space-y-1">
                                     <Label htmlFor="jobdesk">Tugas</Label>
-                                    <Textarea
+                                    <ReactQuill
                                         id="jobdesk"
-                                        placeholder="Masukan Tugas"
                                         value={data.jobdesk}
-                                        onChange={handleChange}
-                                        required
+                                        className="bg-background rounded"
+                                        onChange={(value) =>
+                                            setData("jobdesk", value)
+                                        }
                                     />
                                     {errors.jobdesk && (
                                         <div>{errors.jobdesk}</div>
@@ -272,12 +279,13 @@ const AddActivity = ({
                                     <Label htmlFor="requirement">
                                         Kriteria
                                     </Label>
-                                    <Textarea
+                                    <ReactQuill
                                         id="requirement"
-                                        placeholder="Masukan Tugas"
                                         value={data.requirement}
-                                        onChange={handleChange}
-                                        required
+                                        className="bg-background rounded"
+                                        onChange={(value) =>
+                                            setData("requirement", value)
+                                        }
                                     />
                                     {errors.requirement && (
                                         <div>{errors.requirement}</div>
@@ -287,12 +295,13 @@ const AddActivity = ({
                                     <Label htmlFor="addtional_information">
                                         Informasi Tambahan
                                     </Label>
-                                    <Textarea
+                                    <ReactQuill
                                         id="addtional_information"
-                                        placeholder="Masukan Informasi Tambahan"
                                         value={data.addtional_information}
-                                        onChange={handleChange}
-                                        required
+                                        className="bg-background rounded"
+                                        onChange={(value) =>
+                                            setData("addtional_information", value)
+                                        }
                                     />
                                     {errors.addtional_information && (
                                         <div>
@@ -323,7 +332,9 @@ const AddActivity = ({
                             </CardContent>
                             <CardFooter>
                                 <Button type="submit" disabled={processing}>
-                                    Create Activity
+                                    {
+                                        activity?.[0] ? "Perbarui" : "Tambah"
+                                    }
                                 </Button>
                             </CardFooter>
                         </Card>

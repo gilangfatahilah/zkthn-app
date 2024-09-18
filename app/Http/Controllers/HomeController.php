@@ -113,7 +113,11 @@ class HomeController extends Controller
             // Mendapatkan API key dari konfigurasi
             $prompt = "Berdasarkan CV berikut: " . $text . "\n\n" .
                 "Dan array kategori ini  :" . $category . "\n\n" .
-                "Berikan array cateory yang cocok dengan cv berikut";
+                "Berikan sebuah objek dengan format 
+                {category: (berisi list array kategori 
+                yang relevan dengan cv, jika tidak relevan 
+                berikan array kosong), reason: (berisi rangkuman alasan mengapa kategori tersebut direkomendasikan,
+                gunakan kata 'kamu' sebagai pengganti dari nama pengguna }";
             $result = Gemini::geminiPro()->generateContent($prompt);
             // $user->cv_review = $result;
             // Menampilkan hasil untuk debugging

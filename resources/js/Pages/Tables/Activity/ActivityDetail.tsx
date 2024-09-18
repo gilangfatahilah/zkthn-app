@@ -172,9 +172,12 @@ const DashboardActivityDetail = ({
                                     <p className="text-sm mb-4">
                                         <strong>Description:</strong>{" "}
                                     </p>
-                                    <Textarea name="" id="" readOnly>
-                                        {data.description}
-                                    </Textarea>
+                                    <div
+                                        className="text-gray-600 dark:text-white text-justify p-4 rounded-lg border"
+                                        dangerouslySetInnerHTML={{
+                                            __html: data.description,
+                                        }}
+                                    />
                                 </div>
 
                                 {/* Job Desk */}
@@ -182,9 +185,12 @@ const DashboardActivityDetail = ({
                                     <p className="text-sm mb-4">
                                         <strong>Jobdesk:</strong>{" "}
                                     </p>
-                                    <Textarea name="" id="" readOnly>
-                                        {data.jobdesk}
-                                    </Textarea>
+                                    <div
+                                        className="text-gray-600 dark:text-white text-justify p-4 rounded-lg border"
+                                        dangerouslySetInnerHTML={{
+                                            __html: data.jobdesk,
+                                        }}
+                                    />
                                 </div>
 
                                 {/* Requirements */}
@@ -192,18 +198,24 @@ const DashboardActivityDetail = ({
                                     <p className="text-sm mb-4">
                                         <strong>Requirement:</strong>{" "}
                                     </p>
-                                    <Textarea name="" id="" readOnly>
-                                        {data.requirement}
-                                    </Textarea>
+                                    <div
+                                        className="text-gray-600 dark:text-white text-justify p-4 rounded-lg border"
+                                        dangerouslySetInnerHTML={{
+                                            __html: data.requirement
+                                        }}
+                                    />
                                 </div>
 
                                 <div className="col-span-2">
                                     <p className="text-sm mb-4">
                                         <strong>Additional Information:</strong>{" "}
                                     </p>
-                                    <Textarea name="" id="" readOnly>
-                                        {data.addtional_information}
-                                    </Textarea>
+                                    <div
+                                        className="text-gray-600 dark:text-white text-justify p-4 rounded-lg border"
+                                        dangerouslySetInnerHTML={{
+                                            __html: data.addtional_information ?? '-'
+                                        }}
+                                    />
                                 </div>
                             </CardContent>
                         </Card>

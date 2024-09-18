@@ -18,6 +18,7 @@ import { useToastStore } from "@/hooks/useToastStore";
 import { AlertModal } from "@/Components/AlertModal";
 import { toast } from "sonner";
 import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar";
+import { Icons } from "@/Components/icons";
 
 interface ActivityDetailProps {
     auth: PageProps["auth"];
@@ -85,19 +86,27 @@ const ActivityDetailPage = ({
         }
     };
 
-    const handleConfirm = async () => {
-        try {
-            setLoading(true);
-
-            router.post("/apply", { id: activityId });
-
-            toast.success("Berhasil, anda telah mendaftar aktivitas ini!");
-        } catch (error) {
-            toast.error("Terjadi kesalahan, silahkan coba lagi");
-        } finally {
-            setLoading(false);
-            setOpen(false);
+    const handleConfirm = () => {
+        const reqBody = {
+            id: activityId
         }
+
+        router.post('/apply', reqBody, {
+            onBefore: () => {
+                setLoading(true);
+            },
+            onFinish: () => {
+                setLoading(false);
+                setOpen(false);
+                toast.success("Berhasil, anda telah mendaftar aktivitas ini!");
+            },
+            onError: () => {
+                setLoading(false);
+                toast.error("Error, Terjadi kesalahan silahkan coba lagi")
+            }
+        });
+
+
     };
 
     return (
@@ -113,7 +122,7 @@ const ActivityDetailPage = ({
 
             <section className="max-w-6xl mx-auto py-12 md:py-20 space-y-6">
                 {/* Header Section */}
-                <div className="flex justify-between gap-8 items-start">
+                <div className="flex justify-between gap-8 pt-6 items-start">
                     <div className="space-y-6 w-1/2">
                         {/* Image */}
 
@@ -128,9 +137,8 @@ const ActivityDetailPage = ({
                             <div className="flex  gap-2 items-center">
                                 <Avatar className="border border-slate">
                                     <AvatarImage
-                                        src={`/images/${
-                                            activity[0].publised_image as string
-                                        }`}
+                                        src={`/images/${activity[0].publised_image as string
+                                            }`}
                                         alt={activity[0].publised_name}
                                     />
                                     <AvatarFallback>
@@ -210,12 +218,14 @@ const ActivityDetailPage = ({
 
                         {/* Footer */}
                         <CardFooter className="flex flex-col space-y-4">
-                            {auth.user?.role === "personal" && (
+                            {(auth.user?.role !== "organization" && auth.user?.role !== "administrator") && (
                                 <Button
                                     onClick={onApplyActivity}
                                     className="bg-primary w-full"
                                     disabled={joined}
                                 >
+                                    {loading && <Icons.spinner className="mr-2 w-4 h-4 animate-spin" />}
+
                                     {joined ? "Anda telah mendaftar" : "Daftar"}
                                 </Button>
                             )}

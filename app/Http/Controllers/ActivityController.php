@@ -142,8 +142,6 @@ class ActivityController extends Controller
 
     public function update(Request $request, string $id)
     {
-        $user = Auth::user();
-
         // Validasi input
         $validated = $request->validate([
             'title' => 'required|string|max:255',

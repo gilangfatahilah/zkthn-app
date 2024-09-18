@@ -5,6 +5,7 @@ import { Badge } from "@/Components/ui/badge";
 import { CellAction } from "./cell-action";
 import { Button } from "@/Components/ui/button";
 import { ArrowUpDown } from "lucide-react";
+import { formatDate } from "@/lib/formatter";
 
 export const columns: ColumnDef<Activity>[] = [
     {
@@ -59,6 +60,13 @@ export const columns: ColumnDef<Activity>[] = [
                 </Button>
             );
         },
+        cell: ({ row }) => {
+            return (
+                <p>
+                    {formatDate(row.original.schedule)}
+                </p>
+            )
+        }
     },
     {
         accessorKey: "location",
